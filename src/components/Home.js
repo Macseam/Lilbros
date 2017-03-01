@@ -5,8 +5,19 @@ export default class Home extends React.Component {
   // render
   render() {
     return (
-      <div className="page-home">
-        <h4>Hello world!</h4>
+      <div>
+        <div className="top-level-menu-item">
+          <span>Звери</span>
+        </div>
+        <div className="top-level-menu-item">
+          <span>Птицы</span>
+        </div>
+        <div className="top-level-menu-item">
+          <span>Растения</span>
+        </div>
+        <div className="top-level-menu-item">
+          <span>Насекомые</span>
+        </div>
       </div>
     );
   }

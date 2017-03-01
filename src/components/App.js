@@ -1,14 +1,20 @@
-import React from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import "../stylesheets/main.scss";
 
-// app component
-export default class App extends React.Component {
-  // render
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <div className="container">
+      <div>
         {this.props.children}
       </div>
     );
   }
 }
+
+export default connect(state => state)(App);
