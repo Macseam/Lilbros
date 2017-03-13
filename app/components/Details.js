@@ -14,18 +14,17 @@ class ChapterDetails extends React.Component {
   }
 
   render() {
-    const listItems = [
-      {name: 'Тестовое название', path: 'test-path'},
-      {name: 'Еще тестовое название', path: 'other-test-path'},
-      {name: 'И еще одно тестовое название', path: 'another-test-path'}
-    ];
     return (
       <div>
-        <p onClick={this.handleGoBack.bind(this)}>Вернуться в корневой раздел</p>
+        <button
+          type="button"
+          className="btn btn-default btn-xs"
+          onClick={this.handleGoBack.bind(this)}
+        >
+          Вернуться к списку
+        </button>
         <h4>{this.props.params.name}</h4>
-        <div className="top-level-menu-item">
-          <span>Картинка</span>
-        </div>
+        <img className="details-portrait" src="../../imgs/squirrel.jpg" />
       </div>
     );
   }
