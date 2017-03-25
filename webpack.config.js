@@ -1,13 +1,10 @@
-// http://webpack.github.io/docs/configuration.html
-// http://webpack.github.io/docs/webpack-dev-server.html
-var app_root = 'app'; // the app root folder: src, src_users, etc
-var path = require('path');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
+let app_root = 'app';
+let path = require('path');
+let CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-  app_root: app_root, // the app root folder, needed by the other webpack configs
+  app_root: app_root,
   entry: [
-    // http://gaearon.github.io/react-hot-loader/getstarted/
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
     'babel-polyfill',
@@ -26,7 +23,6 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        // https://github.com/jtangelder/sass-loader
         test: /\.scss$/,
         loaders: ['style', 'css', 'sass'],
       },
@@ -51,6 +47,9 @@ module.exports = {
       }, {
         test: /\.svg$/,
         loader: 'file-loader'
+      }, {
+        test: /\.png$/,
+        loader: 'file-loader'
       }
     ],
   },
@@ -61,7 +60,7 @@ module.exports = {
     new CleanWebpackPlugin(['css/main.css', 'js/bundle.js'], {
       root: __dirname + '/public',
       verbose: true,
-      dry: false, // true for simulation
+      dry: false,
     }),
   ],
 };
