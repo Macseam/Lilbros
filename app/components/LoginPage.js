@@ -2,10 +2,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
 
+import { bindActionCreators } from 'redux';
+import * as authActions from 'redux/actions/authActions';
+
 class LoginPage extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.actions = authActions;
+
+    this.state = {
+      tokenData: null,
+    };
+  }
+
+  componentWillMount() {
+    this.actions.getHeaderAuthToken();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ((nextProps.booksState.authToken !== this.state.tokenData &&
+      nextProps.booksState.loaded)) {
+      this.setState({
+        tokenData: nextProps.booksState.authToken,
+      });
+    }
   }
 
   render() {
@@ -18,12 +40,7 @@ class LoginPage extends React.Component {
 
             <div className="logo"></div>
 
-            {/*<div className="entry_title active">Вход на сайт</div>
-            <div className="register_title">Регистрация</div>*/}
-
-            {/*<hr className="margin"/>*/}
-
-            <input type="hidden" name="someName" value="someValue" />
+            <input type="hidden" name="_csrf" value={this.state.tokenData} />
 
             <label htmlFor="entry_name">Имя пользователя:</label>
             <span className="error_empty">Заполните поле, поручик Голицын</span>
@@ -35,14 +52,7 @@ class LoginPage extends React.Component {
 
             <input type="password" id="entry_password" name="userPassword" />
 
-            <label htmlFor="entry_password_repeat">Повтор пароля:</label>
-            <span className="error_empty">Пароль не совпадает</span>
-
-            <input type="password" id="entry_password_repeat" name="entry_password_repeat" />
-
             <input id="entry_submit" type="submit" value="Войти" name="entry_submit" />
-
-            {/*<input id="register_submit" type="submit" value="Зарегистрироваться" name="register_submit" />*/}
 
             <div className="entry_confirmation">Спасибо! У вас всё получилось!</div>
 
@@ -55,4 +65,12 @@ class LoginPage extends React.Component {
   }
 }
 
-export default connect(state => state)(LoginPage);
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators({
+      ... authActions,
+    }, dispatch),
+  };
+}
+
+export default connect(state => state, mapDispatchToProps)(LoginPage);
