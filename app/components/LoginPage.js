@@ -40,7 +40,7 @@ class LoginPage extends React.Component {
 
             <div className="logo"></div>
 
-            <input type="hidden" name="_csrf" value={this.state.tokenData} />
+            <input type="hidden" name="_csrf" value={this.state.tokenData || 'noData'} />
 
             <label htmlFor="entry_name">Имя пользователя:</label>
             <span className="error_empty">Заполните поле, поручик Голицын</span>

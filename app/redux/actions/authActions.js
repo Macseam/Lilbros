@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import { requestData, receiveData, receiveError } from './actionUtils';
-
 import * as AuthTypes from '../types/authTypes';
 
 export function getHeaderAuthToken () {

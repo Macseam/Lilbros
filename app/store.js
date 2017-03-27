@@ -1,38 +1,44 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import { browserHistory } from "react-router";
-import { syncHistoryWithStore, routerMiddleware } from "react-router-redux";
-import createSagaMiddleware from "redux-saga";
-import freeze from "redux-freeze";
-import { reducers } from "./redux/reducers/index";
-import { sagas } from "./redux/sagas/index";
+'use strict';
 
-// add the middlewares
-let middlewares = [];
+import { createStore, compose, applyMiddleware } from 'redux';
+import { hashHistory } from 'react-router';
+import { routerMiddleware } from 'react-router-redux';
+import createLogger from 'redux-logger';
+import thunk from 'redux-thunk';
+import rootReducer from 'redux/reducers';
 
-// add the router middleware
-middlewares.push(routerMiddleware(browserHistory));
+const NODE_ENV = process.env.NODE_ENV || 'production';
 
-// add the saga middleware
-const sagaMiddleware = createSagaMiddleware();
-middlewares.push(sagaMiddleware);
+const logger = createLogger({
+  diff: true,
+  level: {
+    prevState: () => `info`,
+    action: () => `log`,
+    error: () => `error`,
+    nextState: () => `info`,
+  },
+  colors: {
+    prevState: () => `#FFEB3B`,
+    action: () => `red`,
+    nextState: () => `#4CAF50`,
+  },
+  duration: true,
+  collapsed: true
+});
 
-// add the freeze dev middleware
-if (process.env.NODE_ENV !== 'production') {
-  middlewares.push(freeze);
+const router = routerMiddleware(hashHistory);
+
+const enhancer = compose( applyMiddleware(thunk, router, logger, authChecker) );
+
+export default function configureStore(initialState) {
+  const store = createStore(rootReducer, initialState, enhancer);
+  //const store = createStore(rootReducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+  if (module.hot) {
+    module.hot.accept('../redux/reducers', () =>
+      store.replaceReducer(require('../redux/reducers').default)
+    );
+  }
+
+  return store;
 }
-
-// apply the middleware
-let middleware = applyMiddleware(...middlewares);
-
-// add the redux dev tools
-if (process.env.NODE_ENV !== 'production' && window.devToolsExtension) {
-  middleware = compose(middleware, window.devToolsExtension());
-}
-
-// create the store
-const store = createStore(reducers, middleware);
-const history = syncHistoryWithStore(browserHistory, store);
-sagaMiddleware.run(sagas);
-
-// export
-export { store, history };
