@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
 
 import { bindActionCreators } from 'redux';
-import * as authActions from 'redux/actions/authActions';
+import * as authActions from '../redux/actions/authActions';
 
 class LoginPage extends React.Component {
 
