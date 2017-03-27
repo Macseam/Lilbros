@@ -28,42 +28,10 @@ module.exports.plugins.push(
 );
 
 // export css to a separate file
-module.exports.module.loaders = [
-  {
-    test: /\.js$/,
-    loaders: ['react-hot', 'babel'],
-    exclude: /node_modules/,
-  },
-  {
-    test: /\.scss$/,
-    loader: ExtractTextPlugin.extract('css!sass'),
-  },
-  {
-    test: /\.css$/,
-    loaders: ['style', 'css'],
-  }, {
-    test: /\.less$/,
-    loader: 'style-loader!css-loader!less-loader'
-  }, {
-    test: /\.woff$/,
-    loader: 'url-loader?limit=10000&minetype=application/font-woff'
-  }, {
-    test: /\.woff2$/,
-    loader: 'url-loader?limit=10000&minetype=application/font-woff'
-  }, {
-    test: /\.ttf$/,
-    loader: 'file-loader'
-  }, {
-    test: /\.eot$/,
-    loader: 'file-loader'
-  }, {
-    test: /\.svg$/,
-    loader: 'file-loader'
-  }, {
-    test: /\.png$/,
-    loader: 'file-loader'
-  }
-];
+module.exports.module.loaders[1] = {
+  test: /\.scss$/,
+  loader: ExtractTextPlugin.extract('css!sass'),
+};
 
 module.exports.plugins.push(
   new ExtractTextPlugin('../css/main.css')
