@@ -13,8 +13,8 @@ const MenuList = props => {
           <MenuItem
             key={index}
             title={menuItemObj.title}
-            color={menuItemObj.color}
-            goToAction={()=>{props.goToAction('chapter/' + menuItemObj.slug)}}
+            color={menuItemObj.color || 'gray'}
+            goToAction={()=>{props.goToAction('chapter/' + menuItemObj._id)}}
           />
         );
       })}

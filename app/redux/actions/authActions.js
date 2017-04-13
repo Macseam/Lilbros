@@ -21,11 +21,8 @@ export function getChaptersList () {
   const actionName = 'GET_CHAPTERS_LIST';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return axios.get(`app/sample_data/sample.json`)
+    return axios.get(`http://macseam.ru:8080/api/articles`)
       .then((response) => {
-
-        response.data = response.data.chapters;
-
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
         dispatch(receiveError(actionName, response.data));
