@@ -1,66 +1,181 @@
-let app_root = 'app';
+let webpack = require('webpack');
 let path = require('path');
-let CleanWebpackPlugin = require('clean-webpack-plugin');
+
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractLess = new ExtractTextPlugin({
+  filename: "[name].[contenthash].css",
+  disable: process.env.NODE_ENV === "development"
+});
+
+const NODE_ENV = process.env.NODE_ENV || 'production';
+const AUTH = process.env.AUTH || false;
 
 module.exports = {
-  app_root: app_root,
+
   entry: [
-    'webpack-dev-server/client?http://localhost:80',
-    'webpack/hot/only-dev-server',
-    'babel-polyfill',
-    __dirname + '/' + app_root + '/index.js',
+    './app/app'
   ],
-  output: {
-    path: __dirname + '/public/js',
-    publicPath: 'js/',
-    filename: 'bundle.js',
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loaders: ['react-hot', 'babel'],
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.scss$/,
-        loaders: ['style', 'css', 'sass'],
-      },
-      {
-        test: /\.css$/,
-        loaders: ['style', 'css'],
-      }, {
-        test: /\.less$/,
-        loader: 'style-loader!css-loader!less-loader'
-      }, {
-        test: /\.woff$/,
-        loader: 'url-loader?limit=10000&minetype=application/font-woff'
-      }, {
-        test: /\.woff2$/,
-        loader: 'url-loader?limit=10000&minetype=application/font-woff'
-      }, {
-        test: /\.ttf$/,
-        loader: 'file-loader'
-      }, {
-        test: /\.eot$/,
-        loader: 'file-loader'
-      }, {
-        test: /\.svg$/,
-        loader: 'file-loader'
-      }, {
-        test: /\.png$/,
-        loader: 'file-loader'
-      }
-    ],
-  },
+
+  devtool: ((NODE_ENV == 'development') ? '#inline-source-map' : false),
+
   devServer: {
-    contentBase: __dirname + '/public',
+    historyApiFallback: true
   },
-  plugins: [
-    new CleanWebpackPlugin(['css/main.css', 'js/bundle.js'], {
-      root: __dirname + '/public',
-      verbose: true,
-      dry: false,
+
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: 'build/bundle.js',
+    publicPath: '/build/',
+  },
+
+  resolve: {
+    modules: [
+      path.join(__dirname, 'app'), "node_modules"
+    ],
+    extensions: ['.js', '.jsx']
+  },
+
+  module: {
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: 'react-hot-loader'
+        },
+        {
+          loader: 'babel-loader'
+        },
+      ],
+    }, {
+      test: /\.jsx$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: 'react-hot-loader'
+        },
+        {
+          loader: 'babel-loader'
+        },
+      ],
+    }, {
+      test: /\.json$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: 'json-loader'
+        },
+      ],
+    }, {
+      test: /\.css$/,
+      use: [
+        {
+          loader: 'style!css'
+        },
+      ],
+    }, {
+      test: /\.less$/,
+      loader: extractLess.extract({
+        use: [{
+          loader: "css-loader"
+        }, {
+          loader: "less-loader"
+        }],
+        fallback: "style-loader"
+      })
+    }, {
+      test: /\.woff$/,
+      use: [
+        {
+          loader: 'url-loader?limit=10000&minetype=application/font-woff'
+        },
+      ],
+    }, {
+      test: /\.woff2$/,
+      use: [
+        {
+          loader: 'url-loader?limit=10000&minetype=application/font-woff'
+        },
+      ],
+    }, {
+      test: /\.ttf$/,
+      use: [
+        {
+          loader: 'file-loader'
+        },
+      ],
+    }, {
+      test: /\.eot$/,
+      use: [
+        {
+          loader: 'file-loader'
+        },
+      ],
+    }, {
+      test: /\.svg$/,
+      use: [
+        {
+          loader: 'file-loader'
+        },
+      ],
+    }, {
+      test: /\.png$/,
+      use: [
+        {
+          loader: 'file-loader'
+        },
+      ],
+    }, {
+      test: /\.gif$/,
+      use: [
+        {
+          loader: 'file-loader'
+        },
+      ],
+    }, {
+      test: /\.swf$/,
+      use: [
+        {
+          loader: 'file-loader'
+        },
+      ],
+    }
+    ]
+  },
+
+  node: {
+    fs: "empty"
+  },
+
+  externals: {
+    'showdown': 'window.Showdown'
+  },
+
+  plugins: NODE_ENV == 'development' ? [
+    extractLess,
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify('development')
+      },
+      NODE_ENV: JSON.stringify(NODE_ENV),
+      AUTH: AUTH
     }),
-  ],
+  ] : [
+      extractLess,
+      new webpack.DefinePlugin({
+        'process.env':{
+          'NODE_ENV': JSON.stringify('production')
+        },
+        NODE_ENV: JSON.stringify(NODE_ENV),
+        AUTH: AUTH
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        output: {
+          comments: false
+        },
+        compress: {
+          warnings: false,
+        },
+      }),
+    ]
 };

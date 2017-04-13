@@ -1,1 +1,1 @@
-Readme coming soon
+# Simple-Clean-Redux-Boilerplate
