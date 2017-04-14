@@ -2,11 +2,31 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
+import { bindActionCreators } from 'redux';
+import * as authActions from '../redux/actions/authActions';
 
 class ChapterDetails extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.actions = this.props.authActions;
+    this.state = {
+      itemDetails: null
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ((nextProps.authState.chapterItemDetails !== this.state.itemDetails &&
+      nextProps.authState.loaded) && nextProps.authState.chapterItemDetails) {
+      this.setState({
+        itemDetails: nextProps.authState.chapterItemDetails,
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.actions.getItemDetails(this.props.params.details);
   }
 
   handleGoBack() {
@@ -19,12 +39,21 @@ class ChapterDetails extends React.Component {
       return (chapterObj.slug === this.props.params.chapter);
     });
 
-    let itemDetails = null;
+    const { itemDetails } = this.state;
 
-    if (chapterTitle && !_.isEmpty(chapterTitle)) {
-      itemDetails = _.find(chapterTitle.items, (itemObj)=>{
-        return (itemObj.slug === this.props.params.details);
-      });
+    if ((!itemDetails || _.isEmpty(itemDetails)) && this.props.authState.loading) {
+      return (
+        <div className="item-details-wrapper">
+          <button
+            type="button"
+            className="btn btn-default btn-xs"
+            onClick={this.handleGoBack.bind(this)}
+          >
+            Go back to items list
+          </button>
+          <h5>...</h5>
+        </div>
+      );
     }
 
     return (
@@ -48,4 +77,12 @@ ChapterDetails.contextTypes = {
   router: React.PropTypes.object,
 };
 
-export default connect(state => state)(ChapterDetails);
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators({
+      ...authActions,
+    }, dispatch),
+  };
+}
+
+export default connect(state => state, mapDispatchToProps)(ChapterDetails);

@@ -4,6 +4,7 @@ const initialState = {
   authToken: null,
   chaptersList: null,
   chapterItemsList: null,
+  chapterItemDetails: null,
   loading: false,
   loaded: false,
 };
@@ -31,6 +32,13 @@ export default function authInfo(state = initialState, action) {
       return { ...state, chapterItemsList: action.data, loading: false, loaded: true };
     case 'GET_ITEMS_LIST_FAILURE':
       return { ...state, chapterItemsList: initialState.chapterItemsList, loading: false, loaded: true };
+
+    case 'GET_ITEM_DETAILS_REQUEST':
+      return { ...state, chapterItemDetails: initialState.chapterItemDetails, loading: true, loaded: false };
+    case 'GET_ITEM_DETAILS_SUCCESS':
+      return { ...state, chapterItemDetails: action.data, loading: false, loaded: true };
+    case 'GET_ITEM_DETAILS_FAILURE':
+      return { ...state, chapterItemDetails: initialState.chapterItemDetails, loading: false, loaded: true };
 
     default:
       return state;

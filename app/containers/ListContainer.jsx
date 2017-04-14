@@ -63,14 +63,29 @@ class ListContainer extends Component {
 
     return (
       <div>
+        <button
+          type="button"
+          className="btn btn-default btn-xs"
+          onClick={this.handleGoBack.bind(this)}
+        >
+          Go back to main menu
+        </button>
         {chapterItems && !_.isEmpty(chapterItems) &&
-        <ItemsList
-          goBack={this.handleGoBack.bind(this)}
-          goToItem={this.handleGoToItem.bind(this)}
-          chapterItems={chapterItems}
-          chapterSlug={this.props.params.chapter}
-          chapterTitle={(!_.isEmpty(chapterTitle) && chapterTitle) ? chapterTitle.title : 'No title'}
-        />
+          <ItemsList
+            goToItem={this.handleGoToItem.bind(this)}
+            chapterItems={chapterItems}
+            chapterSlug={this.props.params.chapter}
+            chapterTitle={(!_.isEmpty(chapterTitle) && chapterTitle) ? chapterTitle.title : 'No title'}
+          />
+        }
+        {_.isEmpty(chapterItems)
+        && this.props.authState.chapterItemsList !== null
+        && !this.props.authState.loading &&
+          <h5>No items available in current chapter</h5>
+        }
+        {_.isEmpty(chapterItems)
+        && this.props.authState.loading &&
+        <h5>...</h5>
         }
       </div>
     );
