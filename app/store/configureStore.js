@@ -1,7 +1,7 @@
 'use strict';
 
 import { createStore, compose, applyMiddleware } from 'redux';
-import { hashHistory } from 'react-router';
+import { browserHistory, hashHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -26,7 +26,7 @@ const logger = createLogger({
   collapsed: true
 });
 
-const router = routerMiddleware(hashHistory);
+const router = routerMiddleware(browserHistory);
 
 const enhancer = compose( applyMiddleware(thunk, router, logger) );
 
