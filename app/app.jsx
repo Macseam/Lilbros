@@ -7,12 +7,14 @@ import { Provider } from 'react-redux';
 import { Router, useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from "react-router-redux";
 
+const NODE_ENV = process.env.NODE_ENV || 'production';
+
 import configureStore from './store/configureStore';
 import createRoutes from './routes';
 import { createBrowserHistory, createHashHistory } from 'history';
 
 const store = configureStore();
-const history = useRouterHistory(createHashHistory)();
+const history = ((NODE_ENV === 'development') ? useRouterHistory(createHashHistory)() : useRouterHistory(createBrowserHistory)());
 
 render(
     <Provider store={store} key="provider">
