@@ -10,9 +10,11 @@ class LoginPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.actions = authActions;
+    this.actions = this.props.actions;
 
     this.state = {
+      userName: null,
+      userPassword: null,
       tokenData: null,
     };
   }
@@ -22,52 +24,94 @@ class LoginPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((nextProps.booksState.authToken !== this.state.tokenData &&
-      nextProps.booksState.loaded)) {
+    if ((nextProps.authState.authToken !== this.state.tokenData &&
+      nextProps.authState.loaded)) {
       this.setState({
-        tokenData: nextProps.booksState.authToken,
+        tokenData: nextProps.authState.authToken,
       });
     }
   }
 
+  handleGoBack() {
+    this.context.router.push('');
+  }
+
+  changeName(event) {
+    this.setState({
+      userName: event.target.value || null
+    });
+  }
+
+  changePassword(event) {
+    this.setState({
+      userPassword: event.target.value || null
+    });
+  }
+
+  submitForm(event) {
+    event.preventDefault();
+    console.log('username: ' + this.state.userName);
+    console.log('password: ' + this.state.userPassword);
+    console.log('token: ' + this.state.tokenData);
+  }
+
   render() {
     return (
-      <div className="entry_form_container">
+      <div>
+        <button
+          type="button"
+          className="btn btn-default btn-xs"
+          onClick={this.handleGoBack.bind(this)}
+        >
+          Go back to main menu
+        </button>
 
-        <div className="entry_form_window">
+        <hr/>
 
-          <form className="entry_form">
+        <form action="http://macseam.ru:8080/process" method="POST" onSubmit={this.submitForm.bind(this)}>
 
-            <div className="logo"></div>
+          <input type="hidden" name="_csrf" value={this.state.tokenData || 'noData'} />
 
-            <input type="hidden" name="_csrf" value={this.state.tokenData || 'noData'} />
-
+          <div className="form-group">
             <label htmlFor="entry_name">Имя пользователя:</label>
-            <span className="error_empty">Заполните поле, поручик Голицын</span>
+            <input
+              className="form-control"
+              type="text"
+              id="entry_name"
+              name="userName"
+              defaultValue={this.state.userName}
+              onChange={this.changeName.bind(this)}
+            />
+          </div>
 
-            <input type="text" id="entry_name" name="userName" />
-
+          <div className="form-group">
             <label htmlFor="entry_password">Пароль:</label>
-            <span className="error_empty">Корнет Оболенскый, введите пароль</span>
+            <input
+              className="form-control"
+              type="password"
+              id="entry_password"
+              name="userPassword"
+              defaultValue={this.state.userPassword}
+              onChange={this.changePassword.bind(this)}
+            />
+          </div>
 
-            <input type="password" id="entry_password" name="userPassword" />
+          <button type="submit" className="btn btn-default">Войти</button>
 
-            <input id="entry_submit" type="submit" value="Войти" name="entry_submit" />
-
-            <div className="entry_confirmation">Спасибо! У вас всё получилось!</div>
-
-          </form>
-
-        </div>
+        </form>
 
       </div>
     );
   }
 }
 
+LoginPage.contextTypes = {
+  router: React.PropTypes.object,
+};
+
 function mapDispatchToProps(dispatch) {
   return {
-    authActions: bindActionCreators({
+    actions: bindActionCreators({
       ... authActions,
     }, dispatch),
   };

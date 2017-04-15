@@ -8,7 +8,7 @@ export function getHeaderAuthToken () {
   const actionName = 'GET_HEADER_AUTH_TOKEN';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return axios.get(`http://macseam.ru/form`)
+    return axios.get(`http://macseam.ru:8080/form`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {

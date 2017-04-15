@@ -9,7 +9,10 @@ class AppContainer extends Component {
 
   constructor(props) {
     super(props);
+  }
 
+  goToLogin() {
+    this.context.router.push('login');
   }
 
   render() {
@@ -18,10 +21,15 @@ class AppContainer extends Component {
     } = this.props;
     return (
       <div>
+        <p onClick={this.goToLogin.bind(this)}>Войти</p>
         {children}
       </div>
     );
   }
 }
+
+AppContainer.contextTypes = {
+  router: React.PropTypes.object,
+};
 
 export default connect(state => state)(AppContainer);
