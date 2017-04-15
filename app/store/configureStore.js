@@ -26,7 +26,7 @@ const logger = createLogger({
   collapsed: true
 });
 
-const router = ((NODE_ENV === 'development') ? routerMiddleware(hashHistory) : routerMiddleware(browserHistory));
+const router = routerMiddleware(hashHistory);
 
 const enhancer = compose( applyMiddleware(thunk, router, logger) );
 
