@@ -50,6 +50,10 @@ class LoginPage extends React.Component {
 
   submitForm(event) {
     event.preventDefault();
+    this.actions.tryUserLoginPassword({
+      username: this.state.userName,
+      _csrf: this.state.tokenData
+    });
     console.log('username: ' + this.state.userName);
     console.log('password: ' + this.state.userPassword);
     console.log('token: ' + this.state.tokenData);
@@ -68,7 +72,7 @@ class LoginPage extends React.Component {
 
         <hr/>
 
-        <form action="http://macseam.ru:8080/process" method="POST" onSubmit={this.submitForm.bind(this)}>
+        <form action="http://localhost:8080/api/sendauthinfo" method="POST" onSubmit={this.submitForm.bind(this)}>
 
           <input type="hidden" name="_csrf" value={this.state.tokenData || 'noData'} />
 

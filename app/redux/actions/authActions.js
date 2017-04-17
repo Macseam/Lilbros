@@ -57,3 +57,16 @@ export function getItemDetails (action) {
       });
   };
 }
+
+export function tryUserLoginPassword (action) {
+  const actionName = 'TRY_USER_LOGIN_PASSWORD';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return axios.post(`${apiUrl}/api/sendauthinfo`, action)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
