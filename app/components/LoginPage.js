@@ -51,13 +51,24 @@ class LoginPage extends React.Component {
   submitForm(event) {
     event.preventDefault();
     this.actions.tryUserLoginPassword({
-      username: this.state.userName,
+      data: {
+        username: this.state.userName,
+        password: this.state.userPassword,
+        _csrf: this.state.tokenData
+      },
       _csrf: this.state.tokenData
     });
-    console.log('username: ' + this.state.userName);
+    /*console.log('username: ' + this.state.userName);
     console.log('password: ' + this.state.userPassword);
-    console.log('token: ' + this.state.tokenData);
+    console.log('token: ' + this.state.tokenData);*/
   }
+
+  getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
 
   render() {
     return (
