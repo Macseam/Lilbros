@@ -19,17 +19,16 @@ class LoginPage extends React.Component {
     };
   }
 
-  componentWillMount() {
-    this.actions.getHeaderAuthToken();
+  componentDidMount() {
+    this.setState({
+      tokenData: this.getCookie('CSRF-TOKEN'),
+    });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if ((nextProps.authState.authToken !== this.state.tokenData &&
-      nextProps.authState.loaded)) {
-      this.setState({
-        tokenData: nextProps.authState.authToken,
-      });
-    }
+  componentWillReceiveProps() {
+    this.setState({
+      tokenData: this.getCookie('CSRF-TOKEN'),
+    });
   }
 
   handleGoBack() {
@@ -54,13 +53,9 @@ class LoginPage extends React.Component {
       data: {
         username: this.state.userName,
         password: this.state.userPassword,
-        _csrf: this.state.tokenData
       },
       _csrf: this.state.tokenData
     });
-    /*console.log('username: ' + this.state.userName);
-    console.log('password: ' + this.state.userPassword);
-    console.log('token: ' + this.state.tokenData);*/
   }
 
   getCookie(name) {
@@ -83,9 +78,7 @@ class LoginPage extends React.Component {
 
         <hr/>
 
-        <form action="http://localhost:8080/api/sendauthinfo" method="POST" onSubmit={this.submitForm.bind(this)}>
-
-          <input type="hidden" name="_csrf" value={this.state.tokenData || 'noData'} />
+        <form onSubmit={this.submitForm.bind(this)}>
 
           <div className="form-group">
             <label htmlFor="entry_name">Имя пользователя:</label>
