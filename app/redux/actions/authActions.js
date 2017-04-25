@@ -20,10 +20,14 @@ export function getHeaderAuthToken () {
 }
 
 export function getChaptersList () {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
   const actionName = 'GET_CHAPTERS_LIST';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return axios.get(`${apiUrl}/api/articles`)
+    return instance.get(`${apiUrl}/api/articles`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
