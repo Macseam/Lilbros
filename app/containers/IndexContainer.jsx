@@ -30,6 +30,7 @@ class IndexContainer extends Component {
   }
 
   componentDidMount() {
+    this.actions.getHeaderAuthToken();
     this.actions.getChaptersList();
   }
 
@@ -41,6 +42,7 @@ class IndexContainer extends Component {
     const {
       menuChapters
     } = this.state;
+
     return (
       <div>
         {menuChapters && !_.isEmpty(menuChapters) &&

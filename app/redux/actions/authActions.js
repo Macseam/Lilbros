@@ -7,10 +7,14 @@ import { requestData, receiveData, receiveError } from './actionUtils';
 const apiUrl = 'http://localhost:8080';
 
 export function getHeaderAuthToken () {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
   const actionName = 'GET_HEADER_AUTH_TOKEN';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return axios.get(`${apiUrl}/form`)
+    return instance.get(`${apiUrl}/api`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {

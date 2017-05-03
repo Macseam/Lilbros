@@ -9,6 +9,19 @@ class AppContainer extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      userData: this.props.authState.userData
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ((nextProps.authState.userData !== this.props.authState.userData) &&
+      nextProps.authState.loaded) {
+      this.setState({
+        userData: nextProps.authState.userData,
+      });
+    }
   }
 
   goToLogin() {
@@ -21,7 +34,10 @@ class AppContainer extends Component {
     } = this.props;
     return (
       <div>
-        <p onClick={this.goToLogin.bind(this)}>Войти</p>
+        {!this.state.userData || this.state.userData === 'guest user' ?
+          <p onClick={this.goToLogin.bind(this)}>Войти</p> :
+          <p>{this.state.userData}</p>
+        }
         {children}
       </div>
     );
