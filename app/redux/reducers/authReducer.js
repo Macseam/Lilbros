@@ -19,6 +19,13 @@ export default function authInfo(state = initialState, action) {
     case 'GET_HEADER_AUTH_TOKEN_FAILURE':
       return { ...state, userData: initialState.userData, loading: false, loaded: true };
 
+    case 'SEND_LOGOUT_COMMAND_REQUEST':
+      return { ...state, userData: initialState.userData, loading: true, loaded: false };
+    case 'SEND_LOGOUT_COMMAND_SUCCESS':
+      return { ...state, userData: null, loading: false, loaded: true };
+    case 'SEND_LOGOUT_COMMAND_FAILURE':
+      return { ...state, userData: initialState.userData, loading: false, loaded: true };
+
     case 'GET_CHAPTERS_LIST_REQUEST':
       return { ...state, chaptersList: initialState.chaptersList, loading: true, loaded: false };
     case 'GET_CHAPTERS_LIST_SUCCESS':

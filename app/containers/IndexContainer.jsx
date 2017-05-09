@@ -38,6 +38,10 @@ class IndexContainer extends Component {
     this.context.router.push(path);
   }
 
+  handleDeleteChapter(id) {
+    console.log(id);
+  }
+
   render() {
     const {
       menuChapters
@@ -46,7 +50,13 @@ class IndexContainer extends Component {
     return (
       <div>
         {menuChapters && !_.isEmpty(menuChapters) &&
-          <MenuList goToAction={this.handleGoToChapter.bind(this)} menuChapters={menuChapters} />
+          <MenuList
+            goToAction={this.handleGoToChapter.bind(this)}
+            deleteAction={(!!this.props.authState.userData && this.props.authState.userData !== 'guest user')
+              ? this.handleDeleteChapter.bind(this)
+              : null}
+            menuChapters={menuChapters}
+          />
         }
       </div>
     );

@@ -23,6 +23,23 @@ export function getHeaderAuthToken () {
   };
 }
 
+export function sendLogoutCommand () {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
+  const actionName = 'SEND_LOGOUT_COMMAND';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return instance.get(`${apiUrl}/logout`)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
+
 export function getChaptersList () {
   let instance = axios.create({
     //headers: {'X-CSRF-Token': action._csrf},

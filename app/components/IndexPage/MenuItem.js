@@ -9,6 +9,9 @@ const MenuItem = props => {
         <div className="image-placeholder" style={{backgroundColor: props.color || 'gray'}}>&nbsp;</div>
         <hr className="menu-item-divider" />
         <p>{props.title || 'No title available'}</p>
+        {!!props.deleteAction &&
+          <p onClick={props.deleteAction}>delete link</p>
+        }
       </div>
     </div>
   );

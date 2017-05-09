@@ -15,6 +15,7 @@ const MenuList = props => {
               key={index}
               title={menuItemObj.title}
               color={menuItemObj.color || 'gray'}
+              deleteAction={props.deleteAction ? ()=>{props.deleteAction(menuItemObj._id)} : null}
               goToAction={()=>{props.goToAction('chapter/' + menuItemObj.slug)}}
             />
           );

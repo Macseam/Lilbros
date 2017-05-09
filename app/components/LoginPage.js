@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
+import _ from 'lodash';
 
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
@@ -25,7 +26,11 @@ class LoginPage extends React.Component {
     });
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    if ((nextProps.authState.userData !== this.props.authState.userData) &&
+      nextProps.authState.loaded && !_.isEmpty(nextProps.authState.userData)) {
+      this.context.router.push('/');
+    }
     this.setState({
       tokenData: this.getCookie('CSRF-TOKEN'),
     });
