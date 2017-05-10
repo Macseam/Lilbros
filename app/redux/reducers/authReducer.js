@@ -2,6 +2,7 @@
 
 const initialState = {
   chaptersList: null,
+  chapterDeleted: null,
   chapterItemsList: null,
   chapterItemDetails: null,
   userData: null,
@@ -32,6 +33,13 @@ export default function authInfo(state = initialState, action) {
       return { ...state, chaptersList: action.data, loading: false, loaded: true };
     case 'GET_CHAPTERS_LIST_FAILURE':
       return { ...state, chaptersList: initialState.chaptersList, loading: false, loaded: true };
+
+    case 'DELETE_CHAPTER_REQUEST':
+      return { ...state, chapterDeleted: initialState.chapterDeleted, loading: true, loaded: false };
+    case 'DELETE_CHAPTER_SUCCESS':
+      return { ...state, chapterDeleted: action.data, loading: false, loaded: true };
+    case 'DELETE_CHAPTER_FAILURE':
+      return { ...state, chapterDeleted: initialState.chapterDeleted, loading: false, loaded: true };
 
     case 'GET_ITEMS_LIST_REQUEST':
       return { ...state, chapterItemsList: initialState.chapterItemsList, loading: true, loaded: false };

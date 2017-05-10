@@ -57,6 +57,23 @@ export function getChaptersList () {
   };
 }
 
+export function deleteChapter (action) {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
+  const actionName = 'DELETE_CHAPTER';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return instance.delete(`${apiUrl}/api/articles/${action}`)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
+
 export function getItemsList (action) {
   const actionName = 'GET_ITEMS_LIST';
   return (dispatch) => {

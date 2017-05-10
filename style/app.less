@@ -12,58 +12,84 @@
   border-top: 1px gray solid;
 }
 
-.top-level-menu-item {
-  font-size: 11px;
+.top-level-menu-item-wrapper {
+  position: relative;
   width: 300px;
   height: 300px;
   display: inline-block;
   margin-right: 20px;
   margin-bottom: 20px;
-  background: #ffffff;
-  border: 1px silver solid;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.5s ease;
-  .vertical-aligner {
-    .image-placeholder {
-      background: gray;
-      width: 60px;
-      height: 60px;
-      margin: 0 auto;
-      transition: all 0.5s ease;
-    }
-    p {
-      white-space: nowrap;
-      text-transform: uppercase;
-      transition: all 0.5s ease;
-    }
+  font-size: 11px;
+  .delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    background: silver;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 500;
   }
-  &:before {
-    content: "\200B";
-    display: inline-block;
+  .edit-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    background: silver;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 500;
+  }
+  .top-level-menu-item {
+    width: 100%;
     height: 100%;
-    vertical-align: middle;
-  }
-  &:hover {
-    border: 1px #000000 solid;
+    background: #ffffff;
+    border: 1px silver solid;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
     transition: all 0.5s ease;
     .vertical-aligner {
-      hr {
-        width: 100%;
-        transition: all 0.5s ease;
-      }
       .image-placeholder {
-        transform: translateY(-10px);
+        background: gray;
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;
         transition: all 0.5s ease;
       }
       p {
-        transform: translateY(10px);
+        white-space: nowrap;
+        text-transform: uppercase;
         transition: all 0.5s ease;
       }
     }
-  }
-  span {
-    position: relative;
+    &:before {
+      content: "\200B";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+    &:hover {
+      border: 1px #000000 solid;
+      transition: all 0.5s ease;
+      .vertical-aligner {
+        hr {
+          width: 100%;
+          transition: all 0.5s ease;
+        }
+        .image-placeholder {
+          transform: translateY(-10px);
+          transition: all 0.5s ease;
+        }
+        p {
+          transform: translateY(10px);
+          transition: all 0.5s ease;
+        }
+      }
+    }
+    span {
+      position: relative;
+    }
   }
 }
 
@@ -109,4 +135,10 @@
     float: left;
     margin: 0 16px 0 0;
   }
+}
+
+.popup-content {
+  display: block;
+  width: 90%;
+  margin: 0 auto;
 }
