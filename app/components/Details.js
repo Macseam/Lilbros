@@ -44,6 +44,13 @@ class ChapterDetails extends React.Component {
     this.actions.getItemDetails(this.props.params.details);
   }
 
+  getCookie(name) {
+    const matches = document.cookie.match(new RegExp(
+      `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
+
   handleEditDetails() {
     const { itemDetails } = this.state;
     this.setState({
@@ -82,6 +89,7 @@ class ChapterDetails extends React.Component {
       detailsDescription
     } = this.state;
     const params = {
+      _csrf: this.getCookie('CSRF-TOKEN'),
       id: detailsId,
       body: {
         title: detailsName,

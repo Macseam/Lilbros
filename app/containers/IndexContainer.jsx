@@ -61,6 +61,13 @@ class IndexContainer extends Component {
     this.actions.getChaptersList();
   }
 
+  getCookie(name) {
+    const matches = document.cookie.match(new RegExp(
+      `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
+
   handleGoToChapter(path) {
     this.context.router.push(path);
   }
@@ -77,7 +84,12 @@ class IndexContainer extends Component {
   }
 
   handleDeleteChapter(id) {
-    this.actions.deleteChapter(id);
+    this.actions.deleteChapter(
+      {
+        id: id,
+        _csrf: this.getCookie('CSRF-TOKEN')
+      }
+    );
   }
 
   handleAddChapter() {
@@ -113,6 +125,7 @@ class IndexContainer extends Component {
       chapterDescription
     } = this.state;
     const params = {
+      _csrf: this.getCookie('CSRF-TOKEN'),
       id: chapterId,
       body: {
         title: chapterName,
@@ -131,6 +144,7 @@ class IndexContainer extends Component {
       chapterDescription
     } = this.state;
     const params = {
+      _csrf: this.getCookie('CSRF-TOKEN'),
       title: chapterName,
       slug: chapterSlug,
       description: chapterDescription

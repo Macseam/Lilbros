@@ -59,7 +59,7 @@ export function getChaptersList () {
 
 export function addChapter (action) {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
+    headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'ADD_CHAPTER';
@@ -76,7 +76,7 @@ export function addChapter (action) {
 
 export function editChapter (action) {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
+    headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'EDIT_CHAPTER';
@@ -93,13 +93,13 @@ export function editChapter (action) {
 
 export function deleteChapter (action) {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
+    headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'DELETE_CHAPTER';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return instance.delete(`${apiUrl}/api/articles/${action}`)
+    return instance.delete(`${apiUrl}/api/articles/${action.id}`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
@@ -123,7 +123,7 @@ export function getItemsList (action) {
 
 export function addItem (action) {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
+    headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'ADD_ITEM';
@@ -140,7 +140,7 @@ export function addItem (action) {
 
 export function editItem (action) {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
+    headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'EDIT_ITEM';
@@ -157,13 +157,13 @@ export function editItem (action) {
 
 export function deleteItem (action) {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
+    headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'DELETE_ITEM';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return instance.delete(`${apiUrl}/api/articles/${action}`)
+    return instance.delete(`${apiUrl}/api/articles/${action.id}`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
@@ -187,7 +187,7 @@ export function getItemDetails (action) {
 
 export function editItemDetails (action) {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
+    headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'EDIT_ITEM_DETAILS';

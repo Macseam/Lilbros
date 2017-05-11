@@ -73,6 +73,13 @@ class ListContainer extends Component {
     this.actions.getItemsList(this.props.params.chapter);
   }
 
+  getCookie(name) {
+    const matches = document.cookie.match(new RegExp(
+      `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
+
   handleGoToItem(id) {
     this.context.router.push(id);
   }
@@ -93,7 +100,10 @@ class ListContainer extends Component {
   }
 
   handleDeleteItem(id) {
-    this.actions.deleteItem(id);
+    this.actions.deleteItem({
+      id: id,
+      _csrf: this.getCookie('CSRF-TOKEN')
+    });
   }
 
   handleAddItem() {
@@ -129,6 +139,7 @@ class ListContainer extends Component {
       itemDescription
     } = this.state;
     const params = {
+      _csrf: this.getCookie('CSRF-TOKEN'),
       id: itemId,
       body: {
         title: itemName,
@@ -150,6 +161,7 @@ class ListContainer extends Component {
       return (chapterObj.slug === this.props.params.chapter);
     });
     const params = {
+      _csrf: this.getCookie('CSRF-TOKEN'),
       parent: parentId ? parentId._id : null,
       title: itemName,
       slug: itemSlug,

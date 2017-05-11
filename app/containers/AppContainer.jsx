@@ -38,7 +38,6 @@ class AppContainer extends Component {
 
   handleLogout() {
     this.actions.sendLogoutCommand();
-    //setTimeout(()=>{this.actions.getHeaderAuthToken()}, 100)
   }
 
   render() {
