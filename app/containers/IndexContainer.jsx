@@ -162,7 +162,7 @@ class IndexContainer extends Component {
 
     return (
       <div>
-        {menuChapters && !_.isEmpty(menuChapters) &&
+        {((menuChapters && !_.isEmpty(menuChapters)) || !!this.props.authState.userData) &&
           <MenuList
             goToAction={this.handleGoToChapter.bind(this)}
             editAction={(!!this.props.authState.userData && this.props.authState.userData !== 'guest user')

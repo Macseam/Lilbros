@@ -22,7 +22,7 @@ const ItemsList = props => {
               chapterItem.description
             )} : null}
             deleteAction={props.deleteAction ? ()=>{props.deleteAction(chapterItem._id)} : null}
-            goToItem={()=>{props.goToItem('chapter/' + props.chapterSlug + '/details/' + chapterItem.slug)}}
+            goToItem={()=>{props.goToItem(props.chapterSlug + '/' + chapterItem.slug)}}
           />
           );
         })}

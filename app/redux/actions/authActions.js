@@ -48,7 +48,7 @@ export function getChaptersList () {
   const actionName = 'GET_CHAPTERS_LIST';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return instance.get(`${apiUrl}/api/articles`)
+    return instance.get(`${apiUrl}/api/toparticles`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {

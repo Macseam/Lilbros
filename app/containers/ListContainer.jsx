@@ -201,7 +201,7 @@ class ListContainer extends Component {
         >
           Go back to main menu
         </button>
-        {chapterItems && !_.isEmpty(chapterItems) &&
+        {((chapterItems && !_.isEmpty(chapterItems)) || !!this.props.authState.userData) &&
           <ItemsList
             goToItem={this.handleGoToItem.bind(this)}
             editAction={(!!this.props.authState.userData && this.props.authState.userData !== 'guest user')

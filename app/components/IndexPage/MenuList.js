@@ -22,7 +22,7 @@ const MenuList = props => {
                 menuItemObj.description
               )} : null}
               deleteAction={props.deleteAction ? ()=>{props.deleteAction(menuItemObj._id)} : null}
-              goToAction={()=>{props.goToAction('chapter/' + menuItemObj.slug)}}
+              goToAction={()=>{props.goToAction(menuItemObj.slug)}}
             />
           );
         }

@@ -16,8 +16,8 @@ export default function createRoutes(store) {
   return (
     <Route path="/" component={AppContainer}>
       <Route path="login" component={LoginPage}/>
-      <Route path="chapter/:chapter" component={ListContainer}>
-        <Route path="details/:details" component={ChapterDetails}/>
+      <Route path=":chapter" component={ListContainer}>
+        <Route path=":details" component={ChapterDetails}/>
       </Route>
       <IndexRoute component={IndexContainer} />
       <Route path="*" component={NotFound}/>
