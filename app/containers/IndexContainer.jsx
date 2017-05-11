@@ -18,15 +18,32 @@ class IndexContainer extends Component {
     this.actions = this.props.authActions;
     this.state = {
       menuChapters: [],
-      addModalVisible : false,
-      addChapterName: '',
-      addChapterDescription: '',
+      modalVisible : false,
+      modalAction: 'add',
+      chapterId: '',
+      chapterName: '',
+      chapterSlug: '',
+      chapterDescription: '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.chaptersList !== this.state.menuChapters &&
       nextProps.authState.loaded) && nextProps.authState.chaptersList) {
+      this.setState({
+        menuChapters: nextProps.authState.chaptersList,
+      });
+    }
+    if ((nextProps.authState.chapterAdded !== this.props.authState.chapterAdded &&
+      nextProps.authState.loaded) && nextProps.authState.chaptersList) {
+      this.actions.getChaptersList();
+      this.setState({
+        menuChapters: nextProps.authState.chaptersList,
+      });
+    }
+    if ((nextProps.authState.chapterEdited !== this.props.authState.chapterEdited &&
+      nextProps.authState.loaded) && nextProps.authState.chaptersList) {
+      this.actions.getChaptersList();
       this.setState({
         menuChapters: nextProps.authState.chaptersList,
       });
@@ -38,11 +55,9 @@ class IndexContainer extends Component {
         menuChapters: nextProps.authState.chaptersList,
       });
     }
-
   }
 
   componentDidMount() {
-    this.actions.getHeaderAuthToken();
     this.actions.getChaptersList();
   }
 
@@ -50,8 +65,15 @@ class IndexContainer extends Component {
     this.context.router.push(path);
   }
 
-  handleEditChapter(id) {
-    console.log('edit ' + id);
+  handleEditChapter(id, title, slug, description) {
+    this.setState({
+      modalAction: 'edit',
+      modalVisible : true,
+      chapterId: id,
+      chapterName: title,
+      chapterSlug: slug,
+      chapterDescription: description,
+    });
   }
 
   handleDeleteChapter(id) {
@@ -60,32 +82,82 @@ class IndexContainer extends Component {
 
   handleAddChapter() {
     this.setState({
-      addModalVisible : true
-    });
-    console.log('add new chapter');
-  }
-
-  changeAddChapterName(event) {
-    this.setState({
-      addChapterName : event.target.value
+      modalAction: 'add',
+      modalVisible : true
     });
   }
 
-  changeAddChapterDescription(event) {
+  changeChapterName(event) {
     this.setState({
-      addChapterDescription : event.target.value
+      chapterName : event.target.value
     });
   }
 
-  closeAddModal() {
+  changeChapterSlug(event) {
     this.setState({
-      addModalVisible : false
+      chapterSlug : event.target.value
+    });
+  }
+
+  changeChapterDescription(event) {
+    this.setState({
+      chapterDescription : event.target.value
+    });
+  }
+
+  submitEditModal() {
+    const {
+      chapterId,
+      chapterName,
+      chapterSlug,
+      chapterDescription
+    } = this.state;
+    const params = {
+      id: chapterId,
+      body: {
+        title: chapterName,
+        slug: chapterSlug,
+        description: chapterDescription
+      }
+    };
+    this.closeModal();
+    this.actions.editChapter(params);
+  }
+
+  submitAddModal() {
+    const {
+      chapterName,
+      chapterSlug,
+      chapterDescription
+    } = this.state;
+    const params = {
+      title: chapterName,
+      slug: chapterSlug,
+      description: chapterDescription
+    };
+    this.closeModal();
+    this.actions.addChapter(params);
+  }
+
+  closeModal() {
+    this.setState({
+      modalAction: 'add',
+      modalVisible : false,
+      chapterId: '',
+      chapterName: '',
+      chapterSlug: '',
+      chapterDescription: '',
     });
   }
 
   render() {
     const {
-      menuChapters
+      menuChapters,
+      modalAction,
+      modalVisible,
+      chapterName,
+      chapterSlug,
+      chapterDescription
     } = this.state;
 
     return (
@@ -106,15 +178,18 @@ class IndexContainer extends Component {
           />
         }
         <Modal
-          visible={this.state.addModalVisible}
+          visible={modalVisible}
           width="70%"
-          height="50%"
           effect="fadeInDown"
-          onClickAway={() => this.closeAddModal()}
+          onClickAway={() => this.closeModal()}
         >
           <div className="popup-content">
-            <h1>Добавить новый раздел</h1>
-            <form onSubmit={this.closeAddModal.bind(this)}>
+            <h1>
+              {
+                modalAction === 'add' ? "Добавить новый раздел" : "Редактировать раздел"
+              }
+            </h1>
+            <form onSubmit={this.closeModal.bind(this)}>
               <div className="form-group">
                 <label htmlFor="chapter_name">Название раздела:</label>
                 <input
@@ -122,8 +197,19 @@ class IndexContainer extends Component {
                   type="text"
                   id="chapter_name"
                   name="chapterName"
-                  defaultValue={this.state.addChapterName}
-                  onChange={this.changeAddChapterName.bind(this)}
+                  value={chapterName}
+                  onChange={this.changeChapterName.bind(this)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="chapter_slug">Адрес раздела (латиницей):</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="chapter_slug"
+                  name="chapterSlug"
+                  value={chapterSlug}
+                  onChange={this.changeChapterSlug.bind(this)}
                 />
               </div>
               <div className="form-group">
@@ -133,12 +219,27 @@ class IndexContainer extends Component {
                   rows="3"
                   id="chapter_description"
                   name="chapterDescription"
-                  defaultValue={this.state.addChapterDescription}
-                  onChange={this.changeAddChapterDescription.bind(this)}
+                  value={chapterDescription}
+                  onChange={this.changeChapterDescription.bind(this)}
                 />
               </div>
-              <button type="button" onClick={this.closeAddModal.bind(this)}>Добавить</button>
-              <button type="button" onClick={this.closeAddModal.bind(this)}>Отмена</button>
+              <button
+                type="button"
+                onClick={
+                  modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
+                }
+                disabled={!(chapterName && chapterSlug && chapterDescription)}
+              >
+                {
+                  modalAction === 'add' ? "Добавить" : "Сохранить"
+                }
+              </button>
+              <button
+                type="button"
+                onClick={this.closeModal.bind(this)}
+              >
+                Отмена
+              </button>
             </form>
           </div>
         </Modal>

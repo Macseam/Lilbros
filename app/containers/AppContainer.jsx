@@ -19,6 +19,10 @@ class AppContainer extends Component {
     };
   }
 
+  componentDidMount() {
+    this.actions.getHeaderAuthToken();
+  }
+
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.userData !== this.state.userData) &&
       nextProps.authState.loaded) {

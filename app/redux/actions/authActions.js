@@ -57,6 +57,40 @@ export function getChaptersList () {
   };
 }
 
+export function addChapter (action) {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
+  const actionName = 'ADD_CHAPTER';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return instance.post(`${apiUrl}/api/articles`, action)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
+
+export function editChapter (action) {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
+  const actionName = 'EDIT_CHAPTER';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return instance.put(`${apiUrl}/api/articles/${action.id}`, action.body)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
+
 export function deleteChapter (action) {
   let instance = axios.create({
     //headers: {'X-CSRF-Token': action._csrf},
@@ -87,11 +121,79 @@ export function getItemsList (action) {
   };
 }
 
+export function addItem (action) {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
+  const actionName = 'ADD_ITEM';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return instance.post(`${apiUrl}/api/articles`, action)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
+
+export function editItem (action) {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
+  const actionName = 'EDIT_ITEM';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return instance.put(`${apiUrl}/api/articles/${action.id}`, action.body)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
+
+export function deleteItem (action) {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
+  const actionName = 'DELETE_ITEM';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return instance.delete(`${apiUrl}/api/articles/${action}`)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
+
 export function getItemDetails (action) {
   const actionName = 'GET_ITEM_DETAILS';
   return (dispatch) => {
     dispatch(requestData(actionName));
     return axios.get(`${apiUrl}/api/details/${action}`)
+      .then((response) => {
+        dispatch(receiveData(actionName, response.data));
+      }).catch((response) => {
+        dispatch(receiveError(actionName, response.data));
+      });
+  };
+}
+
+export function editItemDetails (action) {
+  let instance = axios.create({
+    //headers: {'X-CSRF-Token': action._csrf},
+    withCredentials: true
+  });
+  const actionName = 'EDIT_ITEM_DETAILS';
+  return (dispatch) => {
+    dispatch(requestData(actionName));
+    return instance.put(`${apiUrl}/api/articles/${action.id}`, action.body)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
