@@ -24,6 +24,7 @@ class IndexContainer extends Component {
       chapterName: '',
       chapterSlug: '',
       chapterDescription: '',
+      chapterCover: '',
     };
   }
 
@@ -72,7 +73,7 @@ class IndexContainer extends Component {
     this.context.router.push(path);
   }
 
-  handleEditChapter(id, title, slug, description) {
+  handleEditChapter(id, title, slug, description, cover) {
     this.setState({
       modalAction: 'edit',
       modalVisible : true,
@@ -80,6 +81,7 @@ class IndexContainer extends Component {
       chapterName: title,
       chapterSlug: slug,
       chapterDescription: description,
+      chapterCover: cover
     });
   }
 
@@ -95,26 +97,40 @@ class IndexContainer extends Component {
   handleAddChapter() {
     this.setState({
       modalAction: 'add',
-      modalVisible : true
+      modalVisible: true
     });
   }
 
   changeChapterName(event) {
     this.setState({
-      chapterName : event.target.value
+      chapterName: event.target.value
     });
   }
 
   changeChapterSlug(event) {
     this.setState({
-      chapterSlug : event.target.value
+      chapterSlug: event.target.value
     });
   }
 
   changeChapterDescription(event) {
     this.setState({
-      chapterDescription : event.target.value
+      chapterDescription: event.target.value
     });
+  }
+
+  changeChapterCover(event) {
+    if (event && event.target.files[0] && (event.target.files[0].type.indexOf('image/') !== -1) && event.target.files[0].size !== 0) {
+      this.setState({
+        chapterCover: event.target.files[0]
+      });
+    }
+    else {
+      this.setState({
+        chapterCover: null
+      });
+      this.refs.chapter_cover.value = '';
+    }
   }
 
   submitEditModal() {
@@ -122,32 +138,37 @@ class IndexContainer extends Component {
       chapterId,
       chapterName,
       chapterSlug,
-      chapterDescription
+      chapterDescription,
+      chapterCover
     } = this.state;
-    const params = {
+    const formData = new FormData();
+    formData.append("body", JSON.stringify({
+      title: chapterName,
+      slug: chapterSlug,
+      description: chapterDescription,
+    }));
+    formData.append("cover", chapterCover);
+    this.closeModal();
+    this.actions.editChapter({
       _csrf: this.getCookie('CSRF-TOKEN'),
       id: chapterId,
-      body: {
-        title: chapterName,
-        slug: chapterSlug,
-        description: chapterDescription
-      }
-    };
-    this.closeModal();
-    this.actions.editChapter(params);
+      body: formData
+    });
   }
 
   submitAddModal() {
     const {
       chapterName,
       chapterSlug,
-      chapterDescription
+      chapterDescription,
+      chapterCover
     } = this.state;
     const params = {
       _csrf: this.getCookie('CSRF-TOKEN'),
       title: chapterName,
       slug: chapterSlug,
-      description: chapterDescription
+      description: chapterDescription,
+      cover: chapterCover
     };
     this.closeModal();
     this.actions.addChapter(params);
@@ -161,7 +182,9 @@ class IndexContainer extends Component {
       chapterName: '',
       chapterSlug: '',
       chapterDescription: '',
+      chapterCover: '',
     });
+    this.refs.chapter_cover.value = '';
   }
 
   render() {
@@ -171,7 +194,8 @@ class IndexContainer extends Component {
       modalVisible,
       chapterName,
       chapterSlug,
-      chapterDescription
+      chapterDescription,
+      chapterCover
     } = this.state;
 
     return (
@@ -237,6 +261,25 @@ class IndexContainer extends Component {
                   onChange={this.changeChapterDescription.bind(this)}
                 />
               </div>
+              <div className="form-group">
+                <label htmlFor="chapter_cover">Обложка раздела:</label>
+                <input
+                  ref="chapter_cover"
+                  className="form-control"
+                  type="file"
+                  accept="image/*"
+                  id="chapter_cover"
+                  name="chapterCover"
+                  defaultValue={chapterCover}
+                  onChange={this.changeChapterCover.bind(this)}
+                />
+              </div>
+              {chapterCover &&
+                <div className="cover-preview">
+                  <div className="delete-button" onClick={this.changeChapterCover.bind(this, null)}>delete link</div>
+                  <img src={(typeof chapterCover === 'string') ? chapterCover : window.URL.createObjectURL(chapterCover)} />
+                </div>
+              }
               <button
                 type="button"
                 onClick={

@@ -2,6 +2,8 @@
 
 import React from 'react';
 import _ from 'lodash';
+
+import settings from '../../settings';
 import MenuItem from './MenuItem';
 
 const MenuList = props => {
@@ -14,12 +16,18 @@ const MenuList = props => {
             <MenuItem
               key={index}
               title={menuItemObj.title}
+              cover={(menuItemObj.images && !_.isEmpty(menuItemObj.images))
+                ? settings.apiUrl + '/uploads/' + menuItemObj.images[0].url
+                : ''}
               color={menuItemObj.color || 'gray'}
               editAction={props.editAction ? ()=>{props.editAction(
                 menuItemObj._id,
                 menuItemObj.title,
                 menuItemObj.slug,
-                menuItemObj.description
+                menuItemObj.description,
+                (menuItemObj.images && !_.isEmpty(menuItemObj.images))
+                  ? settings.apiUrl + '/uploads/' + menuItemObj.images[0].url
+                  : null
               )} : null}
               deleteAction={props.deleteAction ? ()=>{props.deleteAction(menuItemObj._id)} : null}
               goToAction={()=>{props.goToAction(menuItemObj.slug)}}

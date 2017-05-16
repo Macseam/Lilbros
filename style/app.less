@@ -55,7 +55,16 @@
         width: 60px;
         height: 60px;
         margin: 0 auto;
+        overflow: hidden;
         transition: all 0.5s ease;
+        img {
+          height: 100%;
+          width: auto;
+          min-width: 100%;
+          min-height: 100%;
+          margin-left: 50%;
+          transform: translateX(-50%);
+        }
       }
       p {
         white-space: nowrap;
@@ -141,4 +150,19 @@
   display: block;
   width: 90%;
   margin: 0 auto 30px auto;
+  .cover-preview {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    img {
+      width: auto;
+      height: 100%;
+      min-width: 100%;
+      min-height: 100%;
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 }
