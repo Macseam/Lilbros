@@ -65,7 +65,7 @@ export function addChapter (action) {
   const actionName = 'ADD_CHAPTER';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return instance.post(`${apiUrl}/api/articles`, action)
+    return instance.post(`${apiUrl}/api/articles`, action.body)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {

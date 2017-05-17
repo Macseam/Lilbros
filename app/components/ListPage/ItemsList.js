@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
+import settings from '../../settings';
 import SingleItem from './SingleItem';
 
 const ItemsList = props => {
@@ -14,12 +15,18 @@ const ItemsList = props => {
             key={key}
             title={chapterItem.title}
             color={chapterItem.color}
+            cover={(chapterItem.images && !_.isEmpty(chapterItem.images))
+              ? settings.apiUrl + '/uploads/' + chapterItem.images[0].url
+              : ''}
             description={chapterItem.description}
             editAction={props.editAction ? ()=>{props.editAction(
               chapterItem._id,
               chapterItem.title,
               chapterItem.slug,
-              chapterItem.description
+              chapterItem.description,
+              (chapterItem.images && !_.isEmpty(chapterItem.images))
+                ? settings.apiUrl + '/uploads/' + chapterItem.images[0].url
+                : null
             )} : null}
             deleteAction={props.deleteAction ? ()=>{props.deleteAction(chapterItem._id)} : null}
             goToItem={()=>{props.goToItem(props.chapterSlug + '/' + chapterItem.slug)}}

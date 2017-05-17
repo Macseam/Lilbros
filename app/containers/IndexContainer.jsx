@@ -163,15 +163,18 @@ class IndexContainer extends Component {
       chapterDescription,
       chapterCover
     } = this.state;
-    const params = {
-      _csrf: this.getCookie('CSRF-TOKEN'),
+    const formData = new FormData();
+    formData.append("body", JSON.stringify({
       title: chapterName,
       slug: chapterSlug,
       description: chapterDescription,
-      cover: chapterCover
-    };
+    }));
+    formData.append("cover", chapterCover);
     this.closeModal();
-    this.actions.addChapter(params);
+    this.actions.addChapter({
+      _csrf: this.getCookie('CSRF-TOKEN'),
+      body: formData
+    });
   }
 
   closeModal() {

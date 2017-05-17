@@ -7,7 +7,11 @@ const SingleItem = props => {
     <div
       className="bs-callout bs-callout-info list-item"
     >
-      <div className="image-placeholder" style={{backgroundColor: props.color || 'gray'}}>&nbsp;</div>
+      <div className="image-placeholder" style={{backgroundColor: props.color || 'gray'}}>
+        {props.cover && !_.isEmpty(props.cover) &&
+        <img src={props.cover}/>
+        }
+      </div>
       <h4 className="link list-item-title" onClick={props.goToItem}>{props.title}</h4>
       <p>{props.description}</p>
       {!!props.editAction &&

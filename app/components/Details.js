@@ -37,6 +37,7 @@ class ChapterDetails extends React.Component {
       this.setState({
         itemDetails: nextProps.authState.chapterItemDetails,
       });
+      this.actions.getItemsList(this.props.params.chapter);
     }
   }
 
@@ -88,17 +89,18 @@ class ChapterDetails extends React.Component {
       detailsSlug,
       detailsDescription
     } = this.state;
-    const params = {
+    const formData = new FormData();
+    formData.append("body", JSON.stringify({
+      title: detailsName,
+      slug: detailsSlug,
+      description: detailsDescription,
+    }));
+    this.closeModal();
+    this.actions.editItemDetails({
       _csrf: this.getCookie('CSRF-TOKEN'),
       id: detailsId,
-      body: {
-        title: detailsName,
-        slug: detailsSlug,
-        description: detailsDescription
-      }
-    };
-    this.closeModal();
-    this.actions.editItemDetails(params);
+      body: formData
+    });
   }
 
   closeModal() {

@@ -24,12 +24,14 @@ class ListContainer extends Component {
       itemName: '',
       itemSlug: '',
       itemDescription: '',
+      itemCover: '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.chapterItemsList !== this.state.chapterItems &&
       nextProps.authState.loaded) && nextProps.authState.chapterItemsList) {
+      console.log('list changed');
       this.setState({
         chapterItems: nextProps.authState.chapterItemsList,
       });
@@ -88,7 +90,7 @@ class ListContainer extends Component {
     this.context.router.push('');
   }
 
-  handleEditItem(id, title, slug, description) {
+  handleEditItem(id, title, slug, description, cover) {
     this.setState({
       modalAction: 'edit',
       modalVisible : true,
@@ -96,6 +98,7 @@ class ListContainer extends Component {
       itemName: title,
       itemSlug: slug,
       itemDescription: description,
+      itemCover: cover
     });
   }
 
@@ -131,44 +134,66 @@ class ListContainer extends Component {
     });
   }
 
+  changeItemCover(event) {
+    if (event && event.target.files[0] && (event.target.files[0].type.indexOf('image/') !== -1) && event.target.files[0].size !== 0) {
+      this.setState({
+        itemCover: event.target.files[0]
+      });
+    }
+    else {
+      this.setState({
+        itemCover: null
+      });
+      this.refs.item_cover.value = '';
+    }
+  }
+
   submitEditModal() {
     const {
       itemId,
       itemName,
       itemSlug,
-      itemDescription
+      itemDescription,
+      itemCover
     } = this.state;
-    const params = {
+    const formData = new FormData();
+    formData.append("body", JSON.stringify({
+      title: itemName,
+      slug: itemSlug,
+      description: itemDescription,
+    }));
+    formData.append("cover", itemCover);
+    this.closeModal();
+    this.actions.editItem({
       _csrf: this.getCookie('CSRF-TOKEN'),
       id: itemId,
-      body: {
-        title: itemName,
-        slug: itemSlug,
-        description: itemDescription
-      }
-    };
-    this.closeModal();
-    this.actions.editItem(params);
+      body: formData
+    });
   }
 
   submitAddModal() {
     const {
       itemName,
       itemSlug,
-      itemDescription
+      itemDescription,
+      itemCover
     } = this.state;
     const parentId = _.find(this.props.authState.chaptersList, (chapterObj)=>{
       return (chapterObj.slug === this.props.params.chapter);
     });
-    const params = {
-      _csrf: this.getCookie('CSRF-TOKEN'),
-      parent: parentId ? parentId._id : null,
+    const formData = new FormData();
+    formData.append("body", JSON.stringify({
       title: itemName,
       slug: itemSlug,
-      description: itemDescription
-    };
+      description: itemDescription,
+      parent: parentId ? parentId._id : null,
+    }));
+    formData.append("cover", itemCover);
     this.closeModal();
-    this.actions.addItem(params);
+    this.actions.addItem({
+      _csrf: this.getCookie('CSRF-TOKEN'),
+      body: formData
+    });
   }
 
   closeModal() {
@@ -179,6 +204,7 @@ class ListContainer extends Component {
       itemName: '',
       itemSlug: '',
       itemDescription: '',
+      itemCover: '',
     });
   }
 
@@ -189,7 +215,8 @@ class ListContainer extends Component {
       modalAction,
       itemName,
       itemSlug,
-      itemDescription
+      itemDescription,
+      itemCover
     } = this.state;
 
     const chapterTitle = _.find(this.props.authState.chaptersList, (chapterObj)=>{
@@ -287,6 +314,25 @@ class ListContainer extends Component {
                   onChange={this.changeItemDescription.bind(this)}
                 />
               </div>
+              <div className="form-group">
+                <label htmlFor="item_cover">Обложка раздела:</label>
+                <input
+                  ref="item_cover"
+                  className="form-control"
+                  type="file"
+                  accept="image/*"
+                  id="item_cover"
+                  name="itemCover"
+                  defaultValue={itemCover}
+                  onChange={this.changeItemCover.bind(this)}
+                />
+              </div>
+              {itemCover &&
+              <div className="cover-preview">
+                <div className="delete-button" onClick={this.changeItemCover.bind(this, null)}>delete link</div>
+                <img src={(typeof itemCover === 'string') ? itemCover : window.URL.createObjectURL(itemCover)} />
+              </div>
+              }
               <button
                 type="button"
                 onClick={
