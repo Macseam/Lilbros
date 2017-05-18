@@ -5,6 +5,7 @@ import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
+import settings from '../settings';
 import Modal from 'react-awesome-modal';
 
 class ChapterDetails extends React.Component {
@@ -21,6 +22,7 @@ class ChapterDetails extends React.Component {
       detailsName: '',
       detailsSlug: '',
       detailsDescription: '',
+      detailsCover: '',
     };
   }
 
@@ -61,6 +63,7 @@ class ChapterDetails extends React.Component {
       detailsName: itemDetails.title,
       detailsSlug: itemDetails.slug,
       detailsDescription: itemDetails.description,
+      detailsCover: (itemDetails.images && !_.isEmpty(itemDetails.images)) ? settings.apiUrl + '/uploads/' + itemDetails.images[0].url : ''
     });
   }
 
@@ -82,12 +85,27 @@ class ChapterDetails extends React.Component {
     });
   }
 
+  changeDetailsCover(event) {
+    if (event && event.target.files[0] && (event.target.files[0].type.indexOf('image/') !== -1) && event.target.files[0].size !== 0) {
+      this.setState({
+        detailsCover: event.target.files[0]
+      });
+    }
+    else {
+      this.setState({
+        detailsCover: null
+      });
+      this.refs.details_cover.value = '';
+    }
+  }
+
   submitEditModal() {
     const {
       detailsId,
       detailsName,
       detailsSlug,
-      detailsDescription
+      detailsDescription,
+      detailsCover
     } = this.state;
     const formData = new FormData();
     formData.append("body", JSON.stringify({
@@ -95,9 +113,10 @@ class ChapterDetails extends React.Component {
       slug: detailsSlug,
       description: detailsDescription,
     }));
+    formData.append("cover", detailsCover);
     this.closeModal();
     this.actions.editItemDetails({
-      _csrf: this.getCookie('CSRF-TOKEN'),
+      auth: this.getCookie('auth'),
       id: detailsId,
       body: formData
     });
@@ -111,6 +130,7 @@ class ChapterDetails extends React.Component {
       detailsName: '',
       detailsSlug: '',
       detailsDescription: '',
+      detailsCover: '',
     });
   }
 
@@ -129,7 +149,8 @@ class ChapterDetails extends React.Component {
       modalVisible,
       detailsName,
       detailsSlug,
-      detailsDescription
+      detailsDescription,
+      detailsCover
     } = this.state;
 
     if ((!itemDetails || _.isEmpty(itemDetails)) && this.props.authState.loading) {
@@ -164,7 +185,11 @@ class ChapterDetails extends React.Component {
               : ''
           }
         </h4>
-        <div className="image-placeholder" style={{backgroundColor: (itemDetails && itemDetails.color) || 'gray'}}>&nbsp;</div>
+        <div className="image-placeholder" style={{backgroundColor: (itemDetails && itemDetails.color) || 'gray'}}>
+          {itemDetails && itemDetails.images && !_.isEmpty(itemDetails.images) &&
+            <img src={settings.apiUrl + '/uploads/' + itemDetails.images[0].url} />
+          }
+        </div>
         <p>{(itemDetails && itemDetails.description) || 'No description'}</p>
         <Modal
           visible={modalVisible}
@@ -212,6 +237,25 @@ class ChapterDetails extends React.Component {
                   onChange={this.changeDetailsDescription.bind(this)}
                 />
               </div>
+              <div className="form-group">
+                <label htmlFor="details_cover">Обложка раздела:</label>
+                <input
+                  ref="details_cover"
+                  className="form-control"
+                  type="file"
+                  accept="image/*"
+                  id="details_cover"
+                  name="detailsCover"
+                  defaultValue={detailsCover}
+                  onChange={this.changeDetailsCover.bind(this)}
+                />
+              </div>
+              {detailsCover &&
+              <div className="cover-preview">
+                <div className="delete-button" onClick={this.changeDetailsCover.bind(this, null)}>delete link</div>
+                <img src={(typeof detailsCover === 'string') ? detailsCover : window.URL.createObjectURL(detailsCover)} />
+              </div>
+              }
               <button
                 type="button"
                 onClick={this.submitEditModal.bind(this)}

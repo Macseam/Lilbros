@@ -89,7 +89,7 @@ class IndexContainer extends Component {
     this.actions.deleteChapter(
       {
         id: id,
-        _csrf: this.getCookie('CSRF-TOKEN')
+        auth: this.getCookie('auth'),
       }
     );
   }
@@ -150,7 +150,7 @@ class IndexContainer extends Component {
     formData.append("cover", chapterCover);
     this.closeModal();
     this.actions.editChapter({
-      _csrf: this.getCookie('CSRF-TOKEN'),
+      auth: this.getCookie('auth'),
       id: chapterId,
       body: formData
     });
@@ -172,7 +172,7 @@ class IndexContainer extends Component {
     formData.append("cover", chapterCover);
     this.closeModal();
     this.actions.addChapter({
-      _csrf: this.getCookie('CSRF-TOKEN'),
+        auth: this.getCookie('auth'),
       body: formData
     });
   }

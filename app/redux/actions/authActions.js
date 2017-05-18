@@ -8,7 +8,6 @@ const apiUrl = 'http://localhost:8080';
 
 export function getHeaderAuthToken () {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'GET_HEADER_AUTH_TOKEN';
@@ -42,7 +41,7 @@ export function sendLogoutCommand () {
 
 export function getChaptersList () {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
+    //headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'GET_CHAPTERS_LIST';
@@ -76,7 +75,7 @@ export function addChapter (action) {
 
 export function editChapter (action) {
   let instance = axios.create({
-    headers: {'X-CSRF-Token': action._csrf},
+    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'EDIT_CHAPTER';
@@ -93,7 +92,7 @@ export function editChapter (action) {
 
 export function deleteChapter (action) {
   let instance = axios.create({
-    headers: {'X-CSRF-Token': action._csrf},
+    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'DELETE_CHAPTER';
@@ -123,13 +122,13 @@ export function getItemsList (action) {
 
 export function addItem (action) {
   let instance = axios.create({
-    headers: {'X-CSRF-Token': action._csrf},
+    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'ADD_ITEM';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return instance.post(`${apiUrl}/api/articles`, action)
+    return instance.post(`${apiUrl}/api/articles`, action.body)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
@@ -140,7 +139,7 @@ export function addItem (action) {
 
 export function editItem (action) {
   let instance = axios.create({
-    headers: {'X-CSRF-Token': action._csrf},
+    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'EDIT_ITEM';
@@ -157,7 +156,7 @@ export function editItem (action) {
 
 export function deleteItem (action) {
   let instance = axios.create({
-    headers: {'X-CSRF-Token': action._csrf},
+    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'DELETE_ITEM';
@@ -187,7 +186,7 @@ export function getItemDetails (action) {
 
 export function editItemDetails (action) {
   let instance = axios.create({
-    headers: {'X-CSRF-Token': action._csrf},
+    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'EDIT_ITEM_DETAILS';
@@ -204,8 +203,8 @@ export function editItemDetails (action) {
 
 export function tryUserLoginPassword (action) {
   let instance = axios.create({
-    headers: {'X-CSRF-Token': action._csrf},
-    withCredentials: true
+    //headers: {'Authorization': 'Bearer ' + action.auth},
+    //withCredentials: true
   });
   const actionName = 'TRY_USER_LOGIN_PASSWORD';
   return (dispatch) => {

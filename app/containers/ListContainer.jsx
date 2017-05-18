@@ -105,7 +105,7 @@ class ListContainer extends Component {
   handleDeleteItem(id) {
     this.actions.deleteItem({
       id: id,
-      _csrf: this.getCookie('CSRF-TOKEN')
+      auth: this.getCookie('auth'),
     });
   }
 
@@ -165,7 +165,7 @@ class ListContainer extends Component {
     formData.append("cover", itemCover);
     this.closeModal();
     this.actions.editItem({
-      _csrf: this.getCookie('CSRF-TOKEN'),
+      auth: this.getCookie('auth'),
       id: itemId,
       body: formData
     });
@@ -191,7 +191,7 @@ class ListContainer extends Component {
     formData.append("cover", itemCover);
     this.closeModal();
     this.actions.addItem({
-      _csrf: this.getCookie('CSRF-TOKEN'),
+      auth: this.getCookie('auth'),
       body: formData
     });
   }
