@@ -7,6 +7,8 @@ import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
+import { MdPresentToAll } from 'react-icons/lib/md';
+
 class AppContainer extends Component {
 
   constructor(props) {
@@ -46,10 +48,17 @@ class AppContainer extends Component {
     } = this.props;
     return (
       <div>
-        {!this.state.userData || this.state.userData === 'guest user' ?
-          <p onClick={this.goToLogin.bind(this)}>Войти</p> :
-          <p>{this.state.userData} <span onClick={this.handleLogout.bind(this)}>Выйти</span></p>
-        }
+        <div className="title-logo">
+          <span>Lilbros</span>
+          <div className="authorization-info">
+            {!this.state.userData
+              ? <div className="login-icon" onClick={this.goToLogin.bind(this)}>
+                  <MdPresentToAll />
+                </div>
+              : <p>{this.state.userData} <span onClick={this.handleLogout.bind(this)}>Выйти</span></p>
+            }
+          </div>
+        </div>
         {children}
       </div>
     );

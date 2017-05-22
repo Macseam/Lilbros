@@ -1,8 +1,52 @@
 @import url('https://fonts.googleapis.com/css?family=Bad+Script');
+@import url('https://fonts.googleapis.com/css?family=Pacifico');
+
+html, body {
+  padding: 0;
+  height: 100%;
+}
 
 #app {
-  width: 90%;
-  margin: 20px auto;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  background: transparent url('../images/main_bg.jpg') center top no-repeat;
+}
+
+.title-logo {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+  span {
+    font-family: 'Pacifico', cursive;
+    font-size: 50px;
+    color: green;
+  }
+}
+
+.authorization-info {
+  font-size: 13px;
+  position: absolute;
+  left: 20px;
+  bottom: 12px;
+  .login-icon {
+    cursor: pointer;
+    &:hover {
+      svg {
+        fill: gray;
+        transition: all 0.3s ease;
+      }
+    }
+    svg {
+      fill: #d3d3d3;
+      width: 30px;
+      height: 30px;
+      transition: all 0.3s ease;
+    }
+  }
 }
 
 .main-menu-wrapper {
