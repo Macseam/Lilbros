@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Bad+Script');
+
 #app {
   width: 90%;
   margin: 20px auto;
@@ -17,41 +19,136 @@
   width: 300px;
   height: 300px;
   display: inline-block;
+  background: transparent;
   margin-right: 20px;
   margin-bottom: 20px;
   font-size: 11px;
+  &.add-new {
+    background: silver;
+    .image-placeholder {
+      &:before {
+        content: "\200B";
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+      }
+      svg {
+        fill: gray;
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+  &.animals {
+    background: url('../images/animals_main_bg.png') center center;
+  }
+  &.birds {
+    background: url('../images/birds_main_bg.png') center center;
+  }
+  &.insects {
+    background: url('../images/insects_main_bg.png') center center;
+  }
+  &.plants {
+    background: url('../images/plants_main_bg.png') center center;
+  }
   .delete-button {
     position: absolute;
-    top: 0;
-    right: 0;
+    width: 40px;
+    height: 40px;
+    top: 55px;
+    right: 10px;
     display: block;
-    background: silver;
+    background: #ffffff;
+    border-radius: 100%;
+    border: 0;
     cursor: pointer;
     padding: 10px;
     z-index: 500;
+    transition: all 0.3s ease;
+    svg {
+      fill: #f44336;
+      width: 20px;
+      height: 20px;
+      transition: all 0.3s ease;
+    }
+    &:hover {
+      background: #f44336;
+      transition: all 0.3s ease;
+      svg {
+        fill: #ffffff;
+        transition: all 0.3s ease;
+      }
+    }
+    &:before {
+      content: "\200B";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
   }
   .edit-button {
     position: absolute;
-    top: 0;
-    left: 0;
+    width: 40px;
+    height: 40px;
+    top: 10px;
+    right: 10px;
     display: block;
-    background: silver;
+    background: #ffffff;
+    border-radius: 100%;
+    border: 0;
     cursor: pointer;
     padding: 10px;
     z-index: 500;
+    transition: all 0.3s ease;
+    svg {
+      fill: #2196f3;
+      width: 20px;
+      height: 20px;
+      transition: all 0.3s ease;
+    }
+    &:hover {
+      background: #2196f3;
+      transition: all 0.3s ease;
+      svg {
+        fill: #ffffff;
+        transition: all 0.3s ease;
+      }
+    }
+    &:before {
+      content: "\200B";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
   }
   .top-level-menu-item {
     width: 100%;
     height: 100%;
-    background: #ffffff;
+    background: transparent;
     border: 1px silver solid;
     text-align: center;
     position: relative;
     cursor: pointer;
     transition: all 0.5s ease;
+    .circle {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      margin: 0 auto;
+      width: 150px;
+      height: 150px;
+      background: #ffffff;
+      border-radius: 100%;
+      box-shadow: 0 0 0 5px rgba(255,255,255,0.5);
+    }
     .vertical-aligner {
+      z-index: 100;
+      position: relative;
       .image-placeholder {
-        background: gray;
+        background: transparent;
         width: 60px;
         height: 60px;
         margin: 0 auto;
@@ -67,8 +164,9 @@
         }
       }
       p {
+        font-family: 'Bad Script', cursive;
         white-space: nowrap;
-        text-transform: uppercase;
+        font-size: 20px;
         transition: all 0.5s ease;
       }
     }
@@ -83,7 +181,7 @@
       transition: all 0.5s ease;
       .vertical-aligner {
         hr {
-          width: 100%;
+          width: 70%;
           transition: all 0.5s ease;
         }
         .image-placeholder {

@@ -204,7 +204,7 @@ export function editItemDetails (action) {
 export function tryUserLoginPassword (action) {
   let instance = axios.create({
     //headers: {'Authorization': 'Bearer ' + action.auth},
-    //withCredentials: true
+    withCredentials: true
   });
   const actionName = 'TRY_USER_LOGIN_PASSWORD';
   return (dispatch) => {
