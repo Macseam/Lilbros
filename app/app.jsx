@@ -1,5 +1,6 @@
+import '../style/flatly.less';
 import '../style/app.less';
-import 'bootstrap/less/bootstrap.less';
+//import 'bootstrap/less/bootstrap.less';
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';

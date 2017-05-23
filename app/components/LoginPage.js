@@ -6,6 +6,8 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
+import { MdHome } from 'react-icons/lib/md';
+
 class LoginPage extends React.Component {
 
   constructor(props) {
@@ -75,15 +77,16 @@ class LoginPage extends React.Component {
       <div>
         <button
           type="button"
-          className="btn btn-default btn-xs"
+          className="btn btn-default btn-xs back-home-button"
           onClick={this.handleGoBack.bind(this)}
         >
-          Go back to main menu
+          <MdHome />
+          Вернуться на главную
         </button>
 
         <hr/>
 
-        <form onSubmit={this.submitForm.bind(this)}>
+        <form className="authorization-form" onSubmit={this.submitForm.bind(this)}>
 
           <div className="form-group">
             <label htmlFor="entry_name">Имя пользователя:</label>
@@ -109,7 +112,7 @@ class LoginPage extends React.Component {
             />
           </div>
 
-          <button type="submit" className="btn btn-default">Войти</button>
+          <button type="submit" className="btn btn-success">Войти</button>
 
         </form>
 

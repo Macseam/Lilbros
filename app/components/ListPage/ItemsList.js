@@ -35,10 +35,8 @@ const ItemsList = props => {
         })}
       {!!props.addNewItem &&
       <div className="bs-callout bs-callout-info list-item">
-        <div onClick={()=>{props.addNewItem()}} className="top-level-menu-item">
-          <div className="image-placeholder" style={{backgroundColor: 'tranparent'}}>+</div>
-            <h4 className="link list-item-title">Добавить новый элемент</h4>
-        </div>
+        <div className="image-placeholder" onClick={()=>{props.addNewItem()}}>+</div>
+        <h4 className="link list-item-title" onClick={()=>{props.addNewItem()}}>Добавить новый элемент</h4>
       </div>
       }
     </div>

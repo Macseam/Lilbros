@@ -5,6 +5,8 @@ import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
+import { FaPaw, FaTwitter, FaBug, FaLeaf } from 'react-icons/lib/fa';
+
 import settings from '../settings';
 import Modal from 'react-awesome-modal';
 
@@ -153,15 +155,44 @@ class ChapterDetails extends React.Component {
       detailsCover
     } = this.state;
 
+    let backButtonClass = "btn-default";
+
+    if (this.props.params && this.props.params.chapter) {
+      if (this.props.params.chapter === 'animals') {
+        backButtonClass = 'btn-warning';
+      }
+      else if (this.props.params.chapter === 'birds') {
+        backButtonClass = 'btn-info';
+      }
+      else if (this.props.params.chapter === 'insects') {
+        backButtonClass = 'btn-danger';
+      }
+      else if (this.props.params.chapter === 'plants') {
+        backButtonClass = 'btn-green';
+      }
+    }
+
     if ((!itemDetails || _.isEmpty(itemDetails)) && this.props.authState.loading) {
       return (
         <div className="item-details-wrapper">
           <button
             type="button"
-            className="btn btn-default btn-xs"
+            className={"btn btn-default btn-xs back-home-button" + " " + backButtonClass}
             onClick={this.handleGoBack.bind(this)}
           >
-            Go back to items list
+            {this.props.params.chapter === 'animals' &&
+              <FaPaw />
+            }
+            {this.props.params.chapter === 'birds' &&
+              <FaTwitter />
+            }
+            {this.props.params.chapter === 'insects' &&
+              <FaBug />
+            }
+            {this.props.params.chapter === 'plants' &&
+              <FaLeaf />
+            }
+            Вернуться к списку{(!_.isEmpty(chapterTitle) && chapterTitle) ? ' "' + chapterTitle.title + '"' : ''}
           </button>
           <h5>...</h5>
         </div>
@@ -172,10 +203,13 @@ class ChapterDetails extends React.Component {
       <div className="item-details-wrapper">
         <button
           type="button"
-          className="btn btn-default btn-xs"
+          className={"btn btn-xs back-home-button" + " " + backButtonClass}
           onClick={this.handleGoBack.bind(this)}
         >
-          Go back to items list
+          {this.props.params.chapter === 'animals' &&
+          <FaPaw />
+          }
+          Вернуться к списку{(!_.isEmpty(chapterTitle) && chapterTitle) ? ' "' + chapterTitle.title + '"' : ''}
         </button>
         <h4>
           {(itemDetails && itemDetails.title) || 'No title'}
@@ -198,12 +232,11 @@ class ChapterDetails extends React.Component {
           onClickAway={() => this.closeModal()}
         >
           <div className="popup-content">
-            <h1>
-              {
-                "Редактировать элемент"
-              }
-            </h1>
-            <form onSubmit={this.closeModal.bind(this)}>
+            <div className="modal-header">
+              <button type="button" className="close" onClick={this.closeModal.bind(this)}>&#215;</button>
+              <h4 className="modal-title">Редактировать элемент</h4>
+            </div>
+            <form className="popup-form" onSubmit={this.closeModal.bind(this)}>
               <div className="form-group">
                 <label htmlFor="details_name">Название элемента:</label>
                 <input
@@ -257,6 +290,7 @@ class ChapterDetails extends React.Component {
               </div>
               }
               <button
+                className="btn btn-success"
                 type="button"
                 onClick={this.submitEditModal.bind(this)}
                 disabled={!(detailsName && detailsSlug && detailsDescription)}
@@ -264,6 +298,7 @@ class ChapterDetails extends React.Component {
                 Сохранить
               </button>
               <button
+                className="btn btn-default margined-left"
                 type="button"
                 onClick={this.closeModal.bind(this)}
               >

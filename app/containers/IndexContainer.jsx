@@ -225,12 +225,15 @@ class IndexContainer extends Component {
           onClickAway={() => this.closeModal()}
         >
           <div className="popup-content">
-            <h1>
-              {
-                modalAction === 'add' ? "Добавить новый раздел" : "Редактировать раздел"
-              }
-            </h1>
-            <form onSubmit={this.closeModal.bind(this)}>
+            <div className="modal-header">
+              <button type="button" className="close" onClick={this.closeModal.bind(this)}>&#215;</button>
+              <h4 className="modal-title">
+                {
+                  modalAction === 'add' ? "Добавить новый раздел" : "Редактировать раздел"
+                }
+              </h4>
+            </div>
+            <form className="popup-form" onSubmit={this.closeModal.bind(this)}>
               <div className="form-group">
                 <label htmlFor="chapter_name">Название раздела:</label>
                 <input
@@ -284,6 +287,7 @@ class IndexContainer extends Component {
                 </div>
               }
               <button
+                className="btn btn-success"
                 type="button"
                 onClick={
                   modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
@@ -295,6 +299,7 @@ class IndexContainer extends Component {
                 }
               </button>
               <button
+                className="btn btn-default margined-left"
                 type="button"
                 onClick={this.closeModal.bind(this)}
               >

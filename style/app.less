@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Bad+Script');
 @import url('https://fonts.googleapis.com/css?family=Pacifico');
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
 
 html, body {
   padding: 0;
   height: 100%;
+  font-family: 'Ubuntu', Arial, sans-serif !important;
 }
 
 #app {
@@ -12,6 +14,11 @@ html, body {
   margin: 0 auto;
   padding: 30px;
   background: transparent url('../images/main_bg.jpg') center top no-repeat;
+  background-size: cover;
+}
+
+.margined-left {
+  margin-left: 5px;
 }
 
 .title-logo {
@@ -20,10 +27,20 @@ html, body {
   text-align: center;
   margin-bottom: 24px;
   position: relative;
-  span {
+  .title {
     font-family: 'Pacifico', cursive;
     font-size: 50px;
     color: green;
+  }
+}
+
+.back-home-button {
+  svg {
+    width: 15px;
+    height: 15px;
+    fill: #ffffff;
+    vertical-align: sub !important;
+    margin-right: 4px;
   }
 }
 
@@ -33,7 +50,6 @@ html, body {
   left: 20px;
   bottom: 12px;
   .login-icon {
-    cursor: pointer;
     &:hover {
       svg {
         fill: gray;
@@ -41,12 +57,24 @@ html, body {
       }
     }
     svg {
+      cursor: pointer;
       fill: #d3d3d3;
-      width: 30px;
-      height: 30px;
+      width: 26px;
+      height: 26px;
       transition: all 0.3s ease;
     }
   }
+}
+
+.authorization-form {
+  padding: 30px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 4px 6px 3px rgba(0,0,0,0.3);
+}
+
+.btn-green {
+  background: green;
 }
 
 .main-menu-wrapper {
@@ -56,6 +84,77 @@ html, body {
 .menu-item-divider {
   margin: 4px auto 10px auto;
   border-top: 1px gray solid;
+}
+
+.delete-button {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 55px;
+  right: 10px;
+  display: block;
+  background: #ffffff;
+  border-radius: 100%;
+  border: 0;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 500;
+  transition: all 0.3s ease;
+  svg {
+    fill: #f44336;
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+  }
+  &:hover {
+    background: #f44336;
+    transition: all 0.3s ease;
+    svg {
+      fill: #ffffff;
+      transition: all 0.3s ease;
+    }
+  }
+  &:before {
+    content: "\200B";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+}
+.edit-button {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 10px;
+  right: 10px;
+  display: block;
+  background: #ffffff;
+  border-radius: 100%;
+  border: 0;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 500;
+  transition: all 0.3s ease;
+  svg {
+    fill: #2196f3;
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+  }
+  &:hover {
+    background: #2196f3;
+    transition: all 0.3s ease;
+    svg {
+      fill: #ffffff;
+      transition: all 0.3s ease;
+    }
+  }
+  &:before {
+    content: "\200B";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
 }
 
 .top-level-menu-item-wrapper {
@@ -94,76 +193,6 @@ html, body {
   }
   &.plants {
     background: url('../images/plants_main_bg.png') center center;
-  }
-  .delete-button {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    top: 55px;
-    right: 10px;
-    display: block;
-    background: #ffffff;
-    border-radius: 100%;
-    border: 0;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 500;
-    transition: all 0.3s ease;
-    svg {
-      fill: #f44336;
-      width: 20px;
-      height: 20px;
-      transition: all 0.3s ease;
-    }
-    &:hover {
-      background: #f44336;
-      transition: all 0.3s ease;
-      svg {
-        fill: #ffffff;
-        transition: all 0.3s ease;
-      }
-    }
-    &:before {
-      content: "\200B";
-      display: inline-block;
-      height: 100%;
-      vertical-align: middle;
-    }
-  }
-  .edit-button {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    top: 10px;
-    right: 10px;
-    display: block;
-    background: #ffffff;
-    border-radius: 100%;
-    border: 0;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 500;
-    transition: all 0.3s ease;
-    svg {
-      fill: #2196f3;
-      width: 20px;
-      height: 20px;
-      transition: all 0.3s ease;
-    }
-    &:hover {
-      background: #2196f3;
-      transition: all 0.3s ease;
-      svg {
-        fill: #ffffff;
-        transition: all 0.3s ease;
-      }
-    }
-    &:before {
-      content: "\200B";
-      display: inline-block;
-      height: 100%;
-      vertical-align: middle;
-    }
   }
   .top-level-menu-item {
     width: 100%;
@@ -256,10 +285,14 @@ html, body {
 
 .chapter-items-list-wrapper {
   .list-item {
+    height: 100px;
     margin: 18px 0;
+    position: relative;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
     &:not(:last-of-type) {
-      border-bottom: 1px dashed silver;
-      padding-bottom: 10px;
+      margin-bottom: 10px;
     }
     .list-item-title {
       cursor: pointer;
@@ -268,14 +301,44 @@ html, body {
         text-decoration: underline;
       }
     }
+    h4 {
+      margin-top: 22px;
+    }
+    h6 {
+      margin-top: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding-right: 25px;
+    }
+    .delete-button {
+      top: 53px;
+      background: #eeeeee;
+      svg {
+        vertical-align: inherit !important;
+      }
+      &:hover {
+        background: #f44336;
+      }
+    }
+    .edit-button {
+      top: 8px;
+      background: #eeeeee;
+      svg {
+        vertical-align: inherit !important;
+      }
+      &:hover {
+        background: #2196f3;
+      }
+    }
   }
   .image-placeholder {
     background: gray;
     overflow: hidden;
-    width: 70px;
-    height: 70px;
+    width: 100px;
+    height: 100%;
     float: left;
-    margin: 0 16px 0 0;
+    margin: 0 25px 0 0;
     img {
       height: 100%;
       width: auto;
@@ -292,7 +355,6 @@ html, body {
     background: gray;
     width: 500px;
     height: 500px;
-    float: left;
     overflow: hidden;
     margin: 0 16px 0 0;
     img {
@@ -306,10 +368,41 @@ html, body {
   }
 }
 
+.modal-header {
+  padding: 15px 30px;
+}
+
 .popup-content {
+  button.close {
+    float: right;
+    font-size: 22.5px;
+    font-weight: bold;
+    line-height: 1.3;
+    color: #000000;
+    text-shadow: none;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    &:hover,
+    &:focus {
+      color: #000000;
+      text-decoration: none;
+      cursor: pointer;
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
   display: block;
-  width: 90%;
-  margin: 0 auto 30px auto;
+  width: 100%;
+  margin: 0 auto;
+  .popup-form {
+    width: 90%;
+    margin: 30px auto;
+  }
   .cover-preview {
     position: relative;
     width: 200px;

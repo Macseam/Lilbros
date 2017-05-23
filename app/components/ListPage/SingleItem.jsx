@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import { MdModeEdit, MdDeleteForever } from 'react-icons/lib/md';
+
 const SingleItem = props => {
   return (
     <div
@@ -13,12 +15,16 @@ const SingleItem = props => {
         }
       </div>
       <h4 className="link list-item-title" onClick={props.goToItem}>{props.title}</h4>
-      <p>{props.description}</p>
+      <h6>{props.description}</h6>
       {!!props.editAction &&
-      <span onClick={props.editAction}>edit link</span>
-      }&nbsp;
+      <div className="edit-button" onClick={props.editAction}>
+        <MdModeEdit />
+      </div>
+      }
       {!!props.deleteAction &&
-      <span onClick={props.deleteAction}>delete link</span>
+      <div className="delete-button" onClick={props.deleteAction}>
+        <MdDeleteForever />
+      </div>
       }
     </div>
   );

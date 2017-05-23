@@ -7,7 +7,7 @@ import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
-import { MdPresentToAll } from 'react-icons/lib/md';
+import { MdPresentToAll, MdExitToApp } from 'react-icons/lib/md';
 
 class AppContainer extends Component {
 
@@ -49,14 +49,18 @@ class AppContainer extends Component {
     return (
       <div>
         <div className="title-logo">
-          <span>Lilbros</span>
+          <span className="title">Lilbros</span>
           <div className="authorization-info">
-            {!this.state.userData
-              ? <div className="login-icon" onClick={this.goToLogin.bind(this)}>
-                  <MdPresentToAll />
-                </div>
-              : <p>{this.state.userData} <span onClick={this.handleLogout.bind(this)}>Выйти</span></p>
+            <div className="login-icon" >
+            {(!this.state.userData && this.props.location.pathname.indexOf('login') === -1) &&
+              <MdPresentToAll onClick={this.goToLogin.bind(this)} />
             }
+            {(this.state.userData && this.props.location.pathname.indexOf('login') === -1) &&
+              <div>
+                <span>{this.state.userData}</span> <MdExitToApp onClick={this.handleLogout.bind(this)} />
+              </div>
+            }
+            </div>
           </div>
         </div>
         {children}

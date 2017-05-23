@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
 import Modal from 'react-awesome-modal';
+import { MdHome } from 'react-icons/lib/md';
 import ItemsList from "../components/ListPage/ItemsList";
 
 class ListContainer extends Component {
@@ -235,21 +236,22 @@ class ListContainer extends Component {
       <div>
         <button
           type="button"
-          className="btn btn-default btn-xs"
+          className="btn btn-default btn-xs back-home-button"
           onClick={this.handleGoBack.bind(this)}
         >
-          Go back to main menu
+          <MdHome />
+          Вернуться на главную
         </button>
         {((chapterItems && !_.isEmpty(chapterItems)) || !!this.props.authState.userData) &&
           <ItemsList
             goToItem={this.handleGoToItem.bind(this)}
-            editAction={(!!this.props.authState.userData && this.props.authState.userData !== 'guest user')
+            editAction={!!this.props.authState.userData
               ? this.handleEditItem.bind(this)
               : null}
-            deleteAction={(!!this.props.authState.userData && this.props.authState.userData !== 'guest user')
+            deleteAction={!!this.props.authState.userData
               ? this.handleDeleteItem.bind(this)
               : null}
-            addNewItem={(!!this.props.authState.userData && this.props.authState.userData !== 'guest user')
+            addNewItem={!!this.props.authState.userData
               ? this.handleAddItem.bind(this)
               : null}
             chapterItems={chapterItems}
@@ -260,7 +262,7 @@ class ListContainer extends Component {
         {_.isEmpty(chapterItems)
         && this.props.authState.chapterItemsList !== null
         && !this.props.authState.loading &&
-          <h5>No items available in current chapter</h5>
+          <h5>А тут ничего пока нет :(</h5>
         }
         {_.isEmpty(chapterItems)
         && this.props.authState.loading &&
@@ -273,14 +275,17 @@ class ListContainer extends Component {
           onClickAway={() => this.closeModal()}
         >
           <div className="popup-content">
-            <h1>
-              {
-                modalAction === 'add'
-                  ? "Добавить новый элемент раздела" + (chapterTitle ? ' ' + chapterTitle.title : '')
-                  : "Редактировать элемент раздела" + (chapterTitle ? ' ' + chapterTitle.title : '')
-              }
-            </h1>
-            <form onSubmit={this.closeModal.bind(this)}>
+            <div className="modal-header">
+              <button type="button" className="close" onClick={this.closeModal.bind(this)}>&#215;</button>
+              <h4 className="modal-title">
+                {
+                  modalAction === 'add'
+                    ? "Добавить новый элемент раздела" + (chapterTitle ? ' ' + chapterTitle.title : '')
+                    : "Редактировать элемент раздела" + (chapterTitle ? ' ' + chapterTitle.title : '')
+                }
+              </h4>
+            </div>
+            <form className="popup-form" onSubmit={this.closeModal.bind(this)}>
               <div className="form-group">
                 <label htmlFor="item_name">Название элемента:</label>
                 <input
@@ -334,6 +339,7 @@ class ListContainer extends Component {
               </div>
               }
               <button
+                className="btn btn-success"
                 type="button"
                 onClick={
                   modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
@@ -345,6 +351,7 @@ class ListContainer extends Component {
                 }
               </button>
               <button
+                className="btn btn-default margined-left"
                 type="button"
                 onClick={this.closeModal.bind(this)}
               >
