@@ -4,11 +4,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Navigation } from 'react-router';
+import ReactQuill from 'react-quill/dist/react-quill';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
 import Modal from 'react-awesome-modal';
-import { MdHome } from 'react-icons/lib/md';
+import { MdHome, MdModeEdit, MdDeleteForever } from 'react-icons/lib/md';
 import ItemsList from "../components/ListPage/ItemsList";
 
 class ListContainer extends Component {
@@ -131,7 +132,8 @@ class ListContainer extends Component {
 
   changeItemDescription(event) {
     this.setState({
-      itemDescription : event.target.value
+      //itemDescription : event.target.value
+      itemDescription : event
     });
   }
 
@@ -287,17 +289,6 @@ class ListContainer extends Component {
             </div>
             <form className="popup-form" onSubmit={this.closeModal.bind(this)}>
               <div className="form-group">
-                <label htmlFor="item_name">Название элемента:</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="item_name"
-                  name="itemName"
-                  value={itemName}
-                  onChange={this.changeItemName.bind(this)}
-                />
-              </div>
-              <div className="form-group">
                 <label htmlFor="item_slug">Адрес элемента (латиницей):</label>
                 <input
                   className="form-control"
@@ -309,17 +300,17 @@ class ListContainer extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="item_description">Описание элемента:</label>
-                <textarea
+                <label htmlFor="item_name">Название элемента:</label>
+                <input
                   className="form-control"
-                  rows="3"
-                  id="item_description"
-                  name="itemDescription"
-                  value={itemDescription}
-                  onChange={this.changeItemDescription.bind(this)}
+                  type="text"
+                  id="item_name"
+                  name="itemName"
+                  value={itemName}
+                  onChange={this.changeItemName.bind(this)}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group cover-input">
                 <label htmlFor="item_cover">Обложка раздела:</label>
                 <input
                   ref="item_cover"
@@ -331,32 +322,77 @@ class ListContainer extends Component {
                   defaultValue={itemCover}
                   onChange={this.changeItemCover.bind(this)}
                 />
-              </div>
-              {itemCover &&
-              <div className="cover-preview">
-                <div className="delete-button" onClick={this.changeItemCover.bind(this, null)}>delete link</div>
-                <img src={(typeof itemCover === 'string') ? itemCover : window.URL.createObjectURL(itemCover)} />
-              </div>
-              }
-              <button
-                className="btn btn-success"
-                type="button"
-                onClick={
-                  modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
+                {(!itemCover || _.isEmpty(itemCover)) &&
+                <div className="cover-preview blank" onClick={()=>{this.refs['item_cover'].click()}}>
+                  <p className="add-title">
+                    Добавить<br/>изображение
+                  </p>
+                </div>
                 }
-                disabled={!(itemName && itemSlug && itemDescription)}
-              >
-                {
-                  modalAction === 'add' ? "Добавить" : "Сохранить"
+                {itemCover &&
+                <div className="cover-preview">
+                  <div className="delete-button" onClick={this.changeItemCover.bind(this, null)}>
+                    <MdDeleteForever />
+                  </div>
+                  <div className="edit-button" onClick={()=>{this.refs['item_cover'].click()}}>
+                    <MdModeEdit />
+                  </div>
+                  <img src={(typeof itemCover === 'string') ? itemCover : window.URL.createObjectURL(itemCover)} />
+                  <p className="preview-title">
+                    {typeof itemCover === 'string'
+                      ? itemCover.split('/')[itemCover.split('/').length-1]
+                      : itemCover.name.split('/')[itemCover.name.split('/').length-1]}
+                  </p>
+                </div>
                 }
-              </button>
-              <button
-                className="btn btn-default margined-left"
-                type="button"
-                onClick={this.closeModal.bind(this)}
-              >
-                Отмена
-              </button>
+              </div>
+              <div className="form-group">
+                <label htmlFor="item_description">Описание элемента:</label>
+                {/*<textarea
+                  className="form-control"
+                  rows="10"
+                  id="item_description"
+                  name="itemDescription"
+                  value={itemDescription}
+                  onChange={this.changeItemDescription.bind(this)}
+                />*/}
+                <div className="wysiwyg-wrapper">
+                  <ReactQuill
+                    theme={'snow'}
+                    modules={{
+                      toolbar: [
+                        ['bold', 'italic', 'underline','strike', 'blockquote'],
+                        [{'list': 'bullet'}],
+                        ['link']
+                      ]
+                    }}
+                    onChange={this.changeItemDescription.bind(this)}
+                    value={itemDescription ? itemDescription : ''}
+                    placeholder={'Введите описание'}
+                  />
+                </div>
+              </div>
+              <div className="buttons-wrapper centered">
+                <button
+                  className="btn btn-success"
+                  type="button"
+                  onClick={
+                    modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
+                  }
+                  disabled={!(itemName && itemSlug && itemDescription)}
+                >
+                  {
+                    modalAction === 'add' ? "Добавить" : "Сохранить"
+                  }
+                </button>
+                <button
+                  className="btn btn-default margined-left"
+                  type="button"
+                  onClick={this.closeModal.bind(this)}
+                >
+                  Отмена
+                </button>
+              </div>
             </form>
           </div>
         </Modal>

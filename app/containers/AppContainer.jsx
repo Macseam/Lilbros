@@ -38,6 +38,12 @@ class AppContainer extends Component {
     this.context.router.push('login');
   }
 
+  goHome() {
+    if (this.props.route.path) {
+      this.context.router.push('/');
+    }
+  }
+
   handleLogout() {
     this.actions.sendLogoutCommand();
   }
@@ -49,7 +55,7 @@ class AppContainer extends Component {
     return (
       <div>
         <div className="title-logo">
-          <span className="title">Lilbros</span>
+          <span className="title" onClick={this.goHome.bind(this)}>Lilbros</span>
           <div className="authorization-info">
             <div className="login-icon" >
             {(!this.state.userData && this.props.location.pathname.indexOf('login') === -1) &&

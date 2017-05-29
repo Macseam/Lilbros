@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
 import Modal from 'react-awesome-modal';
+import { MdModeEdit, MdDeleteForever } from 'react-icons/lib/md';
 import MenuList from "../components/IndexPage/MenuList";
 
 class IndexContainer extends Component {
@@ -187,7 +188,7 @@ class IndexContainer extends Component {
       chapterDescription: '',
       chapterCover: '',
     });
-    this.refs.chapter_cover.value = '';
+    this.refs['chapter_cover'].value = '';
   }
 
   render() {
@@ -235,17 +236,6 @@ class IndexContainer extends Component {
             </div>
             <form className="popup-form" onSubmit={this.closeModal.bind(this)}>
               <div className="form-group">
-                <label htmlFor="chapter_name">Название раздела:</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="chapter_name"
-                  name="chapterName"
-                  value={chapterName}
-                  onChange={this.changeChapterName.bind(this)}
-                />
-              </div>
-              <div className="form-group">
                 <label htmlFor="chapter_slug">Адрес раздела (латиницей):</label>
                 <input
                   className="form-control"
@@ -257,20 +247,20 @@ class IndexContainer extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="chapter_description">Описание раздела:</label>
-                <textarea
+                <label htmlFor="chapter_name">Название раздела:</label>
+                <input
                   className="form-control"
-                  rows="3"
-                  id="chapter_description"
-                  name="chapterDescription"
-                  value={chapterDescription}
-                  onChange={this.changeChapterDescription.bind(this)}
+                  type="text"
+                  id="chapter_name"
+                  name="chapterName"
+                  value={chapterName}
+                  onChange={this.changeChapterName.bind(this)}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group cover-input">
                 <label htmlFor="chapter_cover">Обложка раздела:</label>
                 <input
-                  ref="chapter_cover"
+                  ref='chapter_cover'
                   className="form-control"
                   type="file"
                   accept="image/*"
@@ -279,32 +269,62 @@ class IndexContainer extends Component {
                   defaultValue={chapterCover}
                   onChange={this.changeChapterCover.bind(this)}
                 />
-              </div>
-              {chapterCover &&
-                <div className="cover-preview">
-                  <div className="delete-button" onClick={this.changeChapterCover.bind(this, null)}>delete link</div>
-                  <img src={(typeof chapterCover === 'string') ? chapterCover : window.URL.createObjectURL(chapterCover)} />
+                {(!chapterCover || _.isEmpty(chapterCover)) &&
+                <div className="cover-preview blank" onClick={()=>{this.refs['chapter_cover'].click()}}>
+                  <p className="add-title">
+                    Добавить<br/>изображение
+                  </p>
                 </div>
-              }
-              <button
-                className="btn btn-success"
-                type="button"
-                onClick={
-                  modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
                 }
-                disabled={!(chapterName && chapterSlug && chapterDescription)}
-              >
-                {
-                  modalAction === 'add' ? "Добавить" : "Сохранить"
+                {chapterCover &&
+                <div className="cover-preview">
+                  <div className="delete-button" onClick={this.changeChapterCover.bind(this, null)}>
+                    <MdDeleteForever />
+                  </div>
+                  <div className="edit-button" onClick={()=>{this.refs['chapter_cover'].click()}}>
+                    <MdModeEdit />
+                  </div>
+                  <img src={(typeof chapterCover === 'string') ? chapterCover : window.URL.createObjectURL(chapterCover)} />
+                  <p className="preview-title">
+                    {typeof chapterCover === 'string'
+                      ? chapterCover.split('/')[chapterCover.split('/').length-1]
+                      : chapterCover.name.split('/')[chapterCover.name.split('/').length-1]}
+                  </p>
+                </div>
                 }
-              </button>
-              <button
-                className="btn btn-default margined-left"
-                type="button"
-                onClick={this.closeModal.bind(this)}
-              >
-                Отмена
-              </button>
+              </div>
+              <div className="form-group">
+                <label htmlFor="chapter_description">Описание раздела:</label>
+                <textarea
+                  className="form-control"
+                  rows="10"
+                  id="chapter_description"
+                  name="chapterDescription"
+                  value={chapterDescription}
+                  onChange={this.changeChapterDescription.bind(this)}
+                />
+              </div>
+              <div className="buttons-wrapper centered">
+                <button
+                  className="btn btn-success"
+                  type="button"
+                  onClick={
+                    modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
+                  }
+                  disabled={!(chapterName && chapterSlug && chapterDescription)}
+                >
+                  {
+                    modalAction === 'add' ? "Добавить" : "Сохранить"
+                  }
+                </button>
+                <button
+                  className="btn btn-default margined-left"
+                  type="button"
+                  onClick={this.closeModal.bind(this)}
+                >
+                  Отмена
+                </button>
+              </div>
             </form>
           </div>
         </Modal>

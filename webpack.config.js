@@ -68,11 +68,12 @@ module.exports = {
       ],
     }, {
       test: /\.css$/,
-      use: [
-        {
-          loader: 'style!css'
-        },
-      ],
+      loader: extractLess.extract({
+        use: [{
+          loader: "css-loader"
+        }],
+        fallback: "style-loader"
+      })
     }, {
       test: /\.less$/,
       loader: extractLess.extract({

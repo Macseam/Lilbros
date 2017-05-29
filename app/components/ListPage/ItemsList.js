@@ -3,8 +3,17 @@ import _ from 'lodash';
 
 import settings from '../../settings';
 import SingleItem from './SingleItem';
+import { MdAddCircle } from 'react-icons/lib/md';
 
 const ItemsList = props => {
+
+  function strip(html)
+  {
+    let htmlAfterDot = html.split('.')[0];
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = htmlAfterDot;
+    return tmp.textContent || tmp.innerText || "";
+  }
 
   return (
     <div className="chapter-items-list-wrapper">
@@ -18,7 +27,7 @@ const ItemsList = props => {
             cover={(chapterItem.images && !_.isEmpty(chapterItem.images))
               ? settings.apiUrl + '/uploads/' + chapterItem.images[0].url
               : ''}
-            description={chapterItem.description}
+            description={strip(chapterItem.description)}
             editAction={props.editAction ? ()=>{props.editAction(
               chapterItem._id,
               chapterItem.title,
@@ -34,8 +43,10 @@ const ItemsList = props => {
           );
         })}
       {!!props.addNewItem &&
-      <div className="bs-callout bs-callout-info list-item">
-        <div className="image-placeholder" onClick={()=>{props.addNewItem()}}>+</div>
+      <div className="bs-callout bs-callout-info list-item add-item">
+        <div className="image-placeholder" onClick={()=>{props.addNewItem()}}>
+          <MdAddCircle />
+        </div>
         <h4 className="link list-item-title" onClick={()=>{props.addNewItem()}}>Добавить новый элемент</h4>
       </div>
       }

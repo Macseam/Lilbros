@@ -28,6 +28,7 @@ html, body {
   margin-bottom: 24px;
   position: relative;
   .title {
+    cursor: pointer;
     font-family: 'Pacifico', cursive;
     font-size: 50px;
     color: green;
@@ -291,6 +292,40 @@ html, body {
     background: #ffffff;
     border-radius: 10px;
     overflow: hidden;
+    &.add-item {
+      position: relative;
+      .image-placeholder {
+        cursor: pointer;
+        background: silver;
+        text-align: center;
+        position: relative;
+        &:hover {
+          svg {
+            fill: #575757;
+            transition: all 0.3s ease;
+          }
+        }
+        svg {
+          fill: gray;
+          width: 40px;
+          height: 40px;
+          margin: 0 auto;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          transition: all 0.3s ease;
+        }
+      }
+      .list-item-title {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
     &:not(:last-of-type) {
       margin-bottom: 10px;
     }
@@ -351,9 +386,35 @@ html, body {
 }
 
 .item-details-wrapper {
+  background: #ffffff;
+  box-shadow: 0 4px 8px 2px rgba(0,0,0,0.1);
+  text-align: center;
+  padding: 10px;
+  .back-home-button {
+    float: left;
+  }
+  .edit-details-button {
+    background: #2196f3;
+    color: #ffffff;
+    float: right;
+    &:hover {
+      background: #2169c1;
+    }
+  }
+  .details-title {
+    font-family: 'Bad Script', cursive;
+    clear: both;
+    font-size: 26px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  .details-description {
+    text-align: left;
+    margin: 20px;
+  }
   .image-placeholder {
     background: gray;
-    width: 500px;
+    width: 100%;
     height: 500px;
     overflow: hidden;
     margin: 0 16px 0 0;
@@ -372,7 +433,27 @@ html, body {
   padding: 15px 30px;
 }
 
+.buttons-wrapper {
+  &.centered {
+    text-align: center;
+  }
+}
+
 .popup-content {
+  .wysiwyg-wrapper {
+    height: 190px;
+    .ql-container, .ql-toolbar {
+      &.ql-snow {
+        border: 2px #dce4ec solid;
+        .ql-editor {
+          margin-bottom: 15px;
+        }
+      }
+    }
+    .quill {
+      height: 100%;
+    }
+  }
   button.close {
     float: right;
     font-size: 22.5px;
@@ -402,20 +483,102 @@ html, body {
   .popup-form {
     width: 90%;
     margin: 30px auto;
+    .form-group {
+      &.cover-input {
+        position: relative;
+      }
+      input[type=file] {
+        height: 234px;
+      }
+      width: 48%;
+      display: inline-block;
+      &:nth-of-type(odd) {
+        float: right;
+      }
+    }
   }
   .cover-preview {
-    position: relative;
-    width: 200px;
-    height: 200px;
+    position: absolute;
+    width: 100%;
+    height: 234px;
+    left: 0;
+    bottom: -16px;
     overflow: hidden;
     margin-bottom: 16px;
+    border: 2px solid #dce4ec;
+    background: #ffffff;
+    &.blank {
+      background: silver;
+      cursor: pointer;
+      &:hover {
+        .add-title {
+          background: rgba(255,255,255,1);
+          transition: all 0.3s ease;
+        }
+      }
+      .add-title {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 13px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        margin: 0 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 80%;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.5);
+        padding: 2px 0;
+        transition: all 0.3s ease;
+      }
+    }
+    .preview-title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10px;
+      font-size: 11px;
+      white-space: nowrap;
+      margin: 0 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 80%;
+      text-align: center;
+      background: rgba(255,255,255,0.8);
+      padding: 2px 0;
+    }
     img {
       width: auto;
-      height: 100%;
-      min-width: 100%;
-      min-height: 100%;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
       margin-left: 50%;
-      transform: translateX(-50%);
+      position: relative;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+    .delete-button {
+      top: 53px;
+      background: #eeeeee;
+      svg {
+        vertical-align: inherit !important;
+      }
+      &:hover {
+        background: #f44336;
+      }
+    }
+    .edit-button {
+      top: 8px;
+      background: #eeeeee;
+      svg {
+        vertical-align: inherit !important;
+      }
+      &:hover {
+        background: #2196f3;
+      }
     }
   }
 }
