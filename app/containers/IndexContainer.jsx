@@ -219,6 +219,9 @@ class IndexContainer extends Component {
             menuChapters={menuChapters}
           />
         }
+        <footer>
+          Lilbros.ru 1.0 © 2017 by Macseam
+        </footer>
         <Modal
           visible={modalVisible}
           width="70%"
