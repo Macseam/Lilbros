@@ -231,7 +231,7 @@ class ChapterDetails extends React.Component {
             : ''
         }
         <h4 className="details-title">
-          {(itemDetails && itemDetails.title) || 'No title'}
+          {(itemDetails && itemDetails.title) || 'Нет заголовка'}
         </h4>
         <div className="image-placeholder" style={{backgroundColor: (itemDetails && itemDetails.color) || 'gray'}}>
           {itemDetails && itemDetails.images && !_.isEmpty(itemDetails.images) &&
@@ -317,16 +317,6 @@ class ChapterDetails extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="details_description">Описание элемента:</label>
-                {/*
-                  <textarea
-                  className="form-control"
-                  rows="10"
-                  id="details_description"
-                  name="detailsDescription"
-                  value={detailsDescription}
-                  onChange={this.changeDetailsDescription.bind(this)}
-                />
-                */}
                 <div className="wysiwyg-wrapper">
                   <ReactQuill
                     theme={'snow'}

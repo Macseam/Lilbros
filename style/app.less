@@ -13,7 +13,7 @@ html, body {
   min-height: 100%;
   margin: 0 auto;
   padding: 30px;
-  background: transparent url('../images/main_bg.jpg') center top no-repeat;
+  background: #ffffff url('../images/main_bg.jpg') center bottom no-repeat;
   background-size: cover;
 }
 
@@ -36,6 +36,8 @@ html, body {
 }
 
 .back-home-button {
+  display: block;
+  margin: 0 auto;
   svg {
     width: 15px;
     height: 15px;
@@ -284,12 +286,31 @@ html, body {
   }
 }
 
+.nothing-here {
+  width: 100%;
+  background: #ffffff;
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  color: gray;
+}
+
+.list-home-button {
+  display: block;
+  margin: 0 auto;
+}
+
 .chapter-items-list-wrapper {
+  .items-list-title {
+    color: white;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    text-align: center;
+  }
   .list-item {
     height: 100px;
     margin: 18px 0;
     position: relative;
-    background: #ffffff;
+    background: #fdfff4 url('../images/list_bg.jpg') right center no-repeat;
     border-radius: 10px;
     overflow: hidden;
     &.add-item {
@@ -391,12 +412,12 @@ html, body {
   text-align: center;
   padding: 10px;
   .back-home-button {
-    float: left;
+    display: inline-block;
   }
   .edit-details-button {
     background: #2196f3;
     color: #ffffff;
-    float: right;
+    margin-left: 10px;
     &:hover {
       background: #2169c1;
     }
@@ -409,6 +430,19 @@ html, body {
     margin-bottom: 20px;
   }
   .details-description {
+    strong {
+      color: green;
+    }
+    blockquote {
+      width: 100%;
+      position: relative;
+      background: orange;
+      border: 0;
+      margin: 20px auto;
+      color: white;
+      font-weight: normal;
+      font-size: initial;
+    }
     text-align: left;
     margin: 20px;
   }
@@ -553,7 +587,6 @@ html, body {
     img {
       width: auto;
       height: auto;
-      max-width: 100%;
       max-height: 100%;
       margin-left: 50%;
       position: relative;

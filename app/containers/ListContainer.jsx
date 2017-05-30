@@ -238,7 +238,7 @@ class ListContainer extends Component {
       <div>
         <button
           type="button"
-          className="btn btn-default btn-xs back-home-button"
+          className="btn btn-default btn-xs back-home-button list-home-button"
           onClick={this.handleGoBack.bind(this)}
         >
           <MdHome />
@@ -258,13 +258,13 @@ class ListContainer extends Component {
               : null}
             chapterItems={chapterItems}
             chapterSlug={this.props.params.chapter}
-            chapterTitle={(!_.isEmpty(chapterTitle) && chapterTitle) ? chapterTitle.title : 'No title'}
+            chapterTitle={(!_.isEmpty(chapterTitle) && chapterTitle) ? chapterTitle.title : 'Нет заголовка'}
           />
         }
         {_.isEmpty(chapterItems)
         && this.props.authState.chapterItemsList !== null
         && !this.props.authState.loading &&
-          <h5>А тут ничего пока нет :(</h5>
+          <h5 className="nothing-here">А тут ничего пока нет :(</h5>
         }
         {_.isEmpty(chapterItems)
         && this.props.authState.loading &&

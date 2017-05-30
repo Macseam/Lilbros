@@ -17,7 +17,7 @@ const ItemsList = props => {
 
   return (
     <div className="chapter-items-list-wrapper">
-      <h3>{props.chapterTitle}</h3>
+      <h3 className="items-list-title">{props.chapterTitle}</h3>
         {_.map(props.chapterItems, (chapterItem, key)=>{
           return (
           <SingleItem
