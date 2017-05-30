@@ -39,7 +39,7 @@ class AppContainer extends Component {
   }
 
   goHome() {
-    if (this.props.route.path) {
+    if (this.props.route.path && this.props.route.path !== '/') {
       this.context.router.push('/');
     }
   }

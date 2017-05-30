@@ -4,8 +4,8 @@ import axios from 'axios';
 import _ from 'lodash';
 import { requestData, receiveData, receiveError } from './actionUtils';
 
-//const apiUrl = 'http://localhost:8080';
-const apiUrl = 'http://lilbros.macseam.ru:8080';
+const apiUrl = 'http://localhost:8080';
+//const apiUrl = 'http://lilbros.macseam.ru:8080';
 
 export function getHeaderAuthToken () {
   let instance = axios.create({
