@@ -4,7 +4,8 @@
 
 const settingsArray = {
   'local': {
-    apiUrl: 'http://localhost:8080/',
+    //apiUrl: 'http://localhost:8080/',
+    apiUrl: 'http://lilbros.macseam.ru/',
   },
 };
 
