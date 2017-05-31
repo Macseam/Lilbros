@@ -217,6 +217,15 @@ class ChapterDetails extends React.Component {
           {this.props.params.chapter === 'animals' &&
           <FaPaw />
           }
+          {this.props.params.chapter === 'birds' &&
+          <FaTwitter />
+          }
+          {this.props.params.chapter === 'insects' &&
+          <FaBug />
+          }
+          {this.props.params.chapter === 'plants' &&
+          <FaLeaf />
+          }
           Вернуться к списку{(!_.isEmpty(chapterTitle) && chapterTitle) ? ' "' + chapterTitle.title + '"' : ''}
         </button>
         {
