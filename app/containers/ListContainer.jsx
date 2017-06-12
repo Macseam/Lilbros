@@ -33,7 +33,6 @@ class ListContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.chapterItemsList !== this.state.chapterItems &&
       nextProps.authState.loaded) && nextProps.authState.chapterItemsList) {
-      console.log('list changed');
       this.setState({
         chapterItems: nextProps.authState.chapterItemsList,
       });
@@ -63,6 +62,7 @@ class ListContainer extends Component {
       if (_.isEmpty(this.props.authState.chapterItemsList)) {
         this.actions.getChaptersList();
       }
+      this.refs['item_cover'].value = '';
       this.actions.getItemsList(this.props.params.chapter);
       this.setState({
         chapterItems: nextProps.authState.chapterItemsList,
