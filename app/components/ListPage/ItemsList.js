@@ -19,13 +19,19 @@ const ItemsList = props => {
     <div className="chapter-items-list-wrapper">
       <h3 className="items-list-title">{props.chapterTitle}</h3>
         {_.map(props.chapterItems, (chapterItem, key)=>{
+          let foundThumb = null;
+          _.map(chapterItem.images, (imgObj)=>{
+            if (imgObj && imgObj.url && (imgObj.kind === 'thumb')) {
+              foundThumb = imgObj.url;
+            }
+          });
           return (
           <SingleItem
             key={key}
             title={chapterItem.title}
             color={chapterItem.color}
             cover={(chapterItem.images && !_.isEmpty(chapterItem.images))
-              ? settings.apiUrl + '/uploads/' + chapterItem.images[0].url
+              ? settings.apiUrl + '/uploads/' + (foundThumb || chapterItem.images[0].url)
               : ''}
             description={strip(chapterItem.description)}
             editAction={props.editAction ? ()=>{props.editAction(
