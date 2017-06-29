@@ -215,7 +215,12 @@ export function tryUserLoginPassword (action) {
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
-        dispatch(receiveError(actionName, response.data));
+        if (response.response && response.response.data) {
+          dispatch(receiveData(actionName, response.response.data));
+        }
+        else {
+          dispatch(receiveError(actionName, response.data));
+        }
       });
   };
 }

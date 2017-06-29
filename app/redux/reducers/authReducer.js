@@ -108,7 +108,7 @@ export default function authInfo(state = initialState, action) {
     case 'TRY_USER_LOGIN_PASSWORD_SUCCESS':
       return { ...state, userData: action.data, loading: false, loaded: true };
     case 'TRY_USER_LOGIN_PASSWORD_FAILURE':
-      return { ...state, userData: initialState.userData, loading: false, loaded: true };
+      return { ...state, userData: action.data || initialState.userData, loading: false, loaded: true };
 
     default:
       return state;

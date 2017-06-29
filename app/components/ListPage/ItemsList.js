@@ -43,7 +43,8 @@ const ItemsList = props => {
                 ? settings.apiUrl + '/uploads/' + chapterItem.images[0].url
                 : null
             )} : null}
-            deleteAction={props.deleteAction ? ()=>{props.deleteAction(chapterItem._id)} : null}
+            toggleDeleteConfirmation={(e)=>props.toggleDeleteConfirmation(e)}
+            deleteAction={props.deleteAction ? (e)=>{props.deleteAction(e, chapterItem._id)} : null}
             goToItem={()=>{props.goToItem(props.chapterSlug + '/' + chapterItem.slug)}}
           />
           );

@@ -5,6 +5,7 @@ import React from 'react';
 import { MdModeEdit, MdDeleteForever } from 'react-icons/lib/md';
 
 const SingleItem = props => {
+
   return (
     <div
       className="bs-callout bs-callout-info list-item"
@@ -22,8 +23,9 @@ const SingleItem = props => {
       </div>
       }
       {!!props.deleteAction &&
-      <div className="delete-button" onClick={props.deleteAction}>
+      <div className="delete-button" onClick={(e)=>props.toggleDeleteConfirmation(e)}>
         <MdDeleteForever />
+        <div className="delete-confirm hidden" onClick={(e)=>props.deleteAction(e)}>✔</div>
       </div>
       }
     </div>

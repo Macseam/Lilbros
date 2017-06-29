@@ -18,6 +18,7 @@ class LoginPage extends React.Component {
     this.state = {
       userName: null,
       userPassword: null,
+      loginError: null,
       tokenData: null,
     };
   }
@@ -31,7 +32,17 @@ class LoginPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.userData !== this.props.authState.userData) &&
       nextProps.authState.loaded && !_.isEmpty(nextProps.authState.userData)) {
-      this.context.router.push('/');
+      if (nextProps.authState.userData && nextProps.authState.userData.error) {
+        this.setState({
+          loginError: nextProps.authState.userData.error
+        });
+      }
+      else {
+        this.setState({
+          loginError: null
+        });
+        this.context.router.push('/');
+      }
     }
     this.setState({
       tokenData: this.getCookie('CSRF-TOKEN'),
@@ -72,7 +83,20 @@ class LoginPage extends React.Component {
     return matches ? decodeURIComponent(matches[1]) : undefined;
   }
 
+  closeLoginError() {
+    this.setState({
+      loginError: null
+    });
+  }
+
   render() {
+
+    const {
+      userName,
+      userPassword,
+      loginError
+    } = this.state;
+
     return (
       <div>
         <button
@@ -95,7 +119,7 @@ class LoginPage extends React.Component {
               type="text"
               id="entry_name"
               name="userName"
-              defaultValue={this.state.userName}
+              defaultValue={userName}
               onChange={this.changeName.bind(this)}
             />
           </div>
@@ -107,10 +131,25 @@ class LoginPage extends React.Component {
               type="password"
               id="entry_password"
               name="userPassword"
-              defaultValue={this.state.userPassword}
+              defaultValue={userPassword}
               onChange={this.changePassword.bind(this)}
             />
           </div>
+
+          {loginError &&
+            <div className="alert alert-danger">
+              <button
+                type="button"
+                className="close"
+                onClick={this.closeLoginError.bind(this)}
+              >
+                &times;
+              </button>
+              <span>
+                {loginError.text || loginError}
+              </span>
+            </div>
+          }
 
           <button type="submit" className="btn btn-success">Войти</button>
 

@@ -104,7 +104,8 @@ class ListContainer extends Component {
     });
   }
 
-  handleDeleteItem(id) {
+  handleDeleteItem(e, id) {
+    e.stopPropagation();
     this.actions.deleteItem({
       id: id,
       auth: this.getCookie('auth'),
@@ -116,6 +117,32 @@ class ListContainer extends Component {
       modalAction: 'add',
       modalVisible : true
     });
+  }
+
+  toggleDeleteConfirmation(e) {
+    if (e && e.currentTarget) {
+      let confirmElement = e.currentTarget.querySelector('.delete-confirm');
+      let confirmElementClassName = confirmElement.className;
+      confirmElement.className = confirmElement.className === 'delete-confirm'
+        ? 'delete-confirm selected'
+        : 'delete-confirm hidden selected';
+      let allOtherElements = document.querySelectorAll('.delete-confirm:not(.selected)');
+      _.map(allOtherElements, (foundElement)=> {
+        foundElement.className = 'delete-confirm hidden';
+      });
+      if (confirmElementClassName === 'delete-confirm hidden') {
+        confirmElement.className = 'delete-confirm';
+      }
+      else if (confirmElementClassName === 'delete-confirm' && (window.getComputedStyle(confirmElement, null).opacity != 1)) {
+        confirmElement.className = 'delete-confirm hidden';
+        setTimeout(()=>{
+          confirmElement.className = 'delete-confirm';
+        },10);
+      }
+      else {
+        confirmElement.className = 'delete-confirm hidden';
+      }
+    }
   }
 
   changeItemName(event) {
@@ -252,6 +279,9 @@ class ListContainer extends Component {
               : null}
             deleteAction={!!this.props.authState.userData
               ? this.handleDeleteItem.bind(this)
+              : null}
+            toggleDeleteConfirmation={!!this.props.authState.userData
+              ? this.toggleDeleteConfirmation.bind(this)
               : null}
             addNewItem={!!this.props.authState.userData
               ? this.handleAddItem.bind(this)
