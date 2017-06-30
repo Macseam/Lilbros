@@ -32,13 +32,13 @@ class ListContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.chapterItemsList !== this.state.chapterItems &&
-      nextProps.authState.loaded) && nextProps.authState.chapterItemsList) {
+      _.isEmpty(nextProps.authState.loading)) && nextProps.authState.chapterItemsList) {
       this.setState({
         chapterItems: nextProps.authState.chapterItemsList,
       });
     }
     if ((nextProps.authState.itemAdded !== this.props.authState.itemAdded &&
-      nextProps.authState.loaded) && nextProps.authState.chapterItemsList) {
+      _.isEmpty(nextProps.authState.loading)) && nextProps.authState.chapterItemsList) {
       if (_.isEmpty(this.props.authState.chapterItemsList)) {
         this.actions.getChaptersList();
       }
@@ -48,7 +48,7 @@ class ListContainer extends Component {
       });
     }
     if ((nextProps.authState.itemEdited !== this.props.authState.itemEdited &&
-      nextProps.authState.loaded) && nextProps.authState.chapterItemsList) {
+      _.isEmpty(nextProps.authState.loading)) && nextProps.authState.chapterItemsList) {
       if (_.isEmpty(this.props.authState.chapterItemsList)) {
         this.actions.getChaptersList();
       }
@@ -58,7 +58,7 @@ class ListContainer extends Component {
       });
     }
     if ((nextProps.authState.itemDeleted !== this.props.authState.itemDeleted &&
-      nextProps.authState.loaded) && nextProps.authState.chapterItemsList) {
+      _.isEmpty(nextProps.authState.loading)) && nextProps.authState.chapterItemsList) {
       if (_.isEmpty(this.props.authState.chapterItemsList)) {
         this.actions.getChaptersList();
       }
@@ -145,22 +145,28 @@ class ListContainer extends Component {
     }
   }
 
+  limitDescription(html) {
+    let htmlAfterDot = html.split('.')[0];
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = htmlAfterDot;
+    return tmp.textContent || tmp.innerText || "";
+  }
+
   changeItemName(event) {
     this.setState({
-      itemName : event.target.value
+      itemName: event.target.value
     });
   }
 
   changeItemSlug(event) {
     this.setState({
-      itemSlug : event.target.value
+      itemSlug: event.target.value
     });
   }
 
-  changeItemDescription(event) {
+  changeItemDescription(val) {
     this.setState({
-      //itemDescription : event.target.value
-      itemDescription : event
+      itemDescription: val
     });
   }
 
@@ -283,6 +289,7 @@ class ListContainer extends Component {
             toggleDeleteConfirmation={!!this.props.authState.userData
               ? this.toggleDeleteConfirmation.bind(this)
               : null}
+            limitDescription={this.limitDescription.bind(this)}
             addNewItem={!!this.props.authState.userData
               ? this.handleAddItem.bind(this)
               : null}
@@ -293,139 +300,133 @@ class ListContainer extends Component {
         }
         {_.isEmpty(chapterItems)
         && this.props.authState.chapterItemsList !== null
-        && !this.props.authState.loading &&
+        && _.isEmpty(this.props.authState.loading) &&
           <h5 className="nothing-here">А тут ничего пока нет :(</h5>
         }
         {_.isEmpty(chapterItems)
-        && this.props.authState.loading &&
+        && !_.isEmpty(this.props.authState.loading) &&
         <h5>...</h5>
         }
-        <Modal
-          visible={modalVisible}
-          width="70%"
-          effect="fadeInDown"
-          onClickAway={() => this.closeModal()}
-        >
-          <div className="popup-content">
-            <div className="modal-header">
-              <button type="button" className="close" onClick={this.closeModal.bind(this)}>&#215;</button>
-              <h4 className="modal-title">
-                {
-                  modalAction === 'add'
-                    ? "Добавить новый элемент раздела" + (chapterTitle ? ' ' + chapterTitle.title : '')
-                    : "Редактировать элемент раздела" + (chapterTitle ? ' ' + chapterTitle.title : '')
-                }
-              </h4>
-            </div>
-            <form className="popup-form" onSubmit={this.closeModal.bind(this)}>
-              <div className="form-group">
-                <label htmlFor="item_slug">Адрес элемента (латиницей):</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="item_slug"
-                  name="itemSlug"
-                  value={itemSlug}
-                  onChange={this.changeItemSlug.bind(this)}
-                />
+        <div className="modal-wrapper">
+          <Modal
+            visible={modalVisible}
+            width="70%"
+            effect="fadeInDown"
+            onClickAway={() => this.closeModal()}
+          >
+            <div className="popup-content">
+              <div className="modal-header">
+                <button type="button" className="close" onClick={this.closeModal.bind(this)}>&#215;</button>
+                <h4 className="modal-title">
+                  {
+                    modalAction === 'add'
+                      ? "Добавить новый элемент раздела" + (chapterTitle ? ' ' + chapterTitle.title : '')
+                      : "Редактировать элемент раздела" + (chapterTitle ? ' ' + chapterTitle.title : '')
+                  }
+                </h4>
               </div>
-              <div className="form-group">
-                <label htmlFor="item_name">Название элемента:</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="item_name"
-                  name="itemName"
-                  value={itemName}
-                  onChange={this.changeItemName.bind(this)}
-                />
-              </div>
-              <div className="form-group cover-input">
-                <label htmlFor="item_cover">Обложка раздела:</label>
-                <input
-                  ref="item_cover"
-                  className="form-control"
-                  type="file"
-                  accept="image/*"
-                  id="item_cover"
-                  name="itemCover"
-                  defaultValue={itemCover}
-                  onChange={this.changeItemCover.bind(this)}
-                />
-                {(!itemCover || _.isEmpty(itemCover)) &&
-                <div className="cover-preview blank" onClick={()=>{this.refs['item_cover'].click()}}>
-                  <p className="add-title">
-                    Добавить<br/>изображение
-                  </p>
-                </div>
-                }
-                {itemCover &&
-                <div className="cover-preview">
-                  <div className="delete-button" onClick={this.changeItemCover.bind(this, null)}>
-                    <MdDeleteForever />
-                  </div>
-                  <div className="edit-button" onClick={()=>{this.refs['item_cover'].click()}}>
-                    <MdModeEdit />
-                  </div>
-                  <img src={(typeof itemCover === 'string') ? itemCover : window.URL.createObjectURL(itemCover)} />
-                  <p className="preview-title">
-                    {typeof itemCover === 'string'
-                      ? itemCover.split('/')[itemCover.split('/').length-1]
-                      : itemCover.name.split('/')[itemCover.name.split('/').length-1]}
-                  </p>
-                </div>
-                }
-              </div>
-              <div className="form-group">
-                <label htmlFor="item_description">Описание элемента:</label>
-                {/*<textarea
-                  className="form-control"
-                  rows="10"
-                  id="item_description"
-                  name="itemDescription"
-                  value={itemDescription}
-                  onChange={this.changeItemDescription.bind(this)}
-                />*/}
-                <div className="wysiwyg-wrapper">
-                  <ReactQuill
-                    theme={'snow'}
-                    modules={{
-                      toolbar: [
-                        ['bold', 'italic', 'underline','strike', 'blockquote'],
-                        [{'list': 'bullet'}],
-                        ['link']
-                      ]
-                    }}
-                    onChange={this.changeItemDescription.bind(this)}
-                    value={itemDescription ? itemDescription : ''}
-                    placeholder={'Введите описание'}
+              <form className="popup-form" onSubmit={this.closeModal.bind(this)}>
+                <div className="form-group">
+                  <label htmlFor="item_name">Название элемента:</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    id="item_name"
+                    name="itemName"
+                    value={itemName}
+                    onChange={this.changeItemName.bind(this)}
                   />
                 </div>
-              </div>
-              <div className="buttons-wrapper centered">
-                <button
-                  className="btn btn-success"
-                  type="button"
-                  onClick={
-                    modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
+                <div className="form-group">
+                  <label htmlFor="item_slug">Адрес элемента (латиницей):</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    id="item_slug"
+                    name="itemSlug"
+                    value={itemSlug}
+                    onChange={this.changeItemSlug.bind(this)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="item_description">Описание элемента:</label>
+                  <div className="wysiwyg-wrapper">
+                    <ReactQuill
+                      theme={'snow'}
+                      modules={{
+                        toolbar: [
+                          ['bold', 'italic', 'underline','strike', 'blockquote'],
+                          [{'list': 'bullet'}],
+                          ['link']
+                        ]
+                      }}
+                      onChange={this.changeItemDescription.bind(this)}
+                      value={itemDescription ? itemDescription : ''}
+                      placeholder={'Введите описание'}
+                    />
+                  </div>
+                </div>
+                <div className="form-group cover-input">
+                  <label htmlFor="item_cover">Обложка раздела:</label>
+                  <input
+                    ref="item_cover"
+                    className="form-control"
+                    type="file"
+                    accept="image/*"
+                    id="item_cover"
+                    name="itemCover"
+                    defaultValue={itemCover}
+                    onChange={this.changeItemCover.bind(this)}
+                  />
+                  {(!itemCover || _.isEmpty(itemCover)) &&
+                  <div className="cover-preview blank" onClick={()=>{this.refs['item_cover'].click()}}>
+                    <p className="add-title">
+                      Добавить<br/>изображение
+                    </p>
+                  </div>
                   }
-                  disabled={!(itemName && itemSlug && itemDescription)}
-                >
-                  {
-                    modalAction === 'add' ? "Добавить" : "Сохранить"
+                  {itemCover &&
+                  <div className="cover-preview">
+                    <div className="delete-button" onClick={this.changeItemCover.bind(this, null)}>
+                      <MdDeleteForever />
+                    </div>
+                    <div className="edit-button" onClick={()=>{this.refs['item_cover'].click()}}>
+                      <MdModeEdit />
+                    </div>
+                    <img src={(typeof itemCover === 'string') ? itemCover : window.URL.createObjectURL(itemCover)} />
+                    <p className="preview-title">
+                      {typeof itemCover === 'string'
+                        ? itemCover.split('/')[itemCover.split('/').length-1]
+                        : itemCover.name.split('/')[itemCover.name.split('/').length-1]}
+                    </p>
+                  </div>
                   }
-                </button>
-                <button
-                  className="btn btn-default margined-left"
-                  type="button"
-                  onClick={this.closeModal.bind(this)}
-                >
-                  Отмена
-                </button>
-              </div>
-            </form>
-          </div>
-        </Modal>
+                </div>
+                <div className="buttons-wrapper centered">
+                  <button
+                    className="btn btn-success"
+                    type="button"
+                    onClick={
+                      modalAction === 'add' ? this.submitAddModal.bind(this) : this.submitEditModal.bind(this)
+                    }
+                    disabled={!(itemName && itemSlug && itemDescription)}
+                  >
+                    {
+                      modalAction === 'add' ? "Добавить" : "Сохранить"
+                    }
+                  </button>
+                  <button
+                    className="btn btn-default margined-left"
+                    type="button"
+                    onClick={this.closeModal.bind(this)}
+                  >
+                    Отмена
+                  </button>
+                </div>
+              </form>
+            </div>
+          </Modal>
+        </div>
       </div>
     );
   }

@@ -31,7 +31,8 @@ const MenuList = props => {
                   ? settings.apiUrl + '/uploads/' + menuItemObj.images[0].url
                   : null
               )} : null}
-              deleteAction={props.deleteAction ? ()=>{props.deleteAction(menuItemObj._id)} : null}
+              toggleDeleteConfirmation={(e)=>props.toggleDeleteConfirmation(e)}
+              deleteAction={props.deleteAction ? (e)=>{props.deleteAction(e, menuItemObj._id)} : null}
               goToAction={()=>{props.goToAction(menuItemObj.slug)}}
             />
           );

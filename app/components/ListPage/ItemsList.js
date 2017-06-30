@@ -7,14 +7,6 @@ import { MdAddCircle } from 'react-icons/lib/md';
 
 const ItemsList = props => {
 
-  function strip(html)
-  {
-    let htmlAfterDot = html.split('.')[0];
-    let tmp = document.createElement("DIV");
-    tmp.innerHTML = htmlAfterDot;
-    return tmp.textContent || tmp.innerText || "";
-  }
-
   return (
     <div className="chapter-items-list-wrapper">
       <h3 className="items-list-title">{props.chapterTitle}</h3>
@@ -33,7 +25,7 @@ const ItemsList = props => {
             cover={(chapterItem.images && !_.isEmpty(chapterItem.images))
               ? settings.apiUrl + '/uploads/' + (foundThumb || chapterItem.images[0].url)
               : ''}
-            description={strip(chapterItem.description)}
+            description={props.limitDescription(chapterItem.description)}
             editAction={props.editAction ? ()=>{props.editAction(
               chapterItem._id,
               chapterItem.title,
@@ -44,6 +36,7 @@ const ItemsList = props => {
                 : null
             )} : null}
             toggleDeleteConfirmation={(e)=>props.toggleDeleteConfirmation(e)}
+            limitDescription={(val)=>props.limitDescription(val)}
             deleteAction={props.deleteAction ? (e)=>{props.deleteAction(e, chapterItem._id)} : null}
             goToItem={()=>{props.goToItem(props.chapterSlug + '/' + chapterItem.slug)}}
           />

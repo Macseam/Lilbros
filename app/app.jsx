@@ -1,20 +1,17 @@
 import '../style/flatly.less';
 import '../style/app.less';
-//import 'bootstrap/less/bootstrap.less';
 import 'react-quill/dist/quill.snow.css';
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, useRouterHistory } from 'react-router';
-import { syncHistoryWithStore } from "react-router-redux";
+import { Router, browserHistory } from 'react-router';
 
 import configureStore from './store/configureStore';
 import createRoutes from './routes';
-import { createBrowserHistory, createHashHistory } from 'history';
 
 const store = configureStore();
-const history = useRouterHistory(createHashHistory)();
+const history = browserHistory;
 
 render(
     <Provider store={store} key="provider">

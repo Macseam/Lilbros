@@ -13,8 +13,11 @@ const MenuItem = props => {
         </div>
       }
       {!!props.deleteAction &&
-        <div className="delete-button" onClick={props.deleteAction}>
-          <MdDeleteForever />
+        <div className="delete-button-wrapper">
+          <div className="delete-button" onClick={(e)=>props.toggleDeleteConfirmation(e)}>
+            <MdDeleteForever />
+            <div className="delete-confirm hidden" onClick={(e)=>props.deleteAction(e)}>✔</div>
+          </div>
         </div>
       }
       <div onClick={props.goToAction} className="top-level-menu-item">

@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -27,7 +28,7 @@ class AppContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.userData !== this.state.userData) &&
-      nextProps.authState.loaded) {
+      _.isEmpty(nextProps.authState.loading)) {
       this.setState({
         userData: nextProps.authState.userData,
       });
@@ -70,6 +71,9 @@ class AppContainer extends Component {
           </div>
         </div>
         {children}
+        {!_.isEmpty(this.props.authState.loading) &&
+          <p>loading</p>
+        }
       </div>
     );
   }

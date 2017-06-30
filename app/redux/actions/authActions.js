@@ -60,7 +60,7 @@ export function getChaptersList () {
 
 export function addChapter (action) {
   let instance = axios.create({
-    headers: {'X-CSRF-Token': action._csrf},
+    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'ADD_CHAPTER';
