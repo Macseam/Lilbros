@@ -1,21 +1,21 @@
 {
-  "name": "simple-clean-redux-boilerplate",
-  "version": "1.0.0",
-  "description": "Simple Clean Redux Boilerplate",
+  "name": "lilbros-frontend",
+  "version": "1.0.1",
+  "description": "Lilbros frontend",
   "main": "server.js",
   "scripts": {
     "pack": "webpack"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Macseam/Simple-Clean-Redux-Boilerplate.git"
+    "url": "git+https://github.com/Macseam/Lilbros-frontend.git"
   },
   "author": "Max Shvetsov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Macseam/Simple-Clean-Redux-Boilerplate/issues"
+    "url": "https://github.com/Macseam/Lilbros-frontend/issues"
   },
-  "homepage": "https://github.com/Macseam/Simple-Clean-Redux-Boilerplate#readme",
+  "homepage": "https://github.com/Macseam/Lilbros-frontend#readme",
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-core": "^6.24.0",
