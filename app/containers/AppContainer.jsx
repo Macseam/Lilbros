@@ -55,6 +55,16 @@ class AppContainer extends Component {
     } = this.props;
     return (
       <div>
+        {!_.isEmpty(this.props.authState.loading) &&
+          <div className="loading-indicator-container">
+            <div className="mimimi-spinner">
+              &nbsp;
+            </div>
+            <div className="sun-spinner">
+              &nbsp;
+            </div>
+          </div>
+        }
         <div className="title-logo">
           <span className="title" onClick={this.goHome.bind(this)}>Lilbros</span>
           <div className="authorization-info">
@@ -71,9 +81,6 @@ class AppContainer extends Component {
           </div>
         </div>
         {children}
-        {!_.isEmpty(this.props.authState.loading) &&
-          <p>loading</p>
-        }
       </div>
     );
   }

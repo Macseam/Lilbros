@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import cyrillicToTranslit from '../components/Translit';
 import { Navigation } from 'react-router';
 import ReactQuill from 'react-quill/dist/react-quill';
 import { bindActionCreators } from 'redux';
@@ -158,6 +159,14 @@ class ListContainer extends Component {
     });
   }
 
+  itemNameFocusOut() {
+    if (!this.state.itemSlug || _.isEmpty(this.state.itemSlug)) {
+      this.setState({
+        itemSlug: cyrillicToTranslit().transform(this.state.itemName, "_")
+      });
+    }
+  }
+
   changeItemSlug(event) {
     this.setState({
       itemSlug: event.target.value
@@ -182,6 +191,32 @@ class ListContainer extends Component {
       });
       this.refs.item_cover.value = '';
     }
+  }
+
+  dragOverItemCover(event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  dropItemCover(event) {
+    if (event.dataTransfer) {
+      if (event.dataTransfer.items && event.dataTransfer.items.length > 0) {
+        _.map(event.dataTransfer.items, (fileObj)=>{
+          this.setState({
+            itemCover: fileObj.getAsFile()
+          });
+        });
+      }
+      else if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+        _.map(event.dataTransfer.files, (fileObj)=>{
+          this.setState({
+            itemCover: fileObj.name
+          });
+        });
+      }
+    }
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   submitEditModal() {
@@ -335,6 +370,7 @@ class ListContainer extends Component {
                     name="itemName"
                     value={itemName}
                     onChange={this.changeItemName.bind(this)}
+                    onBlur={this.itemNameFocusOut.bind(this)}
                   />
                 </div>
                 <div className="form-group">
@@ -367,7 +403,7 @@ class ListContainer extends Component {
                   </div>
                 </div>
                 <div className="form-group cover-input">
-                  <label htmlFor="item_cover">Обложка раздела:</label>
+                  <label htmlFor="item_cover">Обложка элемента:</label>
                   <input
                     ref="item_cover"
                     className="form-control"
@@ -378,15 +414,24 @@ class ListContainer extends Component {
                     defaultValue={itemCover}
                     onChange={this.changeItemCover.bind(this)}
                   />
-                  {(!itemCover || _.isEmpty(itemCover)) &&
-                  <div className="cover-preview blank" onClick={()=>{this.refs['item_cover'].click()}}>
+                  {!itemCover &&
+                  <div
+                    className="cover-preview blank"
+                    onClick={()=>{this.refs['item_cover'].click()}}
+                    onDrop={this.dropItemCover.bind(this)}
+                    onDragOver={this.dragOverItemCover.bind(this)}
+                  >
                     <p className="add-title">
                       Добавить<br/>изображение
                     </p>
                   </div>
                   }
                   {itemCover &&
-                  <div className="cover-preview">
+                  <div
+                    className="cover-preview"
+                    onDrop={this.dropItemCover.bind(this)}
+                    onDragOver={this.dragOverItemCover.bind(this)}
+                  >
                     <div className="delete-button" onClick={this.changeItemCover.bind(this, null)}>
                       <MdDeleteForever />
                     </div>

@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import cyrillicToTranslit from '../components/Translit';
 import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
@@ -109,6 +110,14 @@ class IndexContainer extends Component {
     });
   }
 
+  chapterNameFocusOut() {
+    if (!this.state.chapterSlug || _.isEmpty(this.state.chapterSlug)) {
+      this.setState({
+        chapterSlug: cyrillicToTranslit().transform(this.state.chapterName, "_")
+      });
+    }
+  }
+
   changeChapterSlug(event) {
     this.setState({
       chapterSlug: event.target.value
@@ -133,6 +142,32 @@ class IndexContainer extends Component {
       });
       this.refs.chapter_cover.value = '';
     }
+  }
+
+  dragOverChapterCover(event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  dropChapterCover(event) {
+    if (event.dataTransfer) {
+      if (event.dataTransfer.items && event.dataTransfer.items.length > 0) {
+        _.map(event.dataTransfer.items, (fileObj)=>{
+          this.setState({
+            chapterCover: fileObj.getAsFile()
+          });
+        });
+      }
+      else if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+        _.map(event.dataTransfer.files, (fileObj)=>{
+          this.setState({
+            chapterCover: fileObj.name
+          });
+        });
+      }
+    }
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   toggleDeleteConfirmation(e) {
@@ -278,6 +313,7 @@ class IndexContainer extends Component {
                     name="chapterName"
                     value={chapterName}
                     onChange={this.changeChapterName.bind(this)}
+                    onBlur={this.chapterNameFocusOut.bind(this)}
                   />
                 </div>
                 <div className="form-group">
@@ -314,15 +350,24 @@ class IndexContainer extends Component {
                     defaultValue={chapterCover}
                     onChange={this.changeChapterCover.bind(this)}
                   />
-                  {(!chapterCover || _.isEmpty(chapterCover)) &&
-                  <div className="cover-preview blank" onClick={()=>{this.refs['chapter_cover'].click()}}>
+                  {!chapterCover &&
+                  <div
+                    className="cover-preview blank"
+                    onClick={()=>{this.refs['chapter_cover'].click()}}
+                    onDrop={this.dropChapterCover.bind(this)}
+                    onDragOver={this.dragOverChapterCover.bind(this)}
+                  >
                     <p className="add-title">
                       Добавить<br/>изображение
                     </p>
                   </div>
                   }
                   {chapterCover &&
-                  <div className="cover-preview">
+                  <div
+                    className="cover-preview"
+                    onDrop={this.dropChapterCover.bind(this)}
+                    onDragOver={this.dragOverChapterCover.bind(this)}
+                  >
                     <div className="delete-button" onClick={this.changeChapterCover.bind(this, null)}>
                       <MdDeleteForever />
                     </div>

@@ -2,6 +2,21 @@
 @import url('https://fonts.googleapis.com/css?family=Pacifico');
 @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
 
+@materialred: #f44336;
+@materialgreen: #22af14;
+@materialblue: #2196f3;
+
+.keyframes(@name; @arguments) {
+  @-moz-keyframes @name { @arguments(); }
+  @-webkit-keyframes @name { @arguments(); }
+  @keyframes @name { @arguments(); }
+}
+.animation(@arguments) {
+  -webkit-animation: @arguments;
+  -moz-animation: @arguments;
+  animation: @arguments;
+}
+
 html, body {
   padding: 0;
   height: 100%;
@@ -17,6 +32,50 @@ html, body {
   background-size: cover;
 }
 
+.loading-indicator-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 5000;
+  .keyframes(fadeIn;{
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  });
+  .animation(fadeIn 0.5s linear 1);
+  .mimimi-spinner {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 110px;
+    height: 110px;
+    border-radius: 100%;
+    background: #ffffff url('../images/loadcat.gif') 58% center no-repeat;
+  }
+  .sun-spinner {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 128px;
+    height: 128px;
+    background: transparent url('../images/sun.png') center center no-repeat;
+    z-index: -1;
+    .keyframes(rotateInf;{
+      0% {transform: translateY(-50%) rotate(0deg);}
+      100% {transform: translateY(-50%) rotate(360deg);}
+    });
+    .animation(rotateInf 6s linear infinite);
+  }
+}
+
 .margined-left {
   margin-left: 5px;
 }
@@ -25,8 +84,10 @@ html, body {
   >div {
     >div {
       >div {
-        max-height: 90%;
-        overflow-y: auto;
+        &:first-of-type {
+          max-height: 90%;
+          overflow-y: auto;
+        }
       }
     }
   }
@@ -88,7 +149,11 @@ html, body {
 }
 
 .btn-green {
+  color: #ffffff;
   background: green;
+  &:hover {
+    background: #006400;
+  }
 }
 
 .main-menu-wrapper {
@@ -113,22 +178,12 @@ html, body {
   cursor: pointer;
   text-align: center;
   transition: all 0.3s ease;
-  .keyframes(@name; @arguments) {
-    @-moz-keyframes @name { @arguments(); }
-    @-webkit-keyframes @name { @arguments(); }
-    @keyframes @name { @arguments(); }
-  }
-  .animation(@arguments) {
-    -webkit-animation: @arguments;
-    -moz-animation: @arguments;
-    animation: @arguments;
-  }
   .delete-confirm {
     display: block;
     pointer-events: none;
     opacity: 0;
     position: absolute;
-    background: #22af14;
+    background: @materialgreen;
     right: 50px;
     color: #ffffff;
     top: 10px;
@@ -148,14 +203,14 @@ html, body {
     .animation(slideLeft 3s ease 1);
   }
   svg {
-    fill: #f44336;
+    fill: @materialred;
     width: 20px;
     height: 20px;
     vertical-align: middle;
     transition: all 0.3s ease;
   }
   &:hover {
-    background: #f44336;
+    background: @materialred;
     transition: all 0.3s ease;
     svg {
       fill: #ffffff;
@@ -184,14 +239,14 @@ html, body {
   z-index: 500;
   transition: all 0.3s ease;
   svg {
-    fill: #2196f3;
+    fill: @materialblue;
     width: 20px;
     height: 20px;
     vertical-align: middle;
     transition: all 0.3s ease;
   }
   &:hover {
-    background: #2196f3;
+    background: @materialblue;
     transition: all 0.3s ease;
     svg {
       fill: #ffffff;
@@ -423,19 +478,19 @@ html, body {
       top: 53px;
       background: #eeeeee;
       &:hover {
-        background: #f44336;
+        background: @materialred;
       }
     }
     .edit-button {
       top: 8px;
       background: #eeeeee;
       &:hover {
-        background: #2196f3;
+        background: @materialblue;
       }
     }
   }
   .image-placeholder {
-    background: gray;
+    background: gray url('../images/upfeathers.png');
     overflow: hidden;
     width: 100px;
     height: 100%;
@@ -461,7 +516,7 @@ html, body {
     display: inline-block;
   }
   .edit-details-button {
-    background: #2196f3;
+    background: @materialblue;
     color: #ffffff;
     margin-left: 10px;
     &:hover {
@@ -482,7 +537,7 @@ html, body {
     blockquote {
       width: 100%;
       position: relative;
-      background: orange;
+      background: #18bc9c;
       border: 0;
       margin: 20px auto;
       color: white;
@@ -490,10 +545,10 @@ html, body {
       font-size: initial;
     }
     text-align: left;
-    margin: 20px;
+    margin: 40px 60px;
   }
   .image-placeholder {
-    background: gray;
+    background: gray url('../images/tree_bark.png');
     width: 100%;
     height: auto;
     overflow: hidden;
@@ -647,14 +702,14 @@ html, body {
       background: #eeeeee;
       z-index: 200;
       &:hover {
-        background: #f44336;
+        background: @materialred;
       }
     }
     .edit-button {
       top: 8px;
       background: #eeeeee;
       &:hover {
-        background: #2196f3;
+        background: @materialblue;
       }
     }
   }

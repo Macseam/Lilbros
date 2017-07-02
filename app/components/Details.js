@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
+import cyrillicToTranslit from '../components/Translit';
 import ReactQuill from 'react-quill/dist/react-quill';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
@@ -78,6 +79,14 @@ class ChapterDetails extends React.Component {
     });
   }
 
+  detailsNameFocusOut() {
+    if (!this.state.detailsSlug || _.isEmpty(this.state.detailsSlug)) {
+      this.setState({
+        detailsSlug: cyrillicToTranslit().transform(this.state.detailsName, "_")
+      });
+    }
+  }
+
   changeDetailsSlug(event) {
     this.setState({
       detailsSlug : event.target.value
@@ -86,7 +95,6 @@ class ChapterDetails extends React.Component {
 
   changeDetailsDescription(event) {
     this.setState({
-      //detailsDescription : event.target.value
       detailsDescription : event
     });
   }
@@ -103,6 +111,32 @@ class ChapterDetails extends React.Component {
       });
       this.refs.details_cover.value = '';
     }
+  }
+
+  dragOverDetailsCover(event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  dropDetailsCover(event) {
+    if (event.dataTransfer) {
+      if (event.dataTransfer.items && event.dataTransfer.items.length > 0) {
+        _.map(event.dataTransfer.items, (fileObj)=>{
+          this.setState({
+            chapterCover: fileObj.getAsFile()
+          });
+        });
+      }
+      else if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+        _.map(event.dataTransfer.files, (fileObj)=>{
+          this.setState({
+            chapterCover: fileObj.name
+          });
+        });
+      }
+    }
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   submitEditModal() {
@@ -142,10 +176,6 @@ class ChapterDetails extends React.Component {
 
   handleGoBack() {
     this.context.router.goBack();
-  }
-
-  handleChange(val) {
-    console.log(val);
   }
 
   render() {
@@ -276,6 +306,7 @@ class ChapterDetails extends React.Component {
                     name="detailsName"
                     value={detailsName}
                     onChange={this.changeDetailsName.bind(this)}
+                    onBlur={this.detailsNameFocusOut.bind(this)}
                   />
                 </div>
                 <div className="form-group">
@@ -319,15 +350,24 @@ class ChapterDetails extends React.Component {
                     defaultValue={detailsCover}
                     onChange={this.changeDetailsCover.bind(this)}
                   />
-                  {(!detailsCover || _.isEmpty(detailsCover)) &&
-                  <div className="cover-preview blank" onClick={()=>{this.refs['details_cover'].click()}}>
+                  {!detailsCover &&
+                  <div
+                    className="cover-preview blank"
+                    onClick={()=>{this.refs['details_cover'].click()}}
+                    onDrop={this.dropDetailsCover.bind(this)}
+                    onDragOver={this.dragOverDetailsCover.bind(this)}
+                  >
                     <p className="add-title">
                       Добавить<br/>изображение
                     </p>
                   </div>
                   }
                   {detailsCover &&
-                  <div className="cover-preview">
+                  <div
+                    className="cover-preview"
+                    onDrop={this.dropDetailsCover.bind(this)}
+                    onDragOver={this.dragOverDetailsCover.bind(this)}
+                  >
                     <div className="delete-button" onClick={this.changeDetailsCover.bind(this, null)}>
                       <MdDeleteForever />
                     </div>

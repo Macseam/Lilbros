@@ -28,7 +28,11 @@ const logger = createLogger({
 
 const router = routerMiddleware(hashHistory);
 
-const enhancer = compose( applyMiddleware(thunk, router, logger) );
+const enhancer = compose(
+  NODE_ENV === 'development'
+    ? applyMiddleware(thunk, router, logger)
+    : applyMiddleware(thunk, router)
+);
 
 export default function configureStore(initialState) {
   const store = createStore(rootReducer, initialState, enhancer);

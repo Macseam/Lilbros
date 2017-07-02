@@ -1,7 +1,6 @@
 'use strict';
 
 import axios from 'axios';
-import _ from 'lodash';
 import { requestData, receiveData, receiveError } from './actionUtils';
 
 const NODE_ENV = process.env.NODE_ENV || 'production';
@@ -26,7 +25,6 @@ export function getHeaderAuthToken () {
 
 export function sendLogoutCommand () {
   let instance = axios.create({
-    //headers: {'X-CSRF-Token': action._csrf},
     withCredentials: true
   });
   const actionName = 'SEND_LOGOUT_COMMAND';
@@ -43,7 +41,6 @@ export function sendLogoutCommand () {
 
 export function getChaptersList () {
   let instance = axios.create({
-    //headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'GET_CHAPTERS_LIST';

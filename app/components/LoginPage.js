@@ -34,6 +34,7 @@ class LoginPage extends React.Component {
       _.isEmpty(nextProps.authState.loading) && !_.isEmpty(nextProps.authState.userData)) {
       if (nextProps.authState.userData && nextProps.authState.userData.error) {
         this.setState({
+          userPassword: null,
           loginError: nextProps.authState.userData.error
         });
       }
