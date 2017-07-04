@@ -16,9 +16,9 @@ class LoginPage extends React.Component {
     this.actions = this.props.actions;
 
     this.state = {
-      userName: null,
-      userPassword: null,
-      loginError: null,
+      userName: '',
+      userPassword: '',
+      loginError: '',
       tokenData: null,
     };
   }
@@ -34,13 +34,13 @@ class LoginPage extends React.Component {
       _.isEmpty(nextProps.authState.loading) && !_.isEmpty(nextProps.authState.userData)) {
       if (nextProps.authState.userData && nextProps.authState.userData.error) {
         this.setState({
-          userPassword: null,
+          userPassword: '',
           loginError: nextProps.authState.userData.error
         });
       }
       else {
         this.setState({
-          loginError: null
+          loginError: ''
         });
         this.context.router.push('/');
       }
@@ -56,13 +56,13 @@ class LoginPage extends React.Component {
 
   changeName(event) {
     this.setState({
-      userName: event.target.value || null
+      userName: event.target.value || ''
     });
   }
 
   changePassword(event) {
     this.setState({
-      userPassword: event.target.value || null
+      userPassword: event.target.value || ''
     });
   }
 
@@ -86,7 +86,7 @@ class LoginPage extends React.Component {
 
   closeLoginError() {
     this.setState({
-      loginError: null
+      loginError: ''
     });
   }
 
@@ -120,7 +120,7 @@ class LoginPage extends React.Component {
               type="text"
               id="entry_name"
               name="userName"
-              defaultValue={userName}
+              value={userName}
               onChange={this.changeName.bind(this)}
             />
           </div>
@@ -132,7 +132,7 @@ class LoginPage extends React.Component {
               type="password"
               id="entry_password"
               name="userPassword"
-              defaultValue={userPassword}
+              value={userPassword}
               onChange={this.changePassword.bind(this)}
             />
           </div>
