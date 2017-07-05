@@ -1,6 +1,7 @@
 let webpack = require('webpack');
 let path = require('path');
 
+const CompressionPlugin = require('compression-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const extractLess = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
@@ -183,7 +184,7 @@ module.exports = {
     }),
   ] : [
       extractLess,
-    new webpack.optimize.CommonsChunkPlugin({name: "vendors", filename: "vendors.bundle.js"}),
+      new webpack.optimize.CommonsChunkPlugin({name: "vendors", filename: "vendors.bundle.js"}),
       new webpack.DefinePlugin({
         'process.env':{
           'NODE_ENV': JSON.stringify('production')
@@ -199,5 +200,10 @@ module.exports = {
           warnings: false,
         },
       }),
+      new CompressionPlugin({
+        asset: "[path].gz[query]",
+        algorithm: "gzip",
+        test: /\.js$|\.css$|\.html$/
+      })
     ]
 };
