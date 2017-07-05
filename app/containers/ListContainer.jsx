@@ -72,7 +72,7 @@ class ListContainer extends Component {
   }
 
   componentDidMount() {
-    if (_.isEmpty(this.props.authState.chapterItemsList)) {
+    if (_.isEmpty(this.props.authState.chaptersList)) {
       this.actions.getChaptersList();
     }
     this.actions.getItemsList(this.props.params.chapter);
