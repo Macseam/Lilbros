@@ -1,7 +1,7 @@
 let webpack = require('webpack');
 let path = require('path');
 
-const CompressionPlugin = require('compression-webpack-plugin');
+//const CompressionPlugin = require('compression-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const extractLess = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
@@ -200,10 +200,10 @@ module.exports = {
           warnings: false,
         },
       }),
-      new CompressionPlugin({
+      /*new CompressionPlugin({
         asset: "[path].gz[query]",
         algorithm: "gzip",
         test: /\.js$|\.css$|\.html$/
-      })
+      })*/
     ]
 };
