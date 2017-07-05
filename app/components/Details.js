@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
-import cyrillicToTranslit from '../components/Translit';
+import translitRusEng from 'translit-rus-eng';
 import ReactQuill from 'react-quill/dist/react-quill';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
@@ -14,7 +14,7 @@ import settings from '../settings';
 import Modal from 'react-awesome-modal';
 import { MdModeEdit, MdDeleteForever } from 'react-icons/lib/md';
 
-class ChapterDetails extends React.Component {
+class ChapterDetails extends Component {
 
   constructor(props) {
     super(props);
@@ -82,7 +82,7 @@ class ChapterDetails extends React.Component {
   detailsNameFocusOut() {
     if (!this.state.detailsSlug || _.isEmpty(this.state.detailsSlug)) {
       this.setState({
-        detailsSlug: cyrillicToTranslit().transform(this.state.detailsName, "_")
+        detailsSlug: translitRusEng(this.state.detailsName, "_")
       });
     }
   }

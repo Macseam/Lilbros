@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import cyrillicToTranslit from '../components/Translit';
+import translitRusEng from 'translit-rus-eng';
 import { Navigation } from 'react-router';
 import ReactQuill from 'react-quill/dist/react-quill';
 import { bindActionCreators } from 'redux';
@@ -162,7 +162,7 @@ class ListContainer extends Component {
   itemNameFocusOut() {
     if (!this.state.itemSlug || _.isEmpty(this.state.itemSlug)) {
       this.setState({
-        itemSlug: cyrillicToTranslit().transform(this.state.itemName, "_")
+        itemSlug: translitRusEng(this.state.itemName, "_")
       });
     }
   }

@@ -8,7 +8,7 @@ import * as authActions from '../redux/actions/authActions';
 
 import { MdHome } from 'react-icons/lib/md';
 
-class LoginPage extends React.Component {
+class LoginPage extends Component {
 
   constructor(props) {
     super(props);

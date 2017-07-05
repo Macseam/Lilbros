@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import cyrillicToTranslit from '../components/Translit';
+import translitRusEng from 'translit-rus-eng';
 import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
@@ -113,7 +113,7 @@ class IndexContainer extends Component {
   chapterNameFocusOut() {
     if (!this.state.chapterSlug || _.isEmpty(this.state.chapterSlug)) {
       this.setState({
-        chapterSlug: cyrillicToTranslit().transform(this.state.chapterName, "_")
+        chapterSlug: translitRusEng(this.state.chapterName, "_")
       });
     }
   }
