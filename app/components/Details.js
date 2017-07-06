@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
 import translitRusEng from 'translit-rus-eng';
-import ReactQuill from 'react-quill/dist/react-quill';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
@@ -93,9 +92,9 @@ class ChapterDetails extends Component {
     });
   }
 
-  changeDetailsDescription(event) {
+  changeDetailsDescription(value) {
     this.setState({
-      detailsDescription : event
+      detailsDescription : value
     });
   }
 
@@ -323,19 +322,7 @@ class ChapterDetails extends Component {
                 <div className="form-group">
                   <label htmlFor="details_description">Описание элемента:</label>
                   <div className="wysiwyg-wrapper">
-                    <ReactQuill
-                      theme={'snow'}
-                      modules={{
-                        toolbar: [
-                        ['bold', 'italic', 'underline','strike', 'blockquote'],
-                        [{'list': 'bullet'}],
-                        ['link']
-                        ]
-                      }}
-                      onChange={this.changeDetailsDescription.bind(this)}
-                      value={detailsDescription ? detailsDescription : ''}
-                      placeholder={'Введите описание'}
-                    />
+                    место под wysiwyg
                   </div>
                 </div>
                 <div className="form-group cover-input">

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import translitRusEng from 'translit-rus-eng';
 import { Navigation } from 'react-router';
-import ReactQuill from 'react-quill/dist/react-quill';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
@@ -387,19 +386,7 @@ class ListContainer extends Component {
                 <div className="form-group">
                   <label htmlFor="item_description">Описание элемента:</label>
                   <div className="wysiwyg-wrapper">
-                    <ReactQuill
-                      theme={'snow'}
-                      modules={{
-                        toolbar: [
-                          ['bold', 'italic', 'underline','strike', 'blockquote'],
-                          [{'list': 'bullet'}],
-                          ['link']
-                        ]
-                      }}
-                      onChange={this.changeItemDescription.bind(this)}
-                      value={itemDescription ? itemDescription : ''}
-                      placeholder={'Введите описание'}
-                    />
+                    место под wysiwyg
                   </div>
                 </div>
                 <div className="form-group cover-input">

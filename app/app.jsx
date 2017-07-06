@@ -1,6 +1,5 @@
 import '../style/flatly.less';
 import '../style/app.less';
-import 'react-quill/dist/quill.snow.css';
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
