@@ -1,5 +1,6 @@
 import '../style/flatly.less';
 import '../style/app.less';
+import 'draft-js/dist/Draft.css';
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';

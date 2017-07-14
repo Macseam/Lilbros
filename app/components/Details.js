@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Editor, EditorState, ContentState, RichUtils, convertFromHTML} from 'draft-js';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
@@ -12,6 +13,40 @@ import { FaPaw, FaTwitter, FaBug, FaLeaf } from 'react-icons/lib/fa';
 import settings from '../settings';
 import Modal from 'react-awesome-modal';
 import { MdModeEdit, MdDeleteForever } from 'react-icons/lib/md';
+
+class MyEditor extends Component {
+  constructor(props) {
+    super(props);
+    const blocksFromHTML = convertFromHTML(this.props.articleText);
+    const state = ContentState.createFromBlockArray(
+      blocksFromHTML.contentBlocks,
+      blocksFromHTML.entityMap
+    );
+    this.state = {editorState: EditorState.createWithContent(state)};
+    this.onChange = (editorState) => this.setState({editorState});
+  }
+  componentWillReceiveProps(nextProps) {
+    const blocksFromHTML = convertFromHTML(nextProps.articleText);
+    const state = ContentState.createFromBlockArray(
+      blocksFromHTML.contentBlocks,
+      blocksFromHTML.entityMap
+    );
+    this.setState({
+      editorState: EditorState.createWithContent(state)
+    });
+  }
+  makeBold() {
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'))
+  }
+  render() {
+    return (
+      <div>
+        <button type="button" onClick={this.makeBold.bind(this)}>Больше жыру</button>
+        <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      </div>
+    );
+  }
+}
 
 class ChapterDetails extends Component {
 
@@ -322,7 +357,7 @@ class ChapterDetails extends Component {
                 <div className="form-group">
                   <label htmlFor="details_description">Описание элемента:</label>
                   <div className="wysiwyg-wrapper">
-                    место под wysiwyg
+                    <MyEditor articleText={detailsDescription} />
                   </div>
                 </div>
                 <div className="form-group cover-input">
