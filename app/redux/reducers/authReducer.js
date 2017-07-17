@@ -12,6 +12,7 @@ const initialState = {
   chapterItemDetails: null,
   chapterItemDetailsEdited: null,
   userData: null,
+  detailsEditable: false,
   loading: {},
 };
 
@@ -148,6 +149,9 @@ export default function authInfo(state = initialState, action) {
     case 'TRY_USER_LOGIN_PASSWORD_FAILURE':
       delete initialState.loading[actionTypeName];
       return { ...state, userData: action.data || initialState.userData, loading: initialState.loading };
+
+    case 'SET_DETAILS_EDITABLE_SUCCESS':
+      return { ...state, detailsEditable: action.data };
 
     default:
       return state;

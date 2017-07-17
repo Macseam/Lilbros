@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-router';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
@@ -162,7 +163,7 @@ class LoginPage extends Component {
 }
 
 LoginPage.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
 
 function mapDispatchToProps(dispatch) {

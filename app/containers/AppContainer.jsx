@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import AlertContainer from 'react-alert'
 
 import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -35,6 +37,13 @@ class AppContainer extends Component {
     }
   }
 
+  showAlert(message) {
+    this.msg.show(message || 'Тревога! Тревога! Волк унёс зайчат!', {
+      time: 8000,
+      type: 'error'
+    })
+  }
+
   goToLogin() {
     this.context.router.push('login');
   }
@@ -53,8 +62,20 @@ class AppContainer extends Component {
     const {
       children
     } = this.props;
+
+    const alertOptions = {
+      offset: 14,
+      position: 'top right',
+      theme: 'light',
+      transition: 'fade'
+    };
+
     return (
       <div>
+        <AlertContainer
+          ref={a => this.msg = a}
+          {...alertOptions}
+        />
         {!_.isEmpty(this.props.authState.loading) &&
           <div className="loading-indicator-container">
             <div className="mimimi-spinner">
@@ -65,6 +86,7 @@ class AppContainer extends Component {
             </div>
           </div>
         }
+        <button onClick={this.showAlert.bind(this)}>Show Alert</button>
         <div className="title-logo">
           <span className="title" onClick={this.goHome.bind(this)}>Lilbros</span>
           <div className="authorization-info">
@@ -87,7 +109,7 @@ class AppContainer extends Component {
 }
 
 AppContainer.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
 
 function mapDispatchToProps(dispatch) {

@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import translitRusEng from 'translit-rus-eng';
 import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -92,16 +93,9 @@ class ListContainer extends Component {
     this.context.router.push('');
   }
 
-  handleEditItem(id, title, slug, description, cover) {
-    this.setState({
-      modalAction: 'edit',
-      modalVisible : true,
-      itemId: id,
-      itemName: title,
-      itemSlug: slug,
-      itemDescription: description,
-      itemCover: cover
-    });
+  handleEditItem(slug) {
+    this.actions.setDetailsEditable(true);
+    this.context.router.push(slug);
   }
 
   handleDeleteItem(e, id) {
@@ -465,7 +459,7 @@ class ListContainer extends Component {
 }
 
 ListContainer.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
 
 

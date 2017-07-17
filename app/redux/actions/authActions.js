@@ -221,3 +221,10 @@ export function tryUserLoginPassword (action) {
       });
   };
 }
+
+export function setDetailsEditable (action) {
+  const actionName = 'SET_DETAILS_EDITABLE';
+  return (dispatch) => {
+    dispatch(receiveData(actionName, action));
+  };
+}

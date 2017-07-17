@@ -1,12 +1,12 @@
 import React from "react";
 
-// Not found page component
+// 404 ошибка
 export default class NotFound extends React.Component {
-  // render
+
   render() {
     return (
       <div className="page-not-found">
-        <h4>Page not found</h4>
+        <h4>:(</h4>
       </div>
     );
   }

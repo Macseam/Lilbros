@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import translitRusEng from 'translit-rus-eng';
 import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -414,7 +415,7 @@ class IndexContainer extends Component {
 }
 
 IndexContainer.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
 
 
