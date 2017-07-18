@@ -159,26 +159,38 @@ export function deleteItem (action) {
     withCredentials: true
   });
   const actionName = 'DELETE_ITEM';
+  const actionHint = 'Удаление записи';
   return (dispatch) => {
     dispatch(requestData(actionName));
     return instance.delete(`${apiUrl}/api/articles/${action.id}`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
-        dispatch(receiveError(actionName, response.data));
+        if (response.response && response.response.data) {
+          dispatch(receiveError(actionName, response.response.data, actionHint));
+        }
+        else {
+          dispatch(receiveError(actionName, response.data));
+        }
       });
   };
 }
 
 export function getItemDetails (action) {
   const actionName = 'GET_ITEM_DETAILS';
+  const actionHint = 'Получение данных о записи';
   return (dispatch) => {
     dispatch(requestData(actionName));
     return axios.get(`${apiUrl}/api/details/${action}`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
-        dispatch(receiveError(actionName, response.data));
+        if (response.response && response.response.data) {
+          dispatch(receiveError(actionName, response.response.data, actionHint));
+        }
+        else {
+          dispatch(receiveError(actionName, response.data));
+        }
       });
   };
 }
@@ -189,13 +201,19 @@ export function editItemDetails (action) {
     withCredentials: true
   });
   const actionName = 'EDIT_ITEM_DETAILS';
+  const actionHint = 'Редактирование записи';
   return (dispatch) => {
     dispatch(requestData(actionName));
     return instance.put(`${apiUrl}/api/articles/${action.id}`, action.body)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
-        dispatch(receiveError(actionName, response.data));
+        if (response.response && response.response.data) {
+          dispatch(receiveError(actionName, response.response.data, actionHint));
+        }
+        else {
+          dispatch(receiveError(actionName, response.data));
+        }
       });
   };
 }
@@ -206,6 +224,7 @@ export function tryUserLoginPassword (action) {
     withCredentials: true
   });
   const actionName = 'TRY_USER_LOGIN_PASSWORD';
+  const actionHint = 'Аутентификация';
   return (dispatch) => {
     dispatch(requestData(actionName));
     return instance.post(`${apiUrl}/api/sendauthinfo`, action.data)
@@ -213,7 +232,7 @@ export function tryUserLoginPassword (action) {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
         if (response.response && response.response.data) {
-          dispatch(receiveData(actionName, response.response.data));
+          dispatch(receiveError(actionName, response.response.data, actionHint));
         }
         else {
           dispatch(receiveError(actionName, response.data));

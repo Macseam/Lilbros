@@ -32,7 +32,7 @@ class LoginPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.userData !== this.props.authState.userData) &&
-      _.isEmpty(nextProps.authState.loading) && !_.isEmpty(nextProps.authState.userData)) {
+      _.isEmpty(nextProps.authState.loading) && !_.isEmpty(nextProps.authState.userData) && nextProps.authState.userData.username) {
       if (nextProps.authState.userData && nextProps.authState.userData.error) {
         this.setState({
           userPassword: '',

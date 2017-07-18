@@ -26,7 +26,7 @@ const ItemsList = props => {
               ? settings.apiUrl + '/uploads/' + (foundThumb || chapterItem.images[0].url)
               : ''}
             description={props.limitDescription(chapterItem.description)}
-            editAction={()=>{props.editAction(props.chapterSlug + '/' + chapterItem.slug)}}
+            editAction={props.editAction ? ()=>{props.editAction(props.chapterSlug + '/' + chapterItem.slug)} : null}
             toggleDeleteConfirmation={(e)=>props.toggleDeleteConfirmation(e)}
             limitDescription={(val)=>props.limitDescription(val)}
             deleteAction={props.deleteAction ? (e)=>{props.deleteAction(e, chapterItem._id)} : null}

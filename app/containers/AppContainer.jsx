@@ -10,7 +10,7 @@ import { Navigation } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../redux/actions/authActions';
 
-import { MdPresentToAll, MdExitToApp } from 'react-icons/lib/md';
+import { MdPresentToAll, MdExitToApp, MdErrorOutline } from 'react-icons/lib/md';
 
 class AppContainer extends Component {
 
@@ -35,12 +35,17 @@ class AppContainer extends Component {
         userData: nextProps.authState.userData,
       });
     }
+    if ((nextProps.authState.errorMessage !== this.props.authState.errorMessage)
+      && !_.isEmpty(nextProps.authState.errorMessage)) {
+      this.showAlert(nextProps.authState.errorMessage);
+    }
   }
 
   showAlert(message) {
     this.msg.show(message || 'Тревога! Тревога! Волк унёс зайчат!', {
       time: 8000,
-      type: 'error'
+      type: 'error',
+      icon: <div className="alert-error-icon"><MdErrorOutline/></div>
     })
   }
 
@@ -86,7 +91,6 @@ class AppContainer extends Component {
             </div>
           </div>
         }
-        <button onClick={this.showAlert.bind(this)}>Show Alert</button>
         <div className="title-logo">
           <span className="title" onClick={this.goHome.bind(this)}>Lilbros</span>
           <div className="authorization-info">

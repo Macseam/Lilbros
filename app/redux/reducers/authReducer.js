@@ -13,147 +13,170 @@ const initialState = {
   chapterItemDetailsEdited: null,
   userData: null,
   detailsEditable: false,
+  errorMessage: '',
   loading: {},
 };
 
 export default function authInfo(state = initialState, action) {
+  let resultObject = null;
   let actionTypeName = action.type ? action.type.split('_').slice(0,-1).join('_') : '';
+
+  if (action.type.indexOf('REQUEST') !== -1) {
+    initialState.errorMessage = '';
+    initialState.loading[actionTypeName] = true;
+  }
+  if (action.type.indexOf('SUCCESS') !== -1) {
+    if (initialState.loading[actionTypeName]) {
+      delete initialState.loading[actionTypeName];
+    }
+  }
+  if (action.type.indexOf('FAILURE') !== -1) {
+    delete initialState.loading[actionTypeName];
+    initialState.errorMessage = action.path + ': ' + action.data;
+  }
+
   switch (action.type) {
 
     case 'GET_HEADER_AUTH_TOKEN_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, userData: initialState.userData, loading: initialState.loading };
+      resultObject = { ...state, userData: initialState.userData };
+      break;
     case 'GET_HEADER_AUTH_TOKEN_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, userData: action.data, loading: initialState.loading };
+      resultObject = { ...state, userData: action.data };
+      break;
     case 'GET_HEADER_AUTH_TOKEN_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, userData: initialState.userData, loading: initialState.loading };
+      resultObject = { ...state, userData: initialState.userData };
+      break;
 
     case 'SEND_LOGOUT_COMMAND_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, userData: initialState.userData, loading: initialState.loading };
+      resultObject = { ...state, userData: initialState.userData };
+      break;
     case 'SEND_LOGOUT_COMMAND_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, userData: null, loading: initialState.loading };
+      resultObject = { ...state, userData: null };
+      break;
     case 'SEND_LOGOUT_COMMAND_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, userData: initialState.userData, loading: initialState.loading };
+      resultObject = { ...state, userData: initialState.userData };
+      break;
 
     case 'GET_CHAPTERS_LIST_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, chaptersList: initialState.chaptersList, loading: initialState.loading };
+      resultObject = { ...state, chaptersList: initialState.chaptersList };
+      break;
     case 'GET_CHAPTERS_LIST_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chaptersList: action.data, loading: initialState.loading };
+      resultObject = { ...state, chaptersList: action.data };
+      break;
     case 'GET_CHAPTERS_LIST_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chaptersList: initialState.chaptersList, loading: initialState.loading };
+      resultObject = { ...state, chaptersList: initialState.chaptersList };
+      break;
 
     case 'ADD_CHAPTER_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, chapterAdded: initialState.chapterAdded, loading: initialState.loading };
+      resultObject = { ...state, chapterAdded: initialState.chapterAdded };
+      break;
     case 'ADD_CHAPTER_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterAdded: action.data, loading: initialState.loading };
+      resultObject = { ...state, chapterAdded: action.data };
+      break;
     case 'ADD_CHAPTER_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterAdded: initialState.chapterAdded, loading: initialState.loading };
+      resultObject = { ...state, chapterAdded: initialState.chapterAdded };
+      break;
 
     case 'EDIT_CHAPTER_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, chapterEdited: initialState.chapterEdited, loading: initialState.loading };
+      resultObject = { ...state, chapterEdited: initialState.chapterEdited };
+      break;
     case 'EDIT_CHAPTER_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterEdited: action.data, loading: initialState.loading };
+      resultObject = { ...state, chapterEdited: action.data };
+      break;
     case 'EDIT_CHAPTER_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterEdited: initialState.chapterEdited, loading: initialState.loading };
+      resultObject = { ...state, chapterEdited: initialState.chapterEdited };
+      break;
 
     case 'DELETE_CHAPTER_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, chapterDeleted: initialState.chapterDeleted, loading: initialState.loading };
+      resultObject = { ...state, chapterDeleted: initialState.chapterDeleted };
+      break;
     case 'DELETE_CHAPTER_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterDeleted: action.data, loading: initialState.loading };
+      resultObject = { ...state, chapterDeleted: action.data };
+      break;
     case 'DELETE_CHAPTER_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterDeleted: initialState.chapterDeleted, loading: initialState.loading };
+      resultObject = { ...state, chapterDeleted: initialState.chapterDeleted };
+      break;
 
     case 'GET_ITEMS_LIST_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, chapterItemsList: initialState.chapterItemsList, loading: initialState.loading };
+      resultObject = { ...state, chapterItemsList: initialState.chapterItemsList };
+      break;
     case 'GET_ITEMS_LIST_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterItemsList: action.data, loading: initialState.loading };
+      resultObject = { ...state, chapterItemsList: action.data };
+      break;
     case 'GET_ITEMS_LIST_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterItemsList: initialState.chapterItemsList, loading: initialState.loading };
+      resultObject = { ...state, chapterItemsList: initialState.chapterItemsList };
+      break;
 
     case 'ADD_ITEM_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, itemAdded: initialState.itemAdded, loading: initialState.loading };
+      resultObject = { ...state, itemAdded: initialState.itemAdded };
+      break;
     case 'ADD_ITEM_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, itemAdded: action.data, loading: initialState.loading };
+      resultObject = { ...state, itemAdded: action.data };
+      break;
     case 'ADD_ITEM_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, itemAdded: initialState.itemAdded, loading: initialState.loading };
+      resultObject = { ...state, itemAdded: initialState.itemAdded };
+      break;
 
     case 'EDIT_ITEM_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, itemEdited: initialState.itemEdited, loading: initialState.loading };
+      resultObject = { ...state, itemEdited: initialState.itemEdited };
+      break;
     case 'EDIT_ITEM_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, itemEdited: action.data, loading: initialState.loading };
+      resultObject = { ...state, itemEdited: action.data };
+      break;
     case 'EDIT_ITEM_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, itemEdited: initialState.itemEdited, loading: initialState.loading };
+      resultObject = { ...state, itemEdited: initialState.itemEdited };
+      break;
 
     case 'DELETE_ITEM_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, itemDeleted: initialState.itemDeleted, loading: initialState.loading };
+      resultObject = { ...state, itemDeleted: initialState.itemDeleted };
+      break;
     case 'DELETE_ITEM_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, itemDeleted: action.data, loading: initialState.loading };
+      resultObject = { ...state, itemDeleted: action.data };
+      break;
     case 'DELETE_ITEM_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, itemDeleted: initialState.itemDeleted, loading: initialState.loading };
+      resultObject = { ...state, itemDeleted: initialState.itemDeleted };
+      break;
 
     case 'GET_ITEM_DETAILS_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, chapterItemDetails: initialState.chapterItemDetails, loading: initialState.loading };
+      resultObject = { ...state, chapterItemDetails: initialState.chapterItemDetails };
+      break;
     case 'GET_ITEM_DETAILS_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterItemDetails: action.data, loading: initialState.loading };
+      resultObject = { ...state, chapterItemDetails: action.data };
+      break;
     case 'GET_ITEM_DETAILS_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterItemDetails: initialState.chapterItemDetails, loading: initialState.loading };
+      resultObject = { ...state, chapterItemDetails: initialState.chapterItemDetails };
+      break;
 
     case 'EDIT_ITEM_DETAILS_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, chapterItemDetailsEdited: initialState.chapterItemDetailsEdited, loading: initialState.loading };
+      resultObject = { ...state, chapterItemDetailsEdited: initialState.chapterItemDetailsEdited };
+      break;
     case 'EDIT_ITEM_DETAILS_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterItemDetailsEdited: action.data, loading: initialState.loading };
+      resultObject = { ...state, chapterItemDetailsEdited: action.data };
+      break;
     case 'EDIT_ITEM_DETAILS_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, chapterItemDetailsEdited: initialState.chapterItemDetailsEdited, loading: initialState.loading };
+      resultObject = { ...state, chapterItemDetailsEdited: initialState.chapterItemDetailsEdited };
+      break;
 
     case 'TRY_USER_LOGIN_PASSWORD_REQUEST':
-      initialState.loading[actionTypeName] = true;
-      return { ...state, userData: initialState.userData, loading: initialState.loading };
+      resultObject = { ...state, userData: initialState.userData };
+      break;
     case 'TRY_USER_LOGIN_PASSWORD_SUCCESS':
-      delete initialState.loading[actionTypeName];
-      return { ...state, userData: action.data, loading: initialState.loading };
+      resultObject = { ...state, userData: action.data };
+      break;
     case 'TRY_USER_LOGIN_PASSWORD_FAILURE':
-      delete initialState.loading[actionTypeName];
-      return { ...state, userData: action.data || initialState.userData, loading: initialState.loading };
+      resultObject = { ...state, userData: initialState.userData };
+      break;
 
     case 'SET_DETAILS_EDITABLE_SUCCESS':
-      return { ...state, detailsEditable: action.data };
+      resultObject = { ...state, detailsEditable: action.data };
+      break;
 
     default:
-      return state;
+      resultObject = state;
   }
+
+  resultObject.loading = initialState.loading;
+  resultObject.errorMessage = initialState.errorMessage;
+
+  return resultObject;
 }
