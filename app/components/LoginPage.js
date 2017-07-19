@@ -19,7 +19,6 @@ class LoginPage extends Component {
     this.state = {
       userName: '',
       userPassword: '',
-      loginError: '',
       tokenData: null,
     };
   }
@@ -33,16 +32,12 @@ class LoginPage extends Component {
   componentWillReceiveProps(nextProps) {
     if ((nextProps.authState.userData !== this.props.authState.userData) &&
       _.isEmpty(nextProps.authState.loading) && !_.isEmpty(nextProps.authState.userData) && nextProps.authState.userData.username) {
-      if (nextProps.authState.userData && nextProps.authState.userData.error) {
+      if (!nextProps.authState.userData || _.isEmpty(nextProps.authState.userData)) {
         this.setState({
-          userPassword: '',
-          loginError: nextProps.authState.userData.error
+          userPassword: ''
         });
       }
       else {
-        this.setState({
-          loginError: ''
-        });
         this.context.router.push('/');
       }
     }
@@ -85,18 +80,11 @@ class LoginPage extends Component {
     return matches ? decodeURIComponent(matches[1]) : undefined;
   }
 
-  closeLoginError() {
-    this.setState({
-      loginError: ''
-    });
-  }
-
   render() {
 
     const {
       userName,
-      userPassword,
-      loginError
+      userPassword
     } = this.state;
 
     return (
@@ -137,21 +125,6 @@ class LoginPage extends Component {
               onChange={this.changePassword.bind(this)}
             />
           </div>
-
-          {loginError &&
-            <div className="alert alert-danger">
-              <button
-                type="button"
-                className="close"
-                onClick={this.closeLoginError.bind(this)}
-              >
-                &times;
-              </button>
-              <span>
-                {loginError.text || loginError}
-              </span>
-            </div>
-          }
 
           <button type="submit" className="btn btn-success">Войти</button>
 
