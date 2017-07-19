@@ -327,7 +327,6 @@ class ListContainer extends Component {
           />
         }
         {_.isEmpty(chapterItems)
-        && this.props.authState.chapterItemsList !== null
         && _.isEmpty(this.props.authState.loading) &&
           <h5 className="nothing-here">А тут ничего пока нет :(</h5>
         }
