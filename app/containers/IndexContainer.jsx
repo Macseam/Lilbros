@@ -286,7 +286,7 @@ class IndexContainer extends Component {
           />
         }
         <footer>
-          Lilbros.ru 1.0 © 2017 by Macseam
+          Lilbros.ru 1.0 © 2017 by <a href="http://www.macseam.ru" target="_blank">Macseam</a>
         </footer>
         <div className="modal-wrapper">
           <Modal
