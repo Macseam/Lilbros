@@ -54,7 +54,7 @@ class AppContainer extends Component {
   }
 
   goHome() {
-    if (this.props.route.path && this.props.route.path !== '/') {
+    if (this.props.location.pathname !== '/') {
       this.context.router.push('/');
     }
   }
@@ -100,7 +100,7 @@ class AppContainer extends Component {
             }
             {(this.state.userData && this.props.location.pathname.indexOf('login') === -1) &&
               <div>
-                <span>{this.state.userData}</span> <MdExitToApp onClick={this.handleLogout.bind(this)} />
+                <span>{this.state.userData || '???'}</span> <MdExitToApp onClick={this.handleLogout.bind(this)} />
               </div>
             }
             </div>

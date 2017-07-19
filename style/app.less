@@ -56,7 +56,18 @@ html, body {
   }
 }
 
+.loading-hint {
+  margin: 10px auto;
+}
+
 .loading-indicator-container {
+  &.async-container {
+    position: relative;
+    margin: 0 auto;
+    background: transparent;
+    bottom: -100px;
+    top: auto;
+  }
   position: fixed;
   left: 0;
   top: 0;
@@ -431,6 +442,18 @@ html, body {
 }
 
 .chapter-items-list-wrapper {
+  &.loading-mockup {
+    .items-list-title {
+      color: transparent;
+      background: #dcdcdc;
+      width: 50%;
+      text-shadow: none;
+      margin: 21px auto 0 auto;
+    }
+    .list-item {
+      background: #dcdcdc;
+    }
+  }
   .items-list-title {
     color: white;
     text-shadow: 0 1px 4px rgba(0,0,0,0.5);
@@ -531,11 +554,24 @@ html, body {
   }
 }
 
+.loading-mockup {
+  .keyframes(fadeInFast;{
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  });
+  .animation(fadeInFast 1s linear 1);
+}
+
 .item-details-wrapper {
   background: #ffffff;
   box-shadow: 0 4px 8px 2px rgba(0,0,0,0.1);
   text-align: center;
   padding: 10px;
+  &.not-found {
+    height: 300px;
+    background: #ffffff url('../images/sad_kitten.jpg') center center no-repeat;
+    background-size: initial;
+  }
   .form-group {
     &:first-of-type {
       margin-top: 30px;
@@ -561,6 +597,12 @@ html, body {
     font-size: 26px;
     margin-top: 40px;
     margin-bottom: 20px;
+    &.loading-mockup {
+      color: transparent;
+      background: #dcdcdc;
+      width: 50%;
+      margin: 40px auto 20px auto;
+    }
   }
   .details-description {
     strong {
@@ -587,6 +629,10 @@ html, body {
     overflow: hidden;
     margin: 0 16px 0 0;
     .image-container {
+      &.loading-mockup {
+        height: 300px;
+        background: #dcdcdc;
+      }
       background: gray url('../images/tree_bark.png');
     }
     img {

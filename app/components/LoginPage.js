@@ -30,15 +30,14 @@ class LoginPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((nextProps.authState.userData !== this.props.authState.userData) &&
-      _.isEmpty(nextProps.authState.loading) && !_.isEmpty(nextProps.authState.userData) && nextProps.authState.userData.username) {
-      if (!nextProps.authState.userData || _.isEmpty(nextProps.authState.userData)) {
+    if (nextProps.authState.userData !== this.props.authState.userData) {
+      if (!_.isEmpty(nextProps.authState.userData)) {
+        this.context.router.push('/');
+      }
+      else {
         this.setState({
           userPassword: ''
         });
-      }
-      else {
-        this.context.router.push('/');
       }
     }
     this.setState({

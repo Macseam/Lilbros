@@ -73,7 +73,7 @@ class IndexContainer extends Component {
   }
 
   handleGoToChapter(path) {
-    this.context.router.push(path);
+    this.context.router.push('list/' + path);
   }
 
   handleEditChapter(id, title, slug, description, cover) {

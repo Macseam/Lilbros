@@ -331,10 +331,6 @@ class ListContainer extends Component {
         && _.isEmpty(this.props.authState.loading) &&
           <h5 className="nothing-here">А тут ничего пока нет :(</h5>
         }
-        {_.isEmpty(chapterItems)
-        && !_.isEmpty(this.props.authState.loading) &&
-        <h5>...</h5>
-        }
         <div className="modal-wrapper">
           <Modal
             visible={modalVisible}

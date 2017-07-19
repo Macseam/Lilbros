@@ -7,17 +7,17 @@ import {
 
 import AppContainer from "./containers/AppContainer";
 import IndexContainer from "./containers/IndexContainer";
-import ListContainer from "./containers/ListContainer";
-import LoginPage from "./components/LoginPage";
+import ListContainerAsync from "./containers/ListContainerAsync";
+import LoginPageAsync from "./components/LoginPageAsync";
 import NotFound from "./components/NotFound";
-import ChapterDetails from './components/Details';
+import ChapterDetailsAsync from './components/DetailsAsync';
 
 export default function createRoutes(store) {
   return (
     <Route path="/" component={AppContainer}>
-      <Route path="login" component={LoginPage}/>
-      <Route path=":chapter" component={ListContainer}>
-        <Route path=":details" component={ChapterDetails}/>
+      <Route path="login" component={LoginPageAsync}/>
+      <Route path="list/:chapter" component={ListContainerAsync}>
+        <Route path=":details" component={ChapterDetailsAsync}/>
       </Route>
       <IndexRoute component={IndexContainer} />
       <Route path="*" component={NotFound}/>

@@ -129,7 +129,7 @@ class ChapterDetails extends Component {
         detailsCover: (itemDetails.images && !_.isEmpty(itemDetails.images)) ? settings.apiUrl + '/uploads/' + itemDetails.images[0].url : ''
       }, ()=>{
         if (this.props.params.details !== this.state.detailsSlug) {
-          this.context.router.push('/' + this.props.params.chapter + '/' + this.state.detailsSlug);
+          this.context.router.push('/list/' + this.props.params.chapter + '/' + this.state.detailsSlug);
         }
       });
     }
@@ -276,7 +276,7 @@ class ChapterDetails extends Component {
   }
 
   handleGoBack() {
-    this.context.router.push('/' + this.props.params.chapter);
+    this.context.router.push('/list/' + this.props.params.chapter);
   }
 
   render() {
@@ -333,7 +333,6 @@ class ChapterDetails extends Component {
             }
             Вернуться к списку{(!_.isEmpty(chapterTitle) && chapterTitle) ? ' "' + chapterTitle.title + '"' : ''}
           </button>
-          <h5>...</h5>
         </div>
       );
     }

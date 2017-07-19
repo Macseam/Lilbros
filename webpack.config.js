@@ -14,7 +14,7 @@ const AUTH = process.env.AUTH || false;
 module.exports = {
 
   entry: {
-    bundle: './app/app',
+    app: './app/app',
     vendors: [
       'lodash',
       'react',
@@ -24,7 +24,8 @@ module.exports = {
       'react-awesome-modal',
       'react-icons/lib/md',
       'react-icons/lib/fa',
-      'translit-rus-eng'
+      'translit-rus-eng',
+      'react-alert'
     ],
   },
 
@@ -36,7 +37,7 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: '[name].js',
+    filename: '[name].bundle.js',
     chunkFilename: '[id].[chunkhash].js',
     publicPath: '/build/',
   },
@@ -174,7 +175,11 @@ module.exports = {
 
   plugins: NODE_ENV === 'development' ? [
     extractLess,
-    new webpack.optimize.CommonsChunkPlugin({name: "vendors", filename: "vendors.bundle.js"}),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendors",
+      children: true,
+      async: true,
+    }),
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
@@ -188,11 +193,15 @@ module.exports = {
     }),
   ] : [
       extractLess,
-      new webpack.optimize.CommonsChunkPlugin({name: "vendors", filename: "vendors.bundle.js"}),
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
-    }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: "vendors",
+        children: true,
+        async: true,
+      }),
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery"
+      }),
       new webpack.DefinePlugin({
         'process.env':{
           'NODE_ENV': JSON.stringify('production')
