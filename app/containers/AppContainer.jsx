@@ -50,7 +50,7 @@ class AppContainer extends Component {
   }
 
   goToLogin() {
-    this.context.router.push('login');
+    this.context.router.push('/login');
   }
 
   goHome() {

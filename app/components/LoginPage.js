@@ -19,14 +19,7 @@ class LoginPage extends Component {
     this.state = {
       userName: '',
       userPassword: '',
-      tokenData: null,
     };
-  }
-
-  componentDidMount() {
-    this.setState({
-      tokenData: this.getCookie('CSRF-TOKEN'),
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,9 +33,6 @@ class LoginPage extends Component {
         });
       }
     }
-    this.setState({
-      tokenData: this.getCookie('CSRF-TOKEN'),
-    });
   }
 
   handleGoBack() {
@@ -68,15 +58,7 @@ class LoginPage extends Component {
         username: this.state.userName,
         password: this.state.userPassword,
       },
-      _csrf: this.state.tokenData
     });
-  }
-
-  getCookie(name) {
-    let matches = document.cookie.match(new RegExp(
-      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
   }
 
   render() {

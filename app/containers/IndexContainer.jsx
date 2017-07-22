@@ -65,13 +65,6 @@ class IndexContainer extends Component {
     this.actions.getChaptersList();
   }
 
-  getCookie(name) {
-    const matches = document.cookie.match(new RegExp(
-      `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-  }
-
   handleGoToChapter(path) {
     this.context.router.push('list/' + path);
   }
@@ -92,8 +85,7 @@ class IndexContainer extends Component {
     e.stopPropagation();
     this.actions.deleteChapter(
       {
-        id: id,
-        auth: this.getCookie('auth'),
+        id: id
       }
     );
   }
@@ -114,7 +106,7 @@ class IndexContainer extends Component {
   chapterNameFocusOut() {
     if (!this.state.chapterSlug || _.isEmpty(this.state.chapterSlug)) {
       this.setState({
-        chapterSlug: translitRusEng(this.state.chapterName, "_")
+        chapterSlug: translitRusEng(this.state.chapterName, "slug")
       });
     }
   }
@@ -214,7 +206,6 @@ class IndexContainer extends Component {
     formData.append("cover", chapterCover);
     this.closeModal();
     this.actions.editChapter({
-      auth: this.getCookie('auth'),
       id: chapterId,
       body: formData
     });
@@ -236,7 +227,6 @@ class IndexContainer extends Component {
     formData.append("cover", chapterCover);
     this.closeModal();
     this.actions.addChapter({
-      auth: this.getCookie('auth'),
       body: formData
     });
   }
@@ -286,7 +276,7 @@ class IndexContainer extends Component {
           />
         }
         <footer>
-          Lilbros.ru 1.0 © 2017 by <a href="http://www.macseam.ru" target="_blank">Macseam</a>
+          Lilbros.ru 1.0 © 2017 by <a href="http://macseam.ru" target="_blank">Macseam</a>
         </footer>
         <div className="modal-wrapper">
           <Modal

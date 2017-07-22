@@ -78,13 +78,6 @@ class ListContainer extends Component {
     this.actions.getItemsList(this.props.params.chapter);
   }
 
-  getCookie(name) {
-    const matches = document.cookie.match(new RegExp(
-      `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-  }
-
   handleGoToItem(id) {
     this.context.router.push(id);
   }
@@ -101,8 +94,7 @@ class ListContainer extends Component {
   handleDeleteItem(e, id) {
     e.stopPropagation();
     this.actions.deleteItem({
-      id: id,
-      auth: this.getCookie('auth'),
+      id: id
     });
   }
 
@@ -155,7 +147,7 @@ class ListContainer extends Component {
   itemNameFocusOut() {
     if (!this.state.itemSlug || _.isEmpty(this.state.itemSlug)) {
       this.setState({
-        itemSlug: translitRusEng(this.state.itemName, "_")
+        itemSlug: translitRusEng(this.state.itemName, "slug")
       });
     }
   }
@@ -166,9 +158,9 @@ class ListContainer extends Component {
     });
   }
 
-  changeItemDescription(val) {
+  changeItemDescription(event) {
     this.setState({
-      itemDescription: val
+      itemDescription: event.target.value
     });
   }
 
@@ -229,7 +221,6 @@ class ListContainer extends Component {
     formData.append("cover", itemCover);
     this.closeModal();
     this.actions.editItem({
-      auth: this.getCookie('auth'),
       id: itemId,
       body: formData
     });
@@ -255,7 +246,6 @@ class ListContainer extends Component {
     formData.append("cover", itemCover);
     this.closeModal();
     this.actions.addItem({
-      auth: this.getCookie('auth'),
       body: formData
     });
   }
@@ -374,9 +364,14 @@ class ListContainer extends Component {
                 </div>
                 <div className="form-group">
                   <label htmlFor="item_description">Описание элемента:</label>
-                  <div className="wysiwyg-wrapper">
-                    место под wysiwyg
-                  </div>
+                  <textarea
+                    className="form-control"
+                    rows="10"
+                    id="item_description"
+                    name="itemDescription"
+                    value={itemDescription}
+                    onChange={this.changeItemDescription.bind(this)}
+                  />
                 </div>
                 <div className="form-group cover-input">
                   <label htmlFor="item_cover">Обложка элемента:</label>

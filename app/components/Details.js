@@ -163,13 +163,6 @@ class ChapterDetails extends Component {
     this.actions.setDetailsEditable(false);
   }
 
-  getCookie(name) {
-    const matches = document.cookie.match(new RegExp(
-      `(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-  }
-
   handleEditDetails() {
     this.actions.setDetailsEditable(!this.state.modalVisible);
     const { itemDetails } = this.state;
@@ -192,7 +185,7 @@ class ChapterDetails extends Component {
   detailsNameFocusOut() {
     if (!this.state.detailsSlug || _.isEmpty(this.state.detailsSlug)) {
       this.setState({
-        detailsSlug: translitRusEng(this.state.detailsName, true)
+        detailsSlug: translitRusEng(this.state.detailsName, "slug")
       });
     }
   }
@@ -265,7 +258,6 @@ class ChapterDetails extends Component {
     }));
     formData.append("cover", detailsCover);
     this.actions.editItemDetails({
-      auth: this.getCookie('auth'),
       id: detailsId,
       body: formData
     });

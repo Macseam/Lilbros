@@ -73,7 +73,6 @@ export function getChaptersList () {
 
 export function addChapter (action) {
   let instance = axios.create({
-    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'ADD_CHAPTER';
@@ -91,7 +90,6 @@ export function addChapter (action) {
 
 export function editChapter (action) {
   let instance = axios.create({
-    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'EDIT_CHAPTER';
@@ -109,7 +107,6 @@ export function editChapter (action) {
 
 export function deleteChapter (action) {
   let instance = axios.create({
-    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'DELETE_CHAPTER';
@@ -141,7 +138,6 @@ export function getItemsList (action) {
 
 export function addItem (action) {
   let instance = axios.create({
-    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'ADD_ITEM';
@@ -159,7 +155,6 @@ export function addItem (action) {
 
 export function editItem (action) {
   let instance = axios.create({
-    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'EDIT_ITEM';
@@ -177,7 +172,6 @@ export function editItem (action) {
 
 export function deleteItem (action) {
   let instance = axios.create({
-    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'DELETE_ITEM';
@@ -209,7 +203,6 @@ export function getItemDetails (action) {
 
 export function editItemDetails (action) {
   let instance = axios.create({
-    headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'EDIT_ITEM_DETAILS';
@@ -227,7 +220,6 @@ export function editItemDetails (action) {
 
 export function tryUserLoginPassword (action) {
   let instance = axios.create({
-    //headers: {'Authorization': 'Bearer ' + action.auth},
     withCredentials: true
   });
   const actionName = 'TRY_USER_LOGIN_PASSWORD';
