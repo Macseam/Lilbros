@@ -1,6 +1,7 @@
 'use strict';
 
 import axios from 'axios';
+import base64js from 'base64-js';
 import { requestData, receiveData, receiveError } from './actionUtils';
 
 const NODE_ENV = process.env.NODE_ENV || 'production';
@@ -219,14 +220,24 @@ export function editItemDetails (action) {
 }
 
 export function tryUserLoginPassword (action) {
-  let instance = axios.create({
+  let authHeader = null;
+  if (action && action.data && action.data.username && action.data.password) {
+    authHeader = base64js.fromByteArray(
+      (action.data.username + ':' + action.data.password).split('').map(function (char) { return char.charCodeAt(0) })
+    );
+  }
+  let requestOptions = {
     withCredentials: true
-  });
+  };
+  if (authHeader) {
+    requestOptions.headers = {'Authorization': authHeader};
+  }
+  let instance = axios.create(requestOptions);
   const actionName = 'TRY_USER_LOGIN_PASSWORD';
   const actionHint = 'Аутентификация';
   return (dispatch) => {
     dispatch(requestData(actionName));
-    return instance.post(`${apiUrl}/api/sendauthinfo`, action.data)
+    return instance.post(`${apiUrl}/api/sendauthinfo`)
       .then((response) => {
         dispatch(receiveData(actionName, response.data));
       }).catch((response) => {
