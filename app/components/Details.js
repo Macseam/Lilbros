@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
+  AtomicBlockUtils,
+  ContentState,
   Editor,
   EditorState,
-  ContentState,
   RichUtils,
   convertFromHTML
 } from 'draft-js';
@@ -20,6 +21,16 @@ import { FaPaw, FaTwitter, FaBug, FaLeaf } from 'react-icons/lib/fa';
 
 import settings from '../settings';
 import { MdModeEdit, MdDeleteForever } from 'react-icons/lib/md';
+
+class MediaComponent extends Component {
+  render() {
+    const {block, contentState} = this.props;
+    const data = contentState.getEntity(block.getEntityAt(0)).getData();
+    return (
+      <img src={data.src} width={data.width} height={data.height} />
+    )
+  }
+}
 
 class MyEditor extends Component {
   constructor(props) {
@@ -61,8 +72,29 @@ class MyEditor extends Component {
       'blockquote'
     ))
   }
+  insertImage() {
+    const entityData = { src: '#', height: '200px', width: '200px' };
+    const entityKey = this.state.editorState
+      .getCurrentContent()
+      .createEntity('IMAGE', 'MUTABLE', entityData)
+      .getLastCreatedEntityKey();
+    this.onChange(AtomicBlockUtils.insertAtomicBlock(
+      this.state.editorState,
+      entityKey,
+      ' '
+    ))
+  }
   getContent() {
     return (stateToHTML(this.state.editorState.getCurrentContent()));
+  }
+  myBlockRenderer(contentBlock) {
+    const type = contentBlock.getType();
+    if (type === 'atomic') {
+      return {
+        component: MediaComponent,
+        editable: false,
+      };
+    }
   }
   render() {
     return (
@@ -88,7 +120,15 @@ class MyEditor extends Component {
         >
           blockquote
         </button>
+        <button
+          type="button"
+          className="editor-button"
+          onClick={this.insertImage.bind(this)}
+        >
+          image
+        </button>
         <Editor
+          blockRendererFn={this.myBlockRenderer.bind(this)}
           customStyleMap={this.state.styleMap}
           editorState={this.state.editorState}
           onChange={this.onChange}
